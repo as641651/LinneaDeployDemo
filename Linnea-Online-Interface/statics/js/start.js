@@ -1,4 +1,6 @@
-
+// $("#M_P_TD_2_UL_LI_2_DIV_INP_1_J_0").on("inputchange paste keyup select",function(){
+//   alert("FFFFFF");
+// });
 
 var examples = {
   
@@ -117,9 +119,7 @@ for (var e in examples) {
 
   });
 
-  $(".format-input").on("inputchange paste keyup select",function(){
-    alert("FFFFFF");
-  });
+  
 
   function getVarNamesFromString(StrObj) {
     var separateNamesBy = ", ";
@@ -556,7 +556,7 @@ for (var e in examples) {
               }
 
               listLinneaBody += "\" data-val=\"";
-              listLinneaBody += "\" style=\"font-size: 13px\">";
+              listLinneaBody += "\" style=\"font-size: 13px\" disabled/>";
               listLinneaBody += "<label class=\"mdl-textfield__label extrawide\" for=\"";
               listLinneaBody += M_P_TD_2_UL_LI_2_DIV_INP_1;
               listLinneaBody += "\">";
@@ -667,10 +667,18 @@ for (var e in examples) {
             listLinneaBody += "</ul></div></li>";
           }
           listLinneaBody += "</ul></td></tr>";
-          out("end of the table structuring!!!!");
+          //out("end of the table structuring!!!!");
         }
+        var s=0;
+        // for(s; s < model.all_IDs.length; s++){
+        //   $(model.all_IDs[s]).on("inputchange paste keyup select",function(){
+        //     alert("FFFFFF");
+        //   });
+          
+        // }
+        
         if (listLinneaBody !== "") {
-          out("begin the table initialization!!!!");
+          //out("begin the table initialization!!!!");
           $("#listLinneas").html(listLinneaBody);
           getmdlSelect.init(".getmdl-select");
           model.mat_GEN = model.mat_IDs.slice();
@@ -789,11 +797,10 @@ for (var e in examples) {
     
   }
 
+  
 
   function generateInput(){
-
     var inputGenerated = "";
-
     inputGenerated += "\n"
     out(model.mat_GEN);
     out(model.vec_GEN);
