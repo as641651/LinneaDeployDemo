@@ -5,23 +5,23 @@ var examples = {
   input1: {
     name: "Least Squares",
     expr: "\\(b = (X^TX)^{-1}X^Ty\\)",
-    code: "b = inv(trans(X)*X)*trans(X)*y",
+    code: "b=inv(trans(X)*X)*trans(X)*y",
   },
   input2:{
     name: "Generalized Least Squares",
     expr: "\\(z = (X^TS^{-1}X)^{-1}X^TS^{-1}y\\)",
-    code: "z = inv(trans(X)*inv(S)*X)*trans(X)*inv(S)*y",
-  }
-  // input3:{
-  //   name: "Triangular Matrix Inversion",
-  //   expr: "X10 = L10 * inv(L00) ...",
-  //   code: "X10 = L10*inv(L00)\nX20 = L20+(inv(L22)*L21*inv(L11)*L10)\nX11 = inv(L11)\nX21 = inv(L22)*L21*-1",
-  // },
-  // input4:{
-  //   name: "Image Restoration",
-  //   expr: "H_dag = trans(H) * ... \n ",
-  //   code: "H_dag = trans(H)*inv(H*trans(H))\ny_k = (H_dag*y)+(((I+(H*H_dag*-1))*x)",
-  // },
+    code: "z=inv(trans(X)*inv(S)*X)*trans(X)*inv(S)*y",
+  },
+  input3:{
+    name: "Triangular Matrix Inversion",
+    expr: ["\\(X_{10} = L_{10} L_{00}^{-1}\\)" , "\\(X_{20} = L_{20}+L_{22}^{-1}L_{21}L_{11}^{-1}L_{10}\\)","\\(X_{11} = L_{11}^{-1}\\)", "\\(X_{21} = -L_{22}^{-1}L_{21}\\)"],
+    code: "X10=L10*inv(L00)\nX20=L20+(inv(L22)*L21*inv(L11)*L10)\nX11=inv(L11)\nX21=inv(L22)*L21*-1",
+  },
+  input4:{
+    name: "Image Restoration",
+    expr: ["\\(H^{\\dagger} = -H^{T}(HH^{T})\\) ", "\\(y_k=H^{\\dagger}y+x(I-HH^{\\dagger})\\)"],
+    code: "H_dag=trans(H)*inv(H*trans(H))\ny_k=H_dag*y+(I+(-1*H_dag*H))*x",
+  },
   // input5:{
   //   name: "Stochastic Newton",
   //   expr: "Bout = k * inv * ...",
@@ -32,13 +32,48 @@ var examples = {
 
 var listExamplesBody = "";
 for (var e in examples) {
-  listExamplesBody += "<li id=\"example_";
-  listExamplesBody += e;
-  listExamplesBody += "\" class=\"mdl-menu__item\">";
-  listExamplesBody += examples[e].name;
-  listExamplesBody += ":&nbsp;  ";
-  listExamplesBody += examples[e].expr;
-  listExamplesBody += "</li>";
+  
+  //:&nbsp;
+  if(examples[e].name == "Triangular Matrix Inversion" ){
+    listExamplesBody += "<li id=\"example_";
+    listExamplesBody += e;
+    listExamplesBody += "\" class=\"mdl-menu__item\" style=\"height: 100px;\" >";
+    listExamplesBody += "<ul style=\"list-style: none; padding-left: 0;\"><li class=\"\">";
+    listExamplesBody += examples[e].name;
+    listExamplesBody += ":&nbsp ";
+    listExamplesBody += examples[e].expr[0];
+    listExamplesBody += "</li><li class=\"\" style=\"padding-left: 206px;\">";
+    listExamplesBody += examples[e].expr[1];
+    listExamplesBody += "</li><li class=\"\" style=\"padding-left: 206px;\">";
+    listExamplesBody += examples[e].expr[2];
+    listExamplesBody += "</li><li  class=\"\" style=\"padding-left: 206px;\">";
+    listExamplesBody += examples[e].expr[3];
+    listExamplesBody += "</li></ul></li>";
+    
+  }else if(examples[e].name == "Image Restoration"){
+    listExamplesBody += "<li id=\"example_";
+    listExamplesBody += e;
+    listExamplesBody += "\" class=\"mdl-menu__item\" style=\"height: 50px;\" >";
+    listExamplesBody += "<ul style=\"list-style: none; padding-left: 0;\"><li class=\"\">";
+    listExamplesBody += examples[e].name;
+    listExamplesBody += ":&nbsp ";
+    listExamplesBody += examples[e].expr[0];
+    listExamplesBody += "</li><li class=\"\" style=\"padding-left: 149px;\">";
+    listExamplesBody += examples[e].expr[1];
+    listExamplesBody += "</li></ul></li>";
+
+  }else{
+    listExamplesBody += "<li id=\"example_";
+    listExamplesBody += e;
+    listExamplesBody += "\" class=\"mdl-menu__item\">";
+    
+    listExamplesBody += examples[e].name;
+    listExamplesBody += ":&nbsp ";
+    listExamplesBody += examples[e].expr;
+    listExamplesBody += "</li>";
+  
+  }
+
 }
 $("#listExamples").html(listExamplesBody);
 
@@ -59,28 +94,32 @@ for (var e in examples) {
 }
 
 
+  
+  function out(blah){
+    console.log(blah);
+  } ;
+  
+
+  function makeid(length) {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+       result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  }
+
   $("#txtExpr").keyup(function() {
-    model.setInput($("#txtExpr").val());
+    var inputString = $("#txtExpr").val();
+    model.setInput(inputString.trim());
     $("#lblError").css('visibility', 'hidden');
 
   });
 
-  function out(blah){
-    console.log(blah);
-  }
-
-  // function ifVarExists(StrObj, VarObj){
-  //   var str = StrObj;
-  //   parts = str.split('=');
-  //   var i=0;
-  //   if(parts[0].includes(VarObj) || parts[2].includes(VarObj) || parts[4].includes(VarObj) || parts[6].includes(VarObj)){
-  //     if(parts[1].includes(VarObj) || parts[3].includes(VarObj) || parts[5].includes(VarObj) || parts[7].includes(VarObj)){
-  //       return true;
-  //     }else{
-  //       return false;
-  //     }
-  //   }
-  // }
+  $(".format-input").on("inputchange paste keyup select",function(){
+    alert("FFFFFF");
+  });
 
   function getVarNamesFromString(StrObj) {
     var separateNamesBy = ", ";
@@ -99,17 +138,7 @@ for (var e in examples) {
             scannedarray.push(namesArray[i]);
         }
     }
-    return name;
-  }
-
-  function makeid(length) {
-    var result           = '';
-    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-    var charactersLength = characters.length;
-    for ( var i = 0; i < length; i++ ) {
-       result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
+    return name
   }
 
   var currentVariableId = 0;
@@ -165,21 +194,12 @@ for (var e in examples) {
         model.outputViews[v](0);
       }
     },
-    addReqView: function(newView) {
-      model.reqViews.push(newView);
-      newView(0);
-    },
-    updateReqViews: function() {
-      for (v in model.reqViews) {
-        model.reqViews[v](0);
-      }
-    },
 
     setInput: function(expression) {
+      out("starting setInput!!!!");
       var inputExpr;
       var temp_1;
       var temp_2 = [];
-      model.cancelReq();
       model.setOutput("", "");
 
       model.input.expression = expression;
@@ -187,7 +207,7 @@ for (var e in examples) {
         model.input.juliaVars = {};
         model.input.error = "Input expression is too long";
       } else {
-        inputExpr = getVarNamesFromString(expression);
+        inputExpr = getVarNamesFromString(expression.trim());
         inputExpr = inputExpr.replace(/\s/g, '');
 
         if(inputExpr.includes(',')){
@@ -244,6 +264,9 @@ for (var e in examples) {
     addmoreIDs: [],
     timerEvent: null,
 
+    insertCacheEntry: function(tensor, format) {
+      tblFormatsView.cache[tensor] = format;
+    },
     updateView: function(timeout) {
 
       clearTimeout(tblFormatsView.timerEvent);
@@ -301,10 +324,10 @@ for (var e in examples) {
             listLinneaBody += "\" class=\"mdl-data-table__cell--non-numeric\" ";
             listLinneaBody += "width=\"100\"><div id=\"";
             listLinneaBody += M_TD_1_DIV_1;
-            listLinneaBody += "\" align=\"center\" ";
-            listLinneaBody += "style=\"font-size: 16px\">";
+            listLinneaBody += "\" align=\"left\" ";
+            listLinneaBody += "style=\"font-size: 16px; margin-top:23px;\">";
             listLinneaBody += variable;
-            listLinneaBody += "</div></td>";
+            listLinneaBody += "</div><span id=\"\"  style=\" font-size:10px; color: purple;\">Matrix</span></td>";
 
             listLinneaBody += "<td id=\"";
             listLinneaBody += M_TD_ID_2;
@@ -333,37 +356,37 @@ for (var e in examples) {
             listLinneaBody += M_R_TD_2_UL_LI_2_DIV_INP_1;
             listLinneaBody += "\" type=\"text\"  ";
 
-            if (model.input.expression == "b = inv(trans(X)*X)*trans(X)*y" && variable == 'X'){
+            if (model.input.expression == examples.input1.code && variable == 'X'){
               listLinneaBody += "value=\"1500";
-            }else if(model.input.expression == "z = inv(trans(X)*inv(S)*X)*trans(X)*inv(S)*y" && variable == "X"){
+            }else if(model.input.expression == examples.input2.code && variable == "X"){
               listLinneaBody += "value=\"2500";
-            }else if(model.input.expression == "z = inv(trans(X)*inv(S)*X)*trans(X)*inv(S)*y" && variable == "S"){
+            }else if(model.input.expression == examples.input2.code && variable == "S"){
               listLinneaBody += "value=\"2500";
-            }else if(model.input.expression == "X10 = L10*inv(L00)\nX20 = L20+(inv(L22)*L21*inv(L11)*L10)\nX11 = inv(L11)\nX21 = inv(L22)*L21*-1" && variable == "L00"){
+            }else if(model.input.expression == examples.input3.code && variable == "L00"){
               listLinneaBody += "value=\"2000";
-            }else if(model.input.expression == "X10 = L10*inv(L00)\nX20 = L20+(inv(L22)*L21*inv(L11)*L10)\nX11 = inv(L11)\nX21 = inv(L22)*L21*-1" && variable == "L11"){
+            }else if(model.input.expression == examples.input3.code && variable == "L11"){
               listLinneaBody += "value=\"200";
-            }else if(model.input.expression == "X10 = L10*inv(L00)\nX20 = L20+(inv(L22)*L21*inv(L11)*L10)\nX11 = inv(L11)\nX21 = inv(L22)*L21*-1" && variable == "L22"){
+            }else if(model.input.expression == examples.input3.code && variable == "L22"){
               listLinneaBody += "value=\"2000";
-            }else if(model.input.expression == "X10 = L10*inv(L00)\nX20 = L20+(inv(L22)*L21*inv(L11)*L10)\nX11 = inv(L11)\nX21 = inv(L22)*L21*-1" && variable == "L21"){
+            }else if(model.input.expression == examples.input3.code && variable == "L21"){
               listLinneaBody += "value=\"2000";
-            }else if(model.input.expression == "X10 = L10*inv(L00)\nX20 = L20+(inv(L22)*L21*inv(L11)*L10)\nX11 = inv(L11)\nX21 = inv(L22)*L21*-1" && variable == "L10"){
+            }else if(model.input.expression == examples.input3.code && variable == "L10"){
               listLinneaBody += "value=\"200";
-            }else if(model.input.expression == "X10 = L10*inv(L00)\nX20 = L20+(inv(L22)*L21*inv(L11)*L10)\nX11 = inv(L11)\nX21 = inv(L22)*L21*-1" && variable == "L20"){
+            }else if(model.input.expression == examples.input3.code && variable == "L20"){
               listLinneaBody += "value=\"2000";
-            }else if(model.input.expression == "X10 = L10*inv(L00)\nX20 = L20+(inv(L22)*L21*inv(L11)*L10)\nX11 = inv(L11)\nX21 = inv(L22)*L21*-1" && variable == "X21"){
+            }else if(model.input.expression == examples.input3.code && variable == "X21"){
               listLinneaBody += "value=\"2000";
-            }else if(model.input.expression == "X10 = L10*inv(L00)\nX20 = L20+(inv(L22)*L21*inv(L11)*L10)\nX11 = inv(L11)\nX21 = inv(L22)*L21*-1" && variable == "X11"){
+            }else if(model.input.expression == examples.input3.code && variable == "X11"){
               listLinneaBody += "value=\"200";
-            }else if(model.input.expression == "X10 = L10*inv(L00)\nX20 = L20+(inv(L22)*L21*inv(L11)*L10)\nX11 = inv(L11)\nX21 = inv(L22)*L21*-1" && variable == "X10"){
+            }else if(model.input.expression == examples.input3.code && variable == "X10"){
               listLinneaBody += "value=\"200";
-            }else if(model.input.expression == "X10 = L10*inv(L00)\nX20 = L20+(inv(L22)*L21*inv(L11)*L10)\nX11 = inv(L11)\nX21 = inv(L22)*L21*-1" && variable == "X20"){
+            }else if(model.input.expression == examples.input3.code && variable == "X20"){
               listLinneaBody += "value=\"2000";
-            }else if(model.input.expression == "H_dag = trans(H)*inv(H*trans(H))\ny_k = (H_dag*y)+(((I+(H*H_dag*-1))*x)" && variable == "H"){
+            }else if(model.input.expression == examples.input4.code && variable == "H"){
               listLinneaBody += "value=\"1000";
-            }else if(model.input.expression == "H_dag = trans(H)*inv(H*trans(H))\ny_k = (H_dag*y)+(((I+(H*H_dag*-1))*x)" && variable == "H_dag"){
+            }else if(model.input.expression == examples.input4.code && variable == "H_dag"){
               listLinneaBody += "value=\"5000";
-            }else if(model.input.expression == "H_dag = trans(H)*inv(H*trans(H))\ny_k = (H_dag*y)+(((I+(H*H_dag*-1))*x)" && variable == "I"){
+            }else if(model.input.expression == examples.input4.code && variable == "I"){
               listLinneaBody += "value=\"5000";
             }else{
               listLinneaBody += "value=\"";
@@ -381,6 +404,8 @@ for (var e in examples) {
 
             listLinneaBody += "</ul></div></li>";
 
+              
+
             listLinneaBody += "<li id=\"";
             listLinneaBody += M_C_TD_2_UL_LI_2;
             listLinneaBody += "\" class=\"ui-state-default\">";
@@ -394,37 +419,37 @@ for (var e in examples) {
             listLinneaBody += M_C_TD_2_UL_LI_2_DIV_INP_1;
             listLinneaBody += "\" type=\"text\"  ";
 
-            if (model.input.expression == "b = inv(trans(X)*X)*trans(X)*y" && variable == "X"){
+            if (model.input.expression == examples.input1.code && variable == "X"){
               listLinneaBody += "value=\"1000";
-            }else if(model.input.expression == "z = inv(trans(X)*inv(S)*X)*trans(X)*inv(S)*y" && variable == "X"){
+            }else if(model.input.expression == examples.input2.code && variable == "X"){
               listLinneaBody += "value=\"500";
-            }else if(model.input.expression == "z = inv(trans(X)*inv(S)*X)*trans(X)*inv(S)*y" && variable == "S"){
+            }else if(model.input.expression == examples.input2.code && variable == "S"){
               listLinneaBody += "value=\"2500";
-            }else if(model.input.expression == "X10 = L10*inv(L00)\nX20 = L20+(inv(L22)*L21*inv(L11)*L10)\nX11 = inv(L11)\nX21 = inv(L22)*L21*-1" && variable == "L00"){
+            }else if(model.input.expression == examples.input3.code && variable == "L00"){
               listLinneaBody += "value=\"2000";
-            }else if(model.input.expression == "X10 = L10*inv(L00)\nX20 = L20+(inv(L22)*L21*inv(L11)*L10)\nX11 = inv(L11)\nX21 = inv(L22)*L21*-1" && variable == "L11"){
+            }else if(model.input.expression == examples.input3.code && variable == "L11"){
               listLinneaBody += "value=\"200";
-            }else if(model.input.expression == "X10 = L10*inv(L00)\nX20 = L20+(inv(L22)*L21*inv(L11)*L10)\nX11 = inv(L11)\nX21 = inv(L22)*L21*-1" && variable == "L22"){
+            }else if(model.input.expression == examples.input3.code && variable == "L22"){
               listLinneaBody += "value=\"2000";
-            }else if(model.input.expression == "X10 = L10*inv(L00)\nX20 = L20+(inv(L22)*L21*inv(L11)*L10)\nX11 = inv(L11)\nX21 = inv(L22)*L21*-1" && variable == "L21"){
+            }else if(model.input.expression == examples.input3.code && variable == "L21"){
               listLinneaBody += "value=\"200";
-            }else if(model.input.expression == "X10 = L10*inv(L00)\nX20 = L20+(inv(L22)*L21*inv(L11)*L10)\nX11 = inv(L11)\nX21 = inv(L22)*L21*-1" && variable == "L10"){
+            }else if(model.input.expression == examples.input3.code && variable == "L10"){
               listLinneaBody += "value=\"2000";
-            }else if(model.input.expression == "X10 = L10*inv(L00)\nX20 = L20+(inv(L22)*L21*inv(L11)*L10)\nX11 = inv(L11)\nX21 = inv(L22)*L21*-1" && variable == "L20"){
+            }else if(model.input.expression == examples.input3.code && variable == "L20"){
               listLinneaBody += "value=\"2000";
-            }else if(model.input.expression == "X10 = L10*inv(L00)\nX20 = L20+(inv(L22)*L21*inv(L11)*L10)\nX11 = inv(L11)\nX21 = inv(L22)*L21*-1" && variable == "X21"){
+            }else if(model.input.expression == examples.input3.code && variable == "X21"){
               listLinneaBody += "value=\"200";
-            }else if(model.input.expression == "X10 = L10*inv(L00)\nX20 = L20+(inv(L22)*L21*inv(L11)*L10)\nX11 = inv(L11)\nX21 = inv(L22)*L21*-1" && variable == "X11"){
+            }else if(model.input.expression == examples.input3.code && variable == "X11"){
               listLinneaBody += "value=\"200";
-            }else if(model.input.expression == "X10 = L10*inv(L00)\nX20 = L20+(inv(L22)*L21*inv(L11)*L10)\nX11 = inv(L11)\nX21 = inv(L22)*L21*-1" && variable == "X10"){
+            }else if(model.input.expression == examples.input3.code && variable == "X10"){
               listLinneaBody += "value=\"2000";
-            }else if(model.input.expression == "X10 = L10*inv(L00)\nX20 = L20+(inv(L22)*L21*inv(L11)*L10)\nX11 = inv(L11)\nX21 = inv(L22)*L21*-1" && variable == "X20"){
+            }else if(model.input.expression == examples.input3.code && variable == "X20"){
               listLinneaBody += "value=\"2000";
-            }else if(model.input.expression == "H_dag = trans(H)*inv(H*trans(H))\ny_k = (H_dag*y)+(((I+(H*H_dag*-1))*x)" && variable == "H"){
+            }else if(model.input.expression == examples.input4.code && variable == "H"){
               listLinneaBody += "value=\"5000";
-            }else if(model.input.expression == "H_dag = trans(H)*inv(H*trans(H))\ny_k = (H_dag*y)+(((I+(H*H_dag*-1))*x)" && variable == "H_dag"){
+            }else if(model.input.expression == examples.input4.code && variable == "H_dag"){
               listLinneaBody += "value=\"1000";
-            }else if(model.input.expression == "H_dag = trans(H)*inv(H*trans(H))\ny_k = (H_dag*y)+(((I+(H*H_dag*-1))*x)" && variable == "I"){
+            }else if(model.input.expression == examples.input4.code && variable == "I"){
               listLinneaBody += "value=\"5000";
             }else{
               listLinneaBody += "value=\"";
@@ -447,78 +472,115 @@ for (var e in examples) {
             listLinneaBody += "<div class=\"\">";
             listLinneaBody += "</div></li>";
 
-            listLinneaBody += "<li id=\"";
-            listLinneaBody += M_P_TD_2_UL_LI_2;
-            listLinneaBody += "\" class=\"ui-state-default\">";
-            listLinneaBody += "<div id=\"";
-            listLinneaBody += M_P_TD_2_UL_LI_2_DIV_1;
-            listLinneaBody += "\" class=\"content mdl-textfield mdl-js-textfield ";
-            listLinneaBody += "mdl-textfield--floating-label getmdl-select\" ";
-            listLinneaBody += ">";
-            listLinneaBody += "<input class=\"mdl-textfield__input ";
-            listLinneaBody += "format-input extrawide\" placeholder=\"Properties\"id=\"";
-            listLinneaBody += M_P_TD_2_UL_LI_2_DIV_INP_1;
-            listLinneaBody += "\" type=\"text\" name=\"property\" ";
+            if(variable == 'I' || variable == 'O'){
+              listLinneaBody += "<li id=\"";
+              listLinneaBody += M_P_TD_2_UL_LI_2;
+              listLinneaBody += "\" class=\"ui-state-default\">";
+              listLinneaBody += "<div id=\"";
+              listLinneaBody += M_P_TD_2_UL_LI_2_DIV_1;
+              listLinneaBody += "\" class=\"content mdl-textfield mdl-js-textfield ";
+              listLinneaBody += "mdl-textfield--floating-label getmdl-select\" ";
+              listLinneaBody += ">";
+              listLinneaBody += "<input class=\"mdl-textfield__input ";
+              listLinneaBody += "format-input extrawide\" placeholder=\"None\"id=\"";
+              listLinneaBody += M_P_TD_2_UL_LI_2_DIV_INP_1;
+              listLinneaBody += "\" type=\"text\" name=\"property\" ";
+              listLinneaBody += "value=\"";
+              listLinneaBody += "\" data-val=\"";
+              listLinneaBody += "\" style=\"font-size: 13px\"disabled/>";
+              listLinneaBody += "<label class=\"mdl-textfield__label extrawide\" for=\"";
+              listLinneaBody += M_P_TD_2_UL_LI_2_DIV_INP_1;
+              listLinneaBody += "\">";
+              listLinneaBody += "</label>";
+              listLinneaBody += "<ul class=\"mdl-menu ";
+              listLinneaBody += "mdl-js-menu \" for=\"";
+              listLinneaBody += "\">";
 
-            if (model.input.expression == "b = inv(trans(X)*X)*trans(X)*y" && variable == "X"){
-              listLinneaBody += "value=\"FullRank";
-            }else if(model.input.expression == "z = inv(trans(X)*inv(S)*X)*trans(X)*inv(S)*y" && variable == "X"){
-              listLinneaBody += "value=\"FullRank";
-            }else if(model.input.expression == "z = inv(trans(X)*inv(S)*X)*trans(X)*inv(S)*y" && variable == "S"){
-              listLinneaBody += "value=\"SPD";
-            }else if(model.input.expression == "X10 = L10*inv(L00)\nX20 = L20+(inv(L22)*L21*inv(L11)*L10)\nX11 = inv(L11)\nX21 = inv(L22)*L21*-1" && variable == "L00"){
-              listLinneaBody += "value=\"FullRank, LowerTriangular";
-            }else if(model.input.expression == "X10 = L10*inv(L00)\nX20 = L20+(inv(L22)*L21*inv(L11)*L10)\nX11 = inv(L11)\nX21 = inv(L22)*L21*-1" && variable == "L11"){
-              listLinneaBody += "value=\"FullRank, LowerTriangular";
-            }else if(model.input.expression == "X10 = L10*inv(L00)\nX20 = L20+(inv(L22)*L21*inv(L11)*L10)\nX11 = inv(L11)\nX21 = inv(L22)*L21*-1" && variable == "L22"){
-              listLinneaBody += "value=\"FullRank, LowerTriangular";
-            }else if(model.input.expression == "X10 = L10*inv(L00)\nX20 = L20+(inv(L22)*L21*inv(L11)*L10)\nX11 = inv(L11)\nX21 = inv(L22)*L21*-1" && variable == "L21"){
-              listLinneaBody += "value=\"FullRank";
-            }else if(model.input.expression == "X10 = L10*inv(L00)\nX20 = L20+(inv(L22)*L21*inv(L11)*L10)\nX11 = inv(L11)\nX21 = inv(L22)*L21*-1" && variable == "L10"){
-              listLinneaBody += "value=\"FullRank";
-            }else if(model.input.expression == "X10 = L10*inv(L00)\nX20 = L20+(inv(L22)*L21*inv(L11)*L10)\nX11 = inv(L11)\nX21 = inv(L22)*L21*-1" && variable == "L20"){
-              listLinneaBody += "value=\"FullRank";
-            }else if(model.input.expression == "X10 = L10*inv(L00)\nX20 = L20+(inv(L22)*L21*inv(L11)*L10)\nX11 = inv(L11)\nX21 = inv(L22)*L21*-1" && variable == "X21"){
-              listLinneaBody += "value=\"";
-            }else if(model.input.expression == "X10 = L10*inv(L00)\nX20 = L20+(inv(L22)*L21*inv(L11)*L10)\nX11 = inv(L11)\nX21 = inv(L22)*L21*-1" && variable == "X11"){
-              listLinneaBody += "value=\"";
-            }else if(model.input.expression == "X10 = L10*inv(L00)\nX20 = L20+(inv(L22)*L21*inv(L11)*L10)\nX11 = inv(L11)\nX21 = inv(L22)*L21*-1" && variable == "X10"){
-              listLinneaBody += "value=\"";
-            }else if(model.input.expression == "X10 = L10*inv(L00)\nX20 = L20+(inv(L22)*L21*inv(L11)*L10)\nX11 = inv(L11)\nX21 = inv(L22)*L21*-1" && variable == "X20"){
-              listLinneaBody += "value=\"";
-            }else if(model.input.expression == "H_dag = trans(H)*inv(H*trans(H))\ny_k = (H_dag*y)+(((I+(H*H_dag*-1))*x)" && variable == "H"){
-              listLinneaBody += "value=\"FullRank";
-            }else if(model.input.expression == "H_dag = trans(H)*inv(H*trans(H))\ny_k = (H_dag*y)+(((I+(H*H_dag*-1))*x)" && variable == "H"){
-              listLinneaBody += "value=\"FullRank";
-            }else if(model.input.expression == "H_dag = trans(H)*inv(H*trans(H))\ny_k = (H_dag*y)+(((I+(H*H_dag*-1))*x)" && variable == "H"){
-              listLinneaBody += "value=\"";
+              listLinneaBody += "</ul>"
+              
+              
+
+              
+              listLinneaBody += "</div>";
+              listLinneaBody += "</li>";
+
             }else{
-              listLinneaBody += "value=\"";
+              
+              listLinneaBody += "<li id=\"";
+              listLinneaBody += M_P_TD_2_UL_LI_2;
+              listLinneaBody += "\" class=\"ui-state-default\">";
+              listLinneaBody += "<div id=\"";
+              listLinneaBody += M_P_TD_2_UL_LI_2_DIV_1;
+              listLinneaBody += "\" class=\"content mdl-textfield mdl-js-textfield ";
+              listLinneaBody += "mdl-textfield--floating-label getmdl-select\" ";
+              listLinneaBody += ">";
+              listLinneaBody += "<input class=\"mdl-textfield__input ";
+              listLinneaBody += "format-input extrawide\" placeholder=\"Properties\"id=\"";
+              listLinneaBody += M_P_TD_2_UL_LI_2_DIV_INP_1;
+              listLinneaBody += "\" type=\"text\" name=\"property\" ";
+
+              if (model.input.expression == examples.input1.code && variable == "X"){
+                listLinneaBody += "value=\"FullRank";
+              }else if(model.input.expression == examples.input2.code && variable == "X"){
+                listLinneaBody += "value=\"FullRank";
+              }else if(model.input.expression == examples.input2.code && variable == "S"){
+                listLinneaBody += "value=\"SPD";
+              }else if(model.input.expression == examples.input3.code && variable == "L00"){
+                listLinneaBody += "value=\"FullRank, LowerTriangular";
+              }else if(model.input.expression == examples.input3.code && variable == "L11"){
+                listLinneaBody += "value=\"FullRank, LowerTriangular";
+              }else if(model.input.expression == examples.input3.code && variable == "L22"){
+                listLinneaBody += "value=\"FullRank, LowerTriangular";
+              }else if(model.input.expression == examples.input3.code && variable == "L21"){
+                listLinneaBody += "value=\"FullRank";
+              }else if(model.input.expression == examples.input3.code && variable == "L10"){
+                listLinneaBody += "value=\"FullRank";
+              }else if(model.input.expression == examples.input3.code && variable == "L20"){
+                listLinneaBody += "value=\"FullRank";
+              }else if(model.input.expression == examples.input3.code && variable == "X21"){
+                listLinneaBody += "value=\"";
+              }else if(model.input.expression == examples.input3.code && variable == "X11"){
+                listLinneaBody += "value=\"";
+              }else if(model.input.expression == examples.input3.code && variable == "X10"){
+                listLinneaBody += "value=\"";
+              }else if(model.input.expression == examples.input3.code && variable == "X20"){
+                listLinneaBody += "value=\"";
+              }else if(model.input.expression == examples.input4.code && variable == "H"){
+                listLinneaBody += "value=\"FullRank";
+              }else if(model.input.expression == examples.input4.code && variable == "H"){
+                listLinneaBody += "value=\"FullRank";
+              }else if(model.input.expression == examples.input4.code && variable == "H"){
+                listLinneaBody += "value=\"";
+              }else{
+                listLinneaBody += "value=\"";
+              }
+
+              listLinneaBody += "\" data-val=\"";
+              listLinneaBody += "\" style=\"font-size: 13px\">";
+              listLinneaBody += "<label class=\"mdl-textfield__label extrawide\" for=\"";
+              listLinneaBody += M_P_TD_2_UL_LI_2_DIV_INP_1;
+              listLinneaBody += "\">";
+              listLinneaBody += "</label>";
+              listLinneaBody += "<ul class=\"mdl-menu ";
+              listLinneaBody += "mdl-js-menu \" for=\"";
+              listLinneaBody += "\">";
+
+              listLinneaBody += "</ul>"
+              
+              
+
+              listLinneaBody += "<button onclick='addProperty(this," + j + ")' id=\"";
+              //listLinneaBody += "<button onclick='addProperty(this)' id=\"";
+
+              listLinneaBody += "addmore";
+              listLinneaBody += "\" class=\"mdl-button mdl-js-button mdl-button--icon\"";
+              listLinneaBody += "style=\"position: absolute; margin-left: 172px;\">";
+              listLinneaBody += "<i class=\"material-icons\">add_circle_outline</i></button>";
+              listLinneaBody += "</div>";
+              listLinneaBody += "</li>";
             }
-
-            listLinneaBody += "\" data-val=\"";
-            listLinneaBody += "\" style=\"font-size: 13px\"disabled/>";
-            listLinneaBody += "<label class=\"mdl-textfield__label extrawide\" for=\"";
-            listLinneaBody += M_P_TD_2_UL_LI_2_DIV_INP_1;
-            listLinneaBody += "\">";
-            listLinneaBody += "</label>";
-            listLinneaBody += "<ul class=\"mdl-menu ";
-            listLinneaBody += "mdl-js-menu \" for=\"";
-            listLinneaBody += "\">";
-
-            listLinneaBody += "</ul>"
-
-            listLinneaBody += "<button onclick='addProperty(this," + j + ")' id=\"";
-            //listLinneaBody += "<button onclick='addProperty(this)' id=\"";
-
-            listLinneaBody += "addmore";
-            listLinneaBody += "\" class=\"mdl-button mdl-js-button mdl-button--icon\"";
-            listLinneaBody += "style=\"position: absolute; margin-left: 172px;\">";
-            listLinneaBody += "<i class=\"material-icons\">add_circle_outline</i></button>";
-            listLinneaBody += "</div>";
-            listLinneaBody += "</li>";
-
-          } else {
+          } 
+          else {
             var V_TD_ID_1 = "V_TD_ID_1_J_" + j;
             var V_TD_ID_2 = "V_TD_ID_2_J_" + j;
             var V_TD_UL_ID_1 = "V_TD_UL_ID_1_J_" + j;
@@ -543,10 +605,10 @@ for (var e in examples) {
             listLinneaBody += V_TD_ID_1;
             listLinneaBody += "\" class=\"mdl-data-table__cell--non-numeric\" ";
             listLinneaBody += "width=\"100\">"
-            listLinneaBody += "<div align=\"center\" ";
+            listLinneaBody += "<div align=\"left\" ";
             listLinneaBody += "style=\"font-size: 16px\">";
             listLinneaBody += variable;
-            listLinneaBody += "</div></td>";
+            listLinneaBody += "</div><span id=\"\"  style=\" font-size:10px; color: purple;\">Vector</span></td>";
 
             listLinneaBody += "<td id=\"";
             listLinneaBody += V_TD_ID_2;
@@ -573,19 +635,19 @@ for (var e in examples) {
             listLinneaBody += V_TD_UL_LI_DIV_INP_ID_1;
             listLinneaBody += "\" type=\"text\"  ";
 
-            if (model.input.expression == "b = inv(trans(X)*X)*trans(X)*y" && variable == "y"){
+            if (model.input.expression == examples.input1.code && variable == "y"){
               listLinneaBody += "value=\"1500";
-            }else if(model.input.expression == "z = inv(trans(X)*inv(S)*X)*trans(X)*inv(S)*y" && variable == "z"){
+            }else if(model.input.expression == examples.input2.code && variable == "z"){
               listLinneaBody += "value=\"500";
-            }else if(model.input.expression == "z = inv(trans(X)*inv(S)*X)*trans(X)*inv(S)*y" && variable == "y"){
+            }else if(model.input.expression == examples.input2.code && variable == "y"){
               listLinneaBody += "value=\"2500";
-            }else if(model.input.expression == "b = inv(trans(X)*X)*trans(X)*y" && variable == "b"){
+            }else if(model.input.expression == examples.input1.code && variable == "b"){
               listLinneaBody += "value=\"1000";
-            }else if(model.input.expression == "H_dag = trans(H)*inv(H*trans(H))\ny_k = (H_dag*y)+(((I+(H*H_dag*-1))*x)" && variable == "y_k"){
+            }else if(model.input.expression == examples.input4.code && variable == "y_k"){
               listLinneaBody += "value=\"5000";
-            }else if(model.input.expression == "H_dag = trans(H)*inv(H*trans(H))\ny_k = (H_dag*y)+(((I+(H*H_dag*-1))*x)" && variable == "y"){
+            }else if(model.input.expression == examples.input4.code && variable == "y"){
               listLinneaBody += "value=\"1000";
-            }else if(model.input.expression == "H_dag = trans(H)*inv(H*trans(H))\ny_k = (H_dag*y)+(((I+(H*H_dag*-1))*x)" && variable == "x"){
+            }else if(model.input.expression == examples.input4.code && variable == "x"){
               listLinneaBody += "value=\"5000";
             }else{
               listLinneaBody += "value=\"";
@@ -605,8 +667,10 @@ for (var e in examples) {
             listLinneaBody += "</ul></div></li>";
           }
           listLinneaBody += "</ul></td></tr>";
+          out("end of the table structuring!!!!");
         }
         if (listLinneaBody !== "") {
+          out("begin the table initialization!!!!");
           $("#listLinneas").html(listLinneaBody);
           getmdlSelect.init(".getmdl-select");
           model.mat_GEN = model.mat_IDs.slice();
@@ -615,8 +679,38 @@ for (var e in examples) {
           model.vec_IDs = [];
 
           model.all_IDs_GEN = model.all_IDs.slice();
-          out(model.all_IDs_GEN);
+          //out(model.all_IDs_GEN);
           model.all_IDs = [];
+          //out("up sortable");
+          // $(".sortable").sortable({
+          //   update: function(ev, ui) {
+          //     var listId = ui.item.parent().attr('id');
+          //     out(listId);
+          //     //var tensor = listId.replace("dims", "");
+
+          //     //tblFormatsView.insertCacheEntry(tensor, 
+          //       //  tblFormatsView.createCacheEntry(listId));
+              
+          //     model.cancelReq();
+          //    // model.setOutput("", "", "", "");
+          //   }
+          // });
+          // $(".format-input").on("inputchange paste keyup select",function() {
+            
+          //   var listId = $(this).parent().parent().parent().attr('id');
+          // //  var tensor = listId.replace("dims", "");
+
+          //   console.log('listId in inputchange is: ' + listId);
+          // //  console.log('tensor in inputchange is: ' + tensor);
+
+          //   console.log('2');
+          //  // tblFormatsView.insertCacheEntry(tensor, 
+          //  //     tblFormatsView.createCacheEntry(listId));
+            
+          //  // model.cancelReq();
+          //  // model.setOutput("", "", "", "");
+          // });
+
 
           $("#tblFormats").show();
         } else {
@@ -655,7 +749,6 @@ for (var e in examples) {
     }
   }
 
-
   var favorite = [];
   var inputInto = "";
   function addProperty(object, id){
@@ -663,18 +756,13 @@ for (var e in examples) {
     modal.style.display = "block";
     var thisID = $(object).attr('id');
     inputInto = $(object).closest("div.content").find("input").attr('id');
-    out('this id is: ' + thisID);
+    //out('this id is: ' + thisID);
 
     $('input:checkbox').removeAttr('checked');
 
     $.each($("input[name='properties']:checked"), function(){
       favorite.push($(this).val());
     });
-
-    out(model.input.test[currentVariableId])
-
-
-
   }
 
   function saveProperty(request){
@@ -687,16 +775,12 @@ for (var e in examples) {
     modal.style.display = "none";
     inputInto = " ";
     favorite = [];
-    out(favorite);
+    //out(favorite);
   }
 
   function clearProperty(request){
-
-
     var properties = "";
-
     $('#'+inputInto).val(properties);
-
     var parentID = $(this).closest('li').attr('id');
 
     // save your value where you want
@@ -777,7 +861,7 @@ for (var e in examples) {
     out("in download!")
     var blob = new Blob([$('#txtComputeLoops').val()],
               {type: "text/plain;charset=utf-8"});
-    saveAs(blob, "Linnea_Algorithm.la");
+    saveAs(blob, "Linnea_Algorithm.jl");
   }
 
 

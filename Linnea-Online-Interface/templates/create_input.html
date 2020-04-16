@@ -59,7 +59,7 @@
             <tr>
               <td>
                 <div class="mdl-textfield mdl-js-textfield is-dirty is-upgraded" style="width: 100%">
-                  <textarea id="txtExpr" class="mdl-textfield__input" placeholder="Enter Expression:" value="" style="font-family: monospace" spellcheck="false" autocomplete="false" autocorrect="false" autocapitalize="false"></textarea>
+                  <textarea id="txtExpr" rows="4" class="mdl-textfield__input" placeholder="Enter Expression:" value="" style="font-family: monospace; border:solid white 1px;" spellcheck="false" autocomplete="false" autocorrect="false" autocapitalize="false"></textarea>
                   <span id="lblError" class="mdl-textfield__error" style="font-size: 14px" ></span>
                 </div>
               </td>
@@ -67,6 +67,9 @@
                 <div style="position:relative">
                   <button id="btnExamples" class="mdl-button mdl-js-button mdl-button--icon" style="width: 100%">
                     <i class="material-icons">more_vert</i>
+                    <div class="mdl-tooltip" data-mdl-for="btnExamples">
+                      Examples
+                    </div>
                   </button>
                   <ul id="listExamples" class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" style="font-size: 8px" for="btnExamples"></ul>
                 </div>
@@ -93,9 +96,9 @@
             <tr>
               <th class="mdl-data-table__cell--non-numeric" width="100px;"><div align="center" style="position:relative; top:-1px"><big>Variables</big></div></th>
               <th class="mdl-data-table__cell--non-numeric" style="padding-left: auto">
-                <div style="display:inline"><big>Format&nbsp;</big></div>
-                <div style="display:inline">(Enter the number of rows and columns)</div>
-                <div style="display:inline">(Select the Property)</div>
+                <div style="display:inline "><big>Format&nbsp;</big></div>
+                <!-- <div style="display:inline">(Enter the number of rows and columns)</div>
+                <div style="display:inline">(Select the Property)</div> -->
               </th>
             </tr>
           </thead>
@@ -124,7 +127,7 @@
             </tr>
           </table>
           <div class="mdl-tabs__panel is-active" id="compute-panel">
-            <pre style="margin-top: 0px">
+            <pre style="margin-top: 0px; margin-bottom: 44px; display:flex;">
               <code id="txtComputeLoops" class="lang-cpp" val="">/* The generated Algorithm will appear here */</code>
             </pre>
           </div>
@@ -294,9 +297,11 @@
 
     <!-- </footer> -->
     <div style="position: fixed; 
+                
                 left: 0; 
                 bottom: 0; 
-                width: 100%; 
+                width: 100%;
+                heigth: 20px; 
                 background-color: #737373; 
                 color: white;
                 text-align: center;">
