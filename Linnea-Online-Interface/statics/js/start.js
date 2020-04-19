@@ -2,8 +2,41 @@
 //   alert("FFFFFF");
 // });
 
+var observe;
+if (window.attachEvent) {
+    observe = function (element, event, handler) {
+        element.attachEvent('on'+event, handler);
+    };
+}
+else {
+    observe = function (element, event, handler) {
+        element.addEventListener(event, handler, false);
+    };
+}
+function init () {
+    var text = document.getElementById('txtExpr');
+    function resize () {
+        text.style.height = 'auto';
+        text.style.height = text.scrollHeight+'px';
+    }
+    /* 0-timeout to get the already changed text */
+    function delayedResize () {
+        window.setTimeout(resize, 0);
+    }
+    observe(text, 'change',  resize);
+    observe(text, 'cut',     delayedResize);
+    observe(text, 'paste',   delayedResize);
+    observe(text, 'drop',    delayedResize);
+    observe(text, 'keydown', delayedResize);
+
+    text.focus();
+    text.select();
+    resize();
+}
+
+
 var examples = {
-  
+
   input1: {
     name: "Least Squares",
     expr: "\\(b = (X^TX)^{-1}X^Ty\\)",
@@ -29,12 +62,12 @@ var examples = {
   //   expr: "Bout = k * inv * ...",
   //   code: "Bout = ((k*inv(kminus1))*Bin*(In+(minus1*trans(A)*wk*(inv((kminus1*I1)+(trans(wk)*A*Bin*trans(A)*wk))*trans(wk)*A*Bin",
   // }
-  
+
 };
 
 var listExamplesBody = "";
 for (var e in examples) {
-  
+
   //:&nbsp;
   if(examples[e].name == "Triangular Matrix Inversion" ){
     listExamplesBody += "<li id=\"example_";
@@ -51,7 +84,7 @@ for (var e in examples) {
     listExamplesBody += "</li><li  class=\"\" style=\"padding-left: 206px;\">";
     listExamplesBody += examples[e].expr[3];
     listExamplesBody += "</li></ul></li>";
-    
+
   }else if(examples[e].name == "Image Restoration"){
     listExamplesBody += "<li id=\"example_";
     listExamplesBody += e;
@@ -68,39 +101,62 @@ for (var e in examples) {
     listExamplesBody += "<li id=\"example_";
     listExamplesBody += e;
     listExamplesBody += "\" class=\"mdl-menu__item\">";
-    
+
     listExamplesBody += examples[e].name;
     listExamplesBody += ":&nbsp ";
     listExamplesBody += examples[e].expr;
     listExamplesBody += "</li>";
-  
+
   }
 
 }
 $("#listExamples").html(listExamplesBody);
 
 for (var e in examples) {
+
   (function(code, formats) {
-    var setExample = function() {
+    var setExample4 = function() {
+      out("4");
+      $("#txtExpr").css('height','50px');
       $("#txtExpr").val(code);
       $("#txtExpr").html(code);
-
       $("#lblError").css('visibility', 'hidden');
-
       model.setInput(code);
     };
-    $("#example_" + e).click(setExample);
+    var setExample3 = function() {
+      out("3");
+      $("#txtExpr").css('height','100px');
+      $("#txtExpr").val(code);
+      $("#txtExpr").html(code);
+      $("#lblError").css('visibility', 'hidden');
+      model.setInput(code);
+    };
+    var setExample = function() {
+      out("else");
+      $("#txtExpr").css('height','32px');
+      $("#txtExpr").val(code);
+      $("#txtExpr").html(code);
+      $("#lblError").css('visibility', 'hidden');
+      model.setInput(code);
+    };
+    if(examples[e].name == "Image Restoration"){
+      $("#example_" + e).click(setExample4);
+    }else if(examples[e].name == "Triangular Matrix Inversion"){
+      $("#example_" + e).click(setExample3);
+    }else{
+      $("#example_" + e).click(setExample);
+    }
     $("#lblError").css('visibility', 'hidden');
-    
+
   })(examples[e].code, examples[e].formats);
 }
 
 
-  
+
   function out(blah){
     console.log(blah);
   } ;
-  
+
 
   function makeid(length) {
     var result           = '';
@@ -113,13 +169,15 @@ for (var e in examples) {
   }
 
   $("#txtExpr").keyup(function() {
+
     var inputString = $("#txtExpr").val();
     model.setInput(inputString.trim());
+
     $("#lblError").css('visibility', 'hidden');
 
   });
 
-  
+
 
   function getVarNamesFromString(StrObj) {
     var separateNamesBy = ", ";
@@ -404,7 +462,7 @@ for (var e in examples) {
 
             listLinneaBody += "</ul></div></li>";
 
-              
+
 
             listLinneaBody += "<li id=\"";
             listLinneaBody += M_C_TD_2_UL_LI_2;
@@ -497,15 +555,15 @@ for (var e in examples) {
               listLinneaBody += "\">";
 
               listLinneaBody += "</ul>"
-              
-              
 
-              
+
+
+
               listLinneaBody += "</div>";
               listLinneaBody += "</li>";
 
             }else{
-              
+
               listLinneaBody += "<li id=\"";
               listLinneaBody += M_P_TD_2_UL_LI_2;
               listLinneaBody += "\" class=\"ui-state-default\">";
@@ -566,8 +624,8 @@ for (var e in examples) {
               listLinneaBody += "\">";
 
               listLinneaBody += "</ul>"
-              
-              
+
+
 
               listLinneaBody += "<button onclick='addProperty(this," + j + ")' id=\"";
               //listLinneaBody += "<button onclick='addProperty(this)' id=\"";
@@ -579,7 +637,7 @@ for (var e in examples) {
               listLinneaBody += "</div>";
               listLinneaBody += "</li>";
             }
-          } 
+          }
           else {
             var V_TD_ID_1 = "V_TD_ID_1_J_" + j;
             var V_TD_ID_2 = "V_TD_ID_2_J_" + j;
@@ -674,9 +732,9 @@ for (var e in examples) {
         //   $(model.all_IDs[s]).on("inputchange paste keyup select",function(){
         //     alert("FFFFFF");
         //   });
-          
+
         // }
-        
+
         if (listLinneaBody !== "") {
           //out("begin the table initialization!!!!");
           $("#listLinneas").html(listLinneaBody);
@@ -696,15 +754,15 @@ for (var e in examples) {
           //     out(listId);
           //     //var tensor = listId.replace("dims", "");
 
-          //     //tblFormatsView.insertCacheEntry(tensor, 
+          //     //tblFormatsView.insertCacheEntry(tensor,
           //       //  tblFormatsView.createCacheEntry(listId));
-              
+
           //     model.cancelReq();
           //    // model.setOutput("", "", "", "");
           //   }
           // });
           // $(".format-input").on("inputchange paste keyup select",function() {
-            
+
           //   var listId = $(this).parent().parent().parent().attr('id');
           // //  var tensor = listId.replace("dims", "");
 
@@ -712,9 +770,9 @@ for (var e in examples) {
           // //  console.log('tensor in inputchange is: ' + tensor);
 
           //   console.log('2');
-          //  // tblFormatsView.insertCacheEntry(tensor, 
+          //  // tblFormatsView.insertCacheEntry(tensor,
           //  //     tblFormatsView.createCacheEntry(listId));
-            
+
           //  // model.cancelReq();
           //  // model.setOutput("", "", "", "");
           // });
@@ -794,10 +852,10 @@ for (var e in examples) {
     // save your value where you want
     modal.style.display = "none";
     inputInto = " ";
-    
+
   }
 
-  
+
 
   function generateInput(){
     var inputGenerated = "";
@@ -870,5 +928,3 @@ for (var e in examples) {
               {type: "text/plain;charset=utf-8"});
     saveAs(blob, "Linnea_Algorithm.jl");
   }
-
-

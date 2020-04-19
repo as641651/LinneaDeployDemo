@@ -32,7 +32,7 @@
 
   </head>
 
-  <body>
+  <body onload="init();">
 
     <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #111627;">
       <a class="navbar-brand" href="#">Linnea</a>
@@ -53,13 +53,13 @@
       <div class="mdl-cell mdl-cell--9-col">
         <p style="margin: auto; font-size: 1em;">Input a <strong>Linear algebra expression</strong> to generate code that computes it:</p>
         <p style="margin: auto; font-size: 1em;">For Specifying <strong> Vector </strong> please start the vector's name with <strong> lower alphabet </strong>, and for specifying <strong> Matrix </strong> start it with <strong>capital alphabet </strong> </p>
-        
+
 
         <table style="width: 100%">
             <tr>
               <td>
                 <div class="mdl-textfield mdl-js-textfield is-dirty is-upgraded" style="width: 100%">
-                  <textarea id="txtExpr" rows="4" class="mdl-textfield__input" placeholder="Enter Expression:" value="" style="font-family: monospace; border:solid white 1px;" spellcheck="false" autocomplete="false" autocorrect="false" autocapitalize="false"></textarea>
+                  <textarea id="txtExpr" rows="1" class="mdl-textfield__input" placeholder="Expression" value="" style="font-family: monospace; border:solid white 1px;" spellcheck="false" autocomplete="false" autocorrect="false" autocapitalize="false"></textarea>
                   <span id="lblError" class="mdl-textfield__error" style="font-size: 14px" ></span>
                 </div>
               </td>
@@ -127,8 +127,8 @@
             </tr>
           </table>
           <div class="mdl-tabs__panel is-active" id="compute-panel">
-            <pre style="margin-top: 0px; margin-bottom: 44px; display:flex;">
-              <code id="txtComputeLoops" class="lang-cpp" val="">/* The generated Algorithm will appear here */</code>
+            <pre style="margin-top: 0px; margin-bottom: 44px; display:block;">
+              <code id="txtComputeLoops" class="lang-cpp hljs" val="">/* The generated Algorithm will appear here */</code>
             </pre>
           </div>
         </div>
@@ -296,13 +296,13 @@
 
 
     <!-- </footer> -->
-    <div style="position: fixed; 
-                
-                left: 0; 
-                bottom: 0; 
+    <div style="position: fixed;
+
+                left: 0;
+                bottom: 0;
                 width: 100%;
-                heigth: 20px; 
-                background-color: #737373; 
+                heigth: 20px;
+                background-color: #737373;
                 color: white;
                 text-align: center;">
       <p>&copy; Copyright 2020</p>
