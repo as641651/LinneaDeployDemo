@@ -77,11 +77,11 @@ for (var e in examples) {
     listExamplesBody += examples[e].name;
     listExamplesBody += ":&nbsp ";
     listExamplesBody += examples[e].expr[0];
-    listExamplesBody += "</li><li class=\"\" style=\"padding-left: 206px;\">";
+    listExamplesBody += "</li><li class=\"\" style=\"padding-left: 175px;\">";
     listExamplesBody += examples[e].expr[1];
-    listExamplesBody += "</li><li class=\"\" style=\"padding-left: 206px;\">";
+    listExamplesBody += "</li><li class=\"\" style=\"padding-left: 175px;\">";
     listExamplesBody += examples[e].expr[2];
-    listExamplesBody += "</li><li  class=\"\" style=\"padding-left: 206px;\">";
+    listExamplesBody += "</li><li  class=\"\" style=\"padding-left: 175px;\">";
     listExamplesBody += examples[e].expr[3];
     listExamplesBody += "</li></ul></li>";
 
@@ -93,7 +93,7 @@ for (var e in examples) {
     listExamplesBody += examples[e].name;
     listExamplesBody += ":&nbsp ";
     listExamplesBody += examples[e].expr[0];
-    listExamplesBody += "</li><li class=\"\" style=\"padding-left: 149px;\">";
+    listExamplesBody += "</li><li class=\"\" style=\"padding-left: 128px;\">";
     listExamplesBody += examples[e].expr[1];
     listExamplesBody += "</li></ul></li>";
 
@@ -117,7 +117,7 @@ for (var e in examples) {
   (function(code, formats) {
     var setExample4 = function() {
       out("4");
-      $("#txtExpr").css('height','50px');
+      $("#txtExpr").css('height','64px');
       $("#txtExpr").val(code);
       $("#txtExpr").html(code);
       $("#lblError").css('visibility', 'hidden');
@@ -125,7 +125,7 @@ for (var e in examples) {
     };
     var setExample3 = function() {
       out("3");
-      $("#txtExpr").css('height','100px');
+      $("#txtExpr").css('height','128px');
       $("#txtExpr").val(code);
       $("#txtExpr").html(code);
       $("#lblError").css('visibility', 'hidden');
