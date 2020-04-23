@@ -57,11 +57,12 @@ var examples = {
     expr: ["\\(H^{\\dagger} = -H^{T}(HH^{T})\\) ", "\\(y_k=H^{\\dagger}y+x(I-HH^{\\dagger})\\)"],
     code: "H_dag=trans(H)*inv(H*trans(H))\ny_k=H_dag*y+(I+(-1*H_dag*H))*x",
   },
-  // input5:{
-  //   name: "Stochastic Newton",
-  //   expr: "Bout = k * inv * ...",
-  //   code: "Bout = ((k*inv(kminus1))*Bin*(In+(minus1*trans(A)*wk*(inv((kminus1*I1)+(trans(wk)*A*Bin*trans(A)*wk))*trans(wk)*A*Bin",
-  // }
+ //  input5:{
+ //    name: "Stochastic Newton",
+ //    expr: ["\\(A = k/k-1*B_{in}\\)", "\\(B = I_{n}\\)", "\\(C = -A^{T}*W_{k}*(W_{k})^{T}*A*B_{in}\\)", "\\(D=\\)"],
+ //    //expr: "\\(B_{out}=((k/k-1)*B_{in}*(I_{n}+(-A^{T}*W_{k}*A*((k-1)*I_{1}+(W_{k})^{T}*A*B_{in}*A^{T}*W_{k})^{-1}*B_{in}*A^{T}*W_{k}))\\)",
+ //    code: "Bout = ((k*inv(kminus1))*Bin*(In+(minus1*trans(A)*wk*(inv((kminus1*I1)+(trans(wk)*A*Bin*trans(A)*wk))*trans(wk)*A*Bin",
+ // },
 
 };
 
@@ -526,9 +527,7 @@ for (var e in examples) {
             listLinneaBody += "</ul></div></li>";
 
 
-            listLinneaBody += "<li class=\"\">";
-            listLinneaBody += "<div class=\"\">";
-            listLinneaBody += "</div></li>";
+            
 
             if(variable == 'I' || variable == 'O'){
               listLinneaBody += "<li id=\"";
@@ -545,10 +544,10 @@ for (var e in examples) {
               listLinneaBody += "\" type=\"text\" name=\"property\" ";
               listLinneaBody += "value=\"";
               listLinneaBody += "\" data-val=\"";
-              listLinneaBody += "\" style=\"font-size: 13px\"disabled/>";
+              listLinneaBody += "\" style=\"font-size: 13px\">";
               listLinneaBody += "<label class=\"mdl-textfield__label extrawide\" for=\"";
               listLinneaBody += M_P_TD_2_UL_LI_2_DIV_INP_1;
-              listLinneaBody += "\">";
+              listLinneaBody += "\">Properties:";
               listLinneaBody += "</label>";
               listLinneaBody += "<ul class=\"mdl-menu ";
               listLinneaBody += "mdl-js-menu \" for=\"";
@@ -573,7 +572,7 @@ for (var e in examples) {
               listLinneaBody += "mdl-textfield--floating-label getmdl-select\" ";
               listLinneaBody += ">";
               listLinneaBody += "<input class=\"mdl-textfield__input ";
-              listLinneaBody += "format-input extrawide\" placeholder=\"Properties\"id=\"";
+              listLinneaBody += "format-input extrawide\" placeholder=\"None\"id=\"";
               listLinneaBody += M_P_TD_2_UL_LI_2_DIV_INP_1;
               listLinneaBody += "\" type=\"text\" name=\"property\" ";
 
@@ -614,10 +613,11 @@ for (var e in examples) {
               }
 
               listLinneaBody += "\" data-val=\"";
-              listLinneaBody += "\" style=\"font-size: 13px\" disabled/>";
+              listLinneaBody += "\" style=\"font-size: 13px\">";
+              //disabled/
               listLinneaBody += "<label class=\"mdl-textfield__label extrawide\" for=\"";
               listLinneaBody += M_P_TD_2_UL_LI_2_DIV_INP_1;
-              listLinneaBody += "\">";
+              listLinneaBody += "\">Properties:";
               listLinneaBody += "</label>";
               listLinneaBody += "<ul class=\"mdl-menu ";
               listLinneaBody += "mdl-js-menu \" for=\"";
@@ -632,21 +632,27 @@ for (var e in examples) {
 
               listLinneaBody += "addmore";
               listLinneaBody += "\" class=\"mdl-button mdl-js-button mdl-button--icon\"";
-              listLinneaBody += "style=\"position: absolute; margin-left: 172px;\">";
-              listLinneaBody += "<i class=\"material-icons\">add_circle_outline</i></button>";
+              listLinneaBody += "style=\"position: absolute; margin-left: 200px;\">";
+              listLinneaBody += "<i class=\"material-icons\">add</i></button>";
               listLinneaBody += "</div>";
               listLinneaBody += "</li>";
             }
           }
           else {
+            // for Variable IDS
             var V_TD_ID_1 = "V_TD_ID_1_J_" + j;
             var V_TD_ID_2 = "V_TD_ID_2_J_" + j;
             var V_TD_UL_ID_1 = "V_TD_UL_ID_1_J_" + j;
             var V_TD_UL_LI_ID_1 = "V_TD_UL_LI_ID_1_J_" + j;
+
+            // for Column-Row Vector IDS
+            var ADD_CLMNVEC_LI_1 = "ADD_CLMNVEC_LI_1" + j;
+            var ADD_CLMNVEC_LI_DIV_1 = "ADD_CLMNVEC_LI_DIV_1" + j;
+            var ADD_CLMNVEC_LI_DIV_INP_1 = "ADD_CLMNVEC_LI_DIV_INP_1" + j;
+
+            // for size IDS
             var V_TD_UL_LI_ID_2 = "V_TD_UL_LI_ID_2_J_" + j;
-
             var V_TD_UL_LI_DIV_ID_1 = "V_TD_UL_LI_DIV_ID_1_J_" + j;
-
             var V_TD_UL_LI_DIV_INP_ID_1 = "V_TD_UL_LI_DIV_INP_ID_1_J_" + j;
 
             var vectorCreator = [];
@@ -658,6 +664,7 @@ for (var e in examples) {
 
             model.vec_IDs.push(vectorCreator);
 
+            // Variable name
             listLinneaBody += "<tr>";
             listLinneaBody += "<td id=\"";
             listLinneaBody += V_TD_ID_1;
@@ -668,6 +675,7 @@ for (var e in examples) {
             listLinneaBody += variable;
             listLinneaBody += "</div><span id=\"\"  style=\" font-size:10px; color: purple;\">Vector</span></td>";
 
+            // Check later what ?????
             listLinneaBody += "<td id=\"";
             listLinneaBody += V_TD_ID_2;
             listLinneaBody += "\" class=\"mdl-data-table__cell--non-numeric\" ";
@@ -680,6 +688,37 @@ for (var e in examples) {
             listLinneaBody += "\ class=\"ui-state-default\" ";
             listLinneaBody += "style=\"width: 0px; padding: 0px\"></li>";
 
+            // Column Vector or Row Vector
+            listLinneaBody += "<li id=\"";
+            listLinneaBody += ADD_CLMNVEC_LI_1;
+            listLinneaBody += "\" class=\"ui-state-default\">";
+            listLinneaBody += "<div id=\"";
+            listLinneaBody += ADD_CLMNVEC_LI_DIV_1;
+            listLinneaBody += "\" class=\"mdl-textfield mdl-js-textfield ";
+            listLinneaBody += "mdl-textfield--floating-label getmdl-select\" ";
+            listLinneaBody += ">";
+            listLinneaBody += "<input style=\"font-size: 11px\" class=\"mdl-textfield__input ";
+            listLinneaBody += "format-input\" id=\"";
+            listLinneaBody += ADD_CLMNVEC_LI_DIV_INP_1;
+            listLinneaBody += "\" type=\"text\" readonly ";
+            listLinneaBody += "value=\" Row Vector";
+            listLinneaBody += "\" data-val=\" Row Vector";
+            listLinneaBody += "\"/>";
+            listLinneaBody += "<label class=\"mdl-textfield__label\" for=\"";
+            listLinneaBody += ADD_CLMNVEC_LI_DIV_INP_1;
+            listLinneaBody += "\">Type: ";
+            listLinneaBody += "</label>";
+            listLinneaBody += "<ul class=\"mdl-menu ";
+            listLinneaBody += "mdl-js-menu \" for=\"";
+            listLinneaBody += ADD_CLMNVEC_LI_DIV_INP_1;
+            listLinneaBody += "\">";
+            listLinneaBody += "<li class=\"mdl-menu__item\" style=\"font-size: 11px\" data-val=\"";
+            listLinneaBody += "d\">Row Vector</li>";
+            listLinneaBody += "<li class=\"mdl-menu__item\" style=\"font-size: 11px\" data-val=\"";
+            listLinneaBody += "s\">Column Vector</li>";
+            listLinneaBody += "</ul></div></li>";
+
+            // Size of the Vector
             listLinneaBody += "<li id=\"";
             listLinneaBody += V_TD_UL_LI_ID_2;
             listLinneaBody += "\" class=\"ui-state-default\">";
@@ -725,7 +764,6 @@ for (var e in examples) {
             listLinneaBody += "</ul></div></li>";
           }
           listLinneaBody += "</ul></td></tr>";
-          //out("end of the table structuring!!!!");
         }
         var s=0;
         // for(s; s < model.all_IDs.length; s++){
