@@ -13,7 +13,7 @@ else {
         element.addEventListener(event, handler, false);
     };
 }
-function init () {
+function inittxtExpr () {
     var text = document.getElementById('txtExpr');
     function resize () {
         text.style.height = 'auto';
@@ -378,15 +378,44 @@ for (var e in examples) {
             model.mat_IDs.push(matricecreator);
 
             listLinneaBody += "<tr>";
-            listLinneaBody += "<td id=\""
+            listLinneaBody += "<td id=\"";
             listLinneaBody += M_TD_ID_1;
             listLinneaBody += "\" class=\"mdl-data-table__cell--non-numeric\" ";
-            listLinneaBody += "width=\"100\"><div id=\"";
+            listLinneaBody += "width=\"100\" style=\"padding: 0px\">";
+            listLinneaBody += "<div align=\"left\" ";
+            listLinneaBody += "style=\"font-size: 16px\">";
+            listLinneaBody += "<ul id=\"";
+            listLinneaBody += "\" class=\"ui-state-default sortable\">";
+            listLinneaBody += "<li id=\"";
+            listLinneaBody += "\ class=\"ui-state-default\" ";
+            listLinneaBody += "style=\"width: 0px; padding: 0px\"></li>";
+            listLinneaBody += "<li id=\"";
+            listLinneaBody += "\" class=\"ui-state-default\">";
+            listLinneaBody += "<div id=\"";
+            listLinneaBody += "\" class=\"mdl-textfield mdl-js-textfield ";
+            listLinneaBody += "mdl-textfield--floating-label getmdl-select\" ";
+            listLinneaBody += ">";
+            listLinneaBody += "<input style=\"text-align: center; font-size: 11px; color: purple;\" class=\"mdl-textfield__input ";
+            listLinneaBody += "format-input\" id=\"";
             listLinneaBody += M_TD_1_DIV_1;
-            listLinneaBody += "\" align=\"left\" ";
-            listLinneaBody += "style=\"font-size: 16px; margin-top:23px;\">";
+
+            listLinneaBody += "\" type=\"text\" readonly ";
+            listLinneaBody += "value=\" Matrix";
+            listLinneaBody += "\" data-val=\" Matrix";
+            listLinneaBody += "\"/>";
+            listLinneaBody += "<label = style=\"text-align: center; font-family: sans-serif; font-size: 16px; color:black;\" class=\"mdl-textfield__label\" for=\"";
+            listLinneaBody += M_TD_1_DIV_1;
+            listLinneaBody += "\">";
             listLinneaBody += variable;
-            listLinneaBody += "</div><span id=\"\"  style=\" font-size:10px; color: purple;\">Matrix</span></td>";
+            listLinneaBody += "</label>";
+            listLinneaBody += "<ul style=\"text-align: center;\" class=\"mdl-menu ";
+            listLinneaBody += "mdl-js-menu \" for=\"";
+            listLinneaBody += "\">";
+            //listLinneaBody += "<li style=\"margin-left: 23px;font-size: 11px;\" class=\"mdl-menu__item\" data-val=\"";
+            //listLinneaBody += "Vector\">Vector</li>";
+            //listLinneaBody += "<li style=\"margin-left: 23px;font-size: 11px;\" class=\"mdl-menu__item\" data-val=\"";
+            //listLinneaBody += "Scalar\">Scalar</li>";
+            listLinneaBody += "</ul></div></li></ul>";
 
             listLinneaBody += "<td id=\"";
             listLinneaBody += M_TD_ID_2;
@@ -527,7 +556,9 @@ for (var e in examples) {
             listLinneaBody += "</ul></div></li>";
 
 
-            
+            listLinneaBody += "<li style=\"width: 9px\" class=\"\">";
+            listLinneaBody += "<div class=\"\">";
+            listLinneaBody += "</div></li>";
 
             if(variable == 'I' || variable == 'O'){
               listLinneaBody += "<li id=\"";
@@ -669,11 +700,45 @@ for (var e in examples) {
             listLinneaBody += "<td id=\"";
             listLinneaBody += V_TD_ID_1;
             listLinneaBody += "\" class=\"mdl-data-table__cell--non-numeric\" ";
-            listLinneaBody += "width=\"100\">"
+            listLinneaBody += "width=\"100\" style=\"padding: 0px\">";
             listLinneaBody += "<div align=\"left\" ";
             listLinneaBody += "style=\"font-size: 16px\">";
+            listLinneaBody += "<ul id=\"";
+            listLinneaBody += "\" class=\"ui-state-default sortable\">";
+            listLinneaBody += "<li id=\"";
+            listLinneaBody += "\ class=\"ui-state-default\" ";
+            listLinneaBody += "style=\"width: 0px; padding: 0px\"></li>";
+            listLinneaBody += "<li id=\"";
+            listLinneaBody += "\" class=\"ui-state-default\">";
+            listLinneaBody += "<div id=\"";
+            listLinneaBody += "\" class=\"mdl-textfield mdl-js-textfield ";
+            listLinneaBody += "mdl-textfield--floating-label getmdl-select\" ";
+            listLinneaBody += ">";
+            listLinneaBody += "<input style=\"text-align: center; font-size: 11px; color: purple;\" class=\"mdl-textfield__input ";
+            listLinneaBody += "format-input\" id=\"";
+            listLinneaBody += V_TD_UL_ID_1;
+
+            listLinneaBody += "\" type=\"text\" readonly ";
+            listLinneaBody += "value=\" Vector";
+            listLinneaBody += "\" data-val=\" Row Vector";
+            listLinneaBody += "\"/>";
+            listLinneaBody += "<label = style=\"font-family: sans-serif;  text-align: center; font-size: 16px; color:black;\" class=\"mdl-textfield__label\" for=\"";
+            listLinneaBody += V_TD_UL_ID_1;
+            listLinneaBody += "\">";
             listLinneaBody += variable;
-            listLinneaBody += "</div><span id=\"\"  style=\" font-size:10px; color: purple;\">Vector</span></td>";
+            listLinneaBody += "</label>";
+            listLinneaBody += "<ul style=\"text-align: center;background-color: #ffffff;\" class=\"mdl-menu ";
+            listLinneaBody += "mdl-js-menu \" for=\"";
+            listLinneaBody += V_TD_UL_ID_1;
+            listLinneaBody += "\">";
+            listLinneaBody += "<li style=\"margin-left: 23px;font-size: 11px;\" class=\"mdl-menu__item\" data-val=\"";
+            listLinneaBody += "Vector\">Vector</li>";
+            listLinneaBody += "<li style=\"margin-left: 23px;font-size: 11px;\" class=\"mdl-menu__item\" data-val=\"";
+            listLinneaBody += "Scalar\">Scalar</li>";
+            listLinneaBody += "</ul></div></li></ul>";
+
+            //listLinneaBody += variable;
+            //listLinneaBody += "</div><span id=\"\"  style=\" font-size:10px; color: purple;\">Vector</span></td>";
 
             // Check later what ?????
             listLinneaBody += "<td id=\"";
@@ -859,10 +924,16 @@ for (var e in examples) {
     currentVariableId = id;
     modal.style.display = "block";
     var thisID = $(object).attr('id');
+    out($(object).val());
     inputInto = $(object).closest("div.content").find("input").attr('id');
+    listofproperties = $('#'+inputInto).val().trim().split(',');
+    out(listofproperties);
     //out('this id is: ' + thisID);
-
     $('input:checkbox').removeAttr('checked');
+
+    for(lst in listofproperties){
+        $("input[name='listofproperties[lst]']:checked");
+    }
 
     $.each($("input[name='properties']:checked"), function(){
       favorite.push($(this).val());
