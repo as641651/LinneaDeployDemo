@@ -172,12 +172,16 @@ for (var e in examples) {
   $("#txtExpr").keyup(function() {
 
     var inputString = $("#txtExpr").val();
-    model.setInput(inputString.trim());
-
-    $("#lblError").css('visibility', 'hidden');
-
+    if(inputString == ""){
+      $("#tblFormats").hide();
+    }else{
+      model.setInput(inputString.trim());
+      $("#lblError").css('visibility', 'hidden');
+    }
   });
 
+
+  //select2js
 
 
   function getVarNamesFromString(StrObj) {
@@ -480,7 +484,7 @@ for (var e in examples) {
               listLinneaBody += "value=\"";
             }
 
-            listLinneaBody += "\" data-val=\"";
+            listLinneaBody += "\" style=\"font-size: 13px\" data-val=\"";
             listLinneaBody += "\"/>";
             listLinneaBody += "<label class=\"mdl-textfield__label\" for=\"";
             listLinneaBody += M_R_TD_2_UL_LI_2_DIV_INP_1;
@@ -543,7 +547,7 @@ for (var e in examples) {
               listLinneaBody += "value=\"";
             }
 
-            listLinneaBody += "\" data-val=\"";
+            listLinneaBody += "\" style=\"font-size: 13px\" data-val=\"";
             listLinneaBody += "\"/>";
             listLinneaBody += "<label class=\"mdl-textfield__label\" for=\"";
             listLinneaBody += M_C_TD_2_UL_LI_2_DIV_INP_1;
@@ -644,7 +648,7 @@ for (var e in examples) {
               }
 
               listLinneaBody += "\" data-val=\"";
-              listLinneaBody += "\" style=\"font-size: 13px\">";
+              listLinneaBody += "\" style=\"font-size: 11px\">";
               //disabled/
               listLinneaBody += "<label class=\"mdl-textfield__label extrawide\" for=\"";
               listLinneaBody += M_P_TD_2_UL_LI_2_DIV_INP_1;
@@ -664,7 +668,13 @@ for (var e in examples) {
               listLinneaBody += "addmore";
               listLinneaBody += "\" class=\"mdl-button mdl-js-button mdl-button--icon\"";
               listLinneaBody += "style=\"position: absolute; margin-left: 200px;\">";
-              listLinneaBody += "<i class=\"material-icons\">add</i></button>";
+              
+              
+              
+            
+              listLinneaBody += "<i class=\"material-icons\">add</i><div class=\"mdl-tooltip\" data-mdl-for=\"addmore\">Examples</div></button>";
+              
+              
               listLinneaBody += "</div>";
               listLinneaBody += "</li>";
             }
@@ -816,7 +826,7 @@ for (var e in examples) {
             }
 
 
-            listLinneaBody += "\" data-val=\"";
+            listLinneaBody += "\" style=\"font-size: 13px\" data-val=\"";
             listLinneaBody += "\"/>";
             listLinneaBody += "</label>";
             listLinneaBody += "<label class=\"mdl-textfield__label\" for=\"";
@@ -851,34 +861,34 @@ for (var e in examples) {
           //out(model.all_IDs_GEN);
           model.all_IDs = [];
           //out("up sortable");
-          // $(".sortable").sortable({
-          //   update: function(ev, ui) {
-          //     var listId = ui.item.parent().attr('id');
-          //     out(listId);
-          //     //var tensor = listId.replace("dims", "");
+          $(".sortable").sortable({
+            update: function(ev, ui) {
+              var listId = ui.item.parent().attr('id');
+              out(listId);
+              var tensor = listId.replace("dims", "");
 
-          //     //tblFormatsView.insertCacheEntry(tensor,
-          //       //  tblFormatsView.createCacheEntry(listId));
+              // tblFormatsView.insertCacheEntry(tensor,
+              //    tblFormatsView.createCacheEntry(listId));
 
-          //     model.cancelReq();
-          //    // model.setOutput("", "", "", "");
-          //   }
-          // });
-          // $(".format-input").on("inputchange paste keyup select",function() {
+              model.cancelReq();
+             // model.setOutput("", "", "", "");
+            }
+          });
+          $(".format-input").on("inputchange paste keyup select",function(){
 
-          //   var listId = $(this).parent().parent().parent().attr('id');
-          // //  var tensor = listId.replace("dims", "");
+            var listId = $(this).parent().parent().parent().attr('id');
+          //  var tensor = listId.replace("dims", "");
 
-          //   console.log('listId in inputchange is: ' + listId);
-          // //  console.log('tensor in inputchange is: ' + tensor);
+            console.log('listId in inputchange is: ' + listId);
+          //  console.log('tensor in inputchange is: ' + tensor);
 
-          //   console.log('2');
-          //  // tblFormatsView.insertCacheEntry(tensor,
-          //  //     tblFormatsView.createCacheEntry(listId));
+            console.log('2');
+           // tblFormatsView.insertCacheEntry(tensor,
+           //     tblFormatsView.createCacheEntry(listId));
 
-          //  // model.cancelReq();
-          //  // model.setOutput("", "", "", "");
-          // });
+           // model.cancelReq();
+           // model.setOutput("", "", "", "");
+          });
 
 
           $("#tblFormats").show();
@@ -932,20 +942,24 @@ for (var e in examples) {
     $('input:checkbox').removeAttr('checked');
 
     for(lst in listofproperties){
-        $("input[name='listofproperties[lst]']:checked");
+        out($('#'+listofproperties[lst].trim()));
+        $('#'+listofproperties[lst].trim()).prop('checked', true);
+        //$("input[name='listofproperties[lst]']:checked");
     }
 
     $.each($("input[name='properties']:checked"), function(){
       favorite.push($(this).val());
     });
+    listofproperties = [];
   }
 
   function saveProperty(request){
+    var favorite = [];
     $("input:checkbox[name='properties']:checked").each(function(){
      favorite.push($(this).val());
     });
     var properties = favorite.join(", ");
-    $('#'+inputInto).val(properties);
+    $('#'+inputInto).val(properties).trigger('inputchange');
     var parentID = $(this).closest('li').attr('id');
     modal.style.display = "none";
     inputInto = " ";
@@ -955,7 +969,7 @@ for (var e in examples) {
 
   function clearProperty(request){
     var properties = "";
-    $('#'+inputInto).val(properties);
+    $('#'+inputInto).val(properties).trigger('inputchange');
     var parentID = $(this).closest('li').attr('id');
 
     // save your value where you want

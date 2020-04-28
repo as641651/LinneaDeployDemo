@@ -152,113 +152,86 @@
 
         <div class="w3-container">
 
-          <table class="w3-table-all w3-hoverable">
+          <table style="table-layout: fixed;width: 100%;" class="w3-table-all w3-hoverable">
             <!-- 1 -->
             <tr>
               <thead>
-                <th>
+                <th colspan="3">
                   All Properties:
                 </th>
-                <th>
-                </th>
-                <th>
-                </th>
+                
               </thead>
             </tr>
             <tr>
               <td>
                 <form>
-                <label class="checkbox-inline">Symmetric
-                  <input type="checkbox" name="properties" value="Symmetric">
-                </label>
-              </form>
+                  <input id="FullRank" type="checkbox" name="properties" value="FullRank">
+                  <label for="properties"  class="checkbox-inline">FullRank</label>
+                </form>
               </td>
               <td>
-                <label class="container">FullRank
-                  <input type="checkbox" name="properties" value="FullRank">
-                  <span class="checkmark"></span>
-                </label>
+                <form>
+                  <input id="SPD" type="checkbox" name="properties" value="SPD">
+                  <label for="properties"  class="checkbox-inline">SPD</label>
+                </form>
               </td>
               <td>
-                <label class="container">SPD
-                  <input type="checkbox" name="properties" value="SPD">
-                  <span class="checkmark"></span>
-                </label>
+                <form>
+                  <input id="RowPanel" type="checkbox" name="properties" value="RowPanel">
+                  <label for="properties"  class="checkbox-inline">RowPanel</label>
+                </form>
               </td>
             </tr>
-            <!-- 2 -->
             <tr>
               <td>
-                <label class="container">RowPanel
-                  <input type="checkbox" name="properties" value="RowPanel">
-                  <span class="checkmark"></span>
-                </label>
-              </td>
-              <td>
-                <label class="container">Diagonal
-                  <input type="checkbox" name="properties" value="Diagonal">
-                  <span class="checkmark"></span>
-                </label>
-              </td>
+                <form>
+                  
+                  <input id="Orthogonal" type="checkbox" name="properties" value="Orthogonal">
+                  <label for="properties"  class="checkbox-inline">Orthogonal</label>
 
-              <td>
-                <label class="container">Symmetric
-                  <input type="checkbox" name="properties" value="Symmetric">
-                  <span class="checkmark"></span>
-                </label>
+                </form>
               </td>
+              <td>
+                <form>
+                  
+                  <input id="LowerTriangular" type="checkbox" name="properties" value="LowerTriangular">
+                  <label for="properties"  class="checkbox-inline">LowerTriangular</label>
 
-            </tr>
-            <!-- 3 -->
-            <tr>
-              <td>
-                <label class="container">LowerTriangular
-                  <input type="checkbox" name="properties" value="LowerTriangular">
-                  <span class="checkmark"></span>
-                </label>
+                </form>
               </td>
               <td>
-                <label class="container">UpperTriangular
-                  <input type="checkbox" name="properties" value="UpperTriangular">
-                  <span class="checkmark"></span>
-                </label>
-              </td>
-              <td>
-                <label class="container">UnitDiagonal
-                  <input type="checkbox" name="properties" value="UnitDiagonal">
-                  <span class="checkmark"></span>
-                </label>
-              </td>
-            </tr>
+                <form>
+                  
+                  <input id="UpperTriangular" type="checkbox" name="properties" value="UpperTriangular">
+                  <label for="properties"  class="checkbox-inline">UpperTriangular</label>
 
-            <!-- 4 -->
-            <tr>
-              <td>
-                <label class="container">Orthogonal
-                  <input type="checkbox" name="properties" value="Orthogonal">
-                  <span class="checkmark"></span>
-                </label>
+                </form>
               </td>
-              <td>
-                <label class="container">Square
-                  <input type="checkbox" name="properties" value="Square">
-                  <span class="checkmark"></span>
-                </label>
-              </td>
-              <td>
-                <label class="container">Non-singular
-                  <input type="checkbox" name="properties" value="Non-singular">
-                  <span class="checkmark"></span>
-                </label>
-              </td>
+              
             </tr>
-            <!-- 6 -->
             <tr>
               <td>
-                <label class="container">Positive
-                  <input type="checkbox" name="properties" value="Positive">
-                  <span class="checkmark"></span>
-                </label>
+                <form>   
+                  <input id="Diagonal" type="checkbox" name="properties" value="Diagonal">
+                  <label for="properties"  class="checkbox-inline">Diagonal</label>
+
+                </form>
+              </td>
+              <td>
+                <form>
+                  
+                  <input id="UnitDiagonal" type="checkbox" name="properties" value="UnitDiagonal">
+                  <label for="properties"  class="checkbox-inline">UnitDiagonal</label>
+
+                </form>
+              </td>
+              <td>
+                <form>
+                  
+                  <input id="Square" type="checkbox" name="properties" value="Square">
+                  <label for="properties"  class="checkbox-inline">Square</label>
+
+                </form>
               </td>
             </tr>
 
