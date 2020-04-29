@@ -737,14 +737,14 @@ for (var e in examples) {
             listLinneaBody += "\">";
             listLinneaBody += variable;
             listLinneaBody += "</label>";
-            listLinneaBody += "<ul style=\"text-align: center;background-color: #ffffff;\" class=\"mdl-menu ";
+            listLinneaBody += "<ul style=\"text-align: center;background-color: #dfeaf4;\" class=\"mdl-menu ";
             listLinneaBody += "mdl-js-menu \" for=\"";
             listLinneaBody += V_TD_UL_ID_1;
             listLinneaBody += "\">";
-            listLinneaBody += "<li style=\"margin-left: 23px;font-size: 11px;\" class=\"mdl-menu__item\" data-val=\"";
-            listLinneaBody += "Vector\">Vector</li>";
-            listLinneaBody += "<li style=\"margin-left: 23px;font-size: 11px;\" class=\"mdl-menu__item\" data-val=\"";
-            listLinneaBody += "Scalar\">Scalar</li>";
+            listLinneaBody += "<li onclick='showScalarDisplay("+ADD_CLMNVEC_LI_DIV_1+")' style=\"margin-left: 23px;font-size: 11px; \" class=\"mdl-menu__item\" data-val=\"";
+            listLinneaBody += "Vector\" >Vector</li>";
+            listLinneaBody += "<li onclick='hideScalarDisplay("+ADD_CLMNVEC_LI_DIV_1+")' style=\"margin-left: 23px;font-size: 11px;\" class=\"mdl-menu__item\" data-val=\"";
+            listLinneaBody += "Scalar\" >Scalar</li>";
             listLinneaBody += "</ul></div></li></ul>";
 
             //listLinneaBody += variable;
@@ -763,35 +763,7 @@ for (var e in examples) {
             listLinneaBody += "\ class=\"ui-state-default\" ";
             listLinneaBody += "style=\"width: 0px; padding: 0px\"></li>";
 
-            // Column Vector or Row Vector
-            listLinneaBody += "<li id=\"";
-            listLinneaBody += ADD_CLMNVEC_LI_1;
-            listLinneaBody += "\" class=\"ui-state-default\">";
-            listLinneaBody += "<div id=\"";
-            listLinneaBody += ADD_CLMNVEC_LI_DIV_1;
-            listLinneaBody += "\" class=\"mdl-textfield mdl-js-textfield ";
-            listLinneaBody += "mdl-textfield--floating-label getmdl-select\" ";
-            listLinneaBody += ">";
-            listLinneaBody += "<input style=\"font-size: 11px\" class=\"mdl-textfield__input ";
-            listLinneaBody += "format-input\" id=\"";
-            listLinneaBody += ADD_CLMNVEC_LI_DIV_INP_1;
-            listLinneaBody += "\" type=\"text\" readonly ";
-            listLinneaBody += "value=\" Row Vector";
-            listLinneaBody += "\" data-val=\" Row Vector";
-            listLinneaBody += "\"/>";
-            listLinneaBody += "<label class=\"mdl-textfield__label\" for=\"";
-            listLinneaBody += ADD_CLMNVEC_LI_DIV_INP_1;
-            listLinneaBody += "\">Type: ";
-            listLinneaBody += "</label>";
-            listLinneaBody += "<ul class=\"mdl-menu ";
-            listLinneaBody += "mdl-js-menu \" for=\"";
-            listLinneaBody += ADD_CLMNVEC_LI_DIV_INP_1;
-            listLinneaBody += "\">";
-            listLinneaBody += "<li class=\"mdl-menu__item\" style=\"font-size: 11px\" data-val=\"";
-            listLinneaBody += "d\">Row Vector</li>";
-            listLinneaBody += "<li class=\"mdl-menu__item\" style=\"font-size: 11px\" data-val=\"";
-            listLinneaBody += "s\">Column Vector</li>";
-            listLinneaBody += "</ul></div></li>";
+            
 
             // Size of the Vector
             listLinneaBody += "<li id=\"";
@@ -836,6 +808,36 @@ for (var e in examples) {
             listLinneaBody += "<ul class=\"mdl-menu ";
             listLinneaBody += "mdl-js-menu \" for=\"";
             listLinneaBody += "\">";
+            listLinneaBody += "</ul></div></li>";
+
+            // Column Vector or Row Vector
+            listLinneaBody += "<li id=\"";
+            listLinneaBody += ADD_CLMNVEC_LI_1;
+            listLinneaBody += "\" class=\"ui-state-default\">";
+            listLinneaBody += "<div id=\"";
+            listLinneaBody += ADD_CLMNVEC_LI_DIV_1;
+            listLinneaBody += "\" class=\"mdl-textfield mdl-js-textfield ";
+            listLinneaBody += "mdl-textfield--floating-label getmdl-select\" ";
+            listLinneaBody += ">";
+            listLinneaBody += "<input style=\"font-size: 11px\" class=\"mdl-textfield__input ";
+            listLinneaBody += "format-input\" id=\"";
+            listLinneaBody += ADD_CLMNVEC_LI_DIV_INP_1;
+            listLinneaBody += "\" type=\"text\" readonly ";
+            listLinneaBody += "value=\" Row Vector";
+            listLinneaBody += "\" data-val=\" Row Vector";
+            listLinneaBody += "\"/>";
+            listLinneaBody += "<label class=\"mdl-textfield__label\" for=\"";
+            listLinneaBody += ADD_CLMNVEC_LI_DIV_INP_1;
+            listLinneaBody += "\">Type: ";
+            listLinneaBody += "</label>";
+            listLinneaBody += "<ul class=\"mdl-menu ";
+            listLinneaBody += "mdl-js-menu \" for=\"";
+            listLinneaBody += ADD_CLMNVEC_LI_DIV_INP_1;
+            listLinneaBody += "\">";
+            listLinneaBody += "<li class=\"mdl-menu__item\" style=\"font-size: 11px\" data-val=\"";
+            listLinneaBody += "d\">Row Vector</li>";
+            listLinneaBody += "<li class=\"mdl-menu__item\" style=\"font-size: 11px\" data-val=\"";
+            listLinneaBody += "s\">Column Vector</li>";
             listLinneaBody += "</ul></div></li>";
           }
           listLinneaBody += "</ul></td></tr>";
@@ -926,6 +928,11 @@ for (var e in examples) {
     if (event.target == modal) {
       modal.style.display = "none";
     }
+  }
+
+  function hideScalarDisplay(id){
+    out('in hide');
+    $('#'+id).attr('display', 'none');
   }
 
   var favorite = [];
