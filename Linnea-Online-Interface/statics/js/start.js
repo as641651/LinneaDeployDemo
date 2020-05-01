@@ -668,13 +668,13 @@ for (var e in examples) {
               listLinneaBody += "addmore";
               listLinneaBody += "\" class=\"mdl-button mdl-js-button mdl-button--icon\"";
               listLinneaBody += "style=\"position: absolute; margin-left: 200px;\">";
-              
-              
-              
-            
+
+
+
+
               listLinneaBody += "<i class=\"material-icons\">add</i><div class=\"mdl-tooltip\" data-mdl-for=\"addmore\">Examples</div></button>";
-              
-              
+
+
               listLinneaBody += "</div>";
               listLinneaBody += "</li>";
             }
@@ -724,7 +724,7 @@ for (var e in examples) {
             listLinneaBody += "\" class=\"mdl-textfield mdl-js-textfield ";
             listLinneaBody += "mdl-textfield--floating-label getmdl-select\" ";
             listLinneaBody += ">";
-            listLinneaBody += "<input style=\"text-align: center; font-size: 11px; color: purple;\" class=\"mdl-textfield__input ";
+            listLinneaBody += "<input onchange='hideScalarDisplay(this," + ADD_CLMNVEC_LI_DIV_1 + ")' style=\"text-align: center; font-size: 11px; color: purple;\" class=\"format-input mdl-textfield__input ";
             listLinneaBody += "format-input\" id=\"";
             listLinneaBody += V_TD_UL_ID_1;
 
@@ -737,13 +737,14 @@ for (var e in examples) {
             listLinneaBody += "\">";
             listLinneaBody += variable;
             listLinneaBody += "</label>";
-            listLinneaBody += "<ul style=\"text-align: center;background-color: #dfeaf4;\" class=\"mdl-menu ";
+            listLinneaBody += "<ul ";
+            listLinneaBody += " style=\"text-align: center;background-color: #dfeaf4;\" class=\"mdl-menu ";
             listLinneaBody += "mdl-js-menu \" for=\"";
             listLinneaBody += V_TD_UL_ID_1;
             listLinneaBody += "\">";
-            listLinneaBody += "<li onclick='showScalarDisplay("+ADD_CLMNVEC_LI_DIV_1+")' style=\"margin-left: 23px;font-size: 11px; \" class=\"mdl-menu__item\" data-val=\"";
+            listLinneaBody += "<li  style=\"margin-left: 23px;font-size: 11px; \" class=\"mdl-menu__item show\" data-val=\"";
             listLinneaBody += "Vector\" >Vector</li>";
-            listLinneaBody += "<li onclick='hideScalarDisplay("+ADD_CLMNVEC_LI_DIV_1+")' style=\"margin-left: 23px;font-size: 11px;\" class=\"mdl-menu__item\" data-val=\"";
+            listLinneaBody += "<li style=\"margin-left: 23px;font-size: 11px;\" class=\"mdl-menu__item\" data-val=\"";
             listLinneaBody += "Scalar\" >Scalar</li>";
             listLinneaBody += "</ul></div></li></ul>";
 
@@ -763,7 +764,7 @@ for (var e in examples) {
             listLinneaBody += "\ class=\"ui-state-default\" ";
             listLinneaBody += "style=\"width: 0px; padding: 0px\"></li>";
 
-            
+
 
             // Size of the Vector
             listLinneaBody += "<li id=\"";
@@ -876,7 +877,7 @@ for (var e in examples) {
              // model.setOutput("", "", "", "");
             }
           });
-          $(".format-input").on("inputchange paste keyup select",function(){
+          $(".format-input").on("inputchange change paste keyup select",function(){
 
             var listId = $(this).parent().parent().parent().attr('id');
           //  var tensor = listId.replace("dims", "");
@@ -930,9 +931,17 @@ for (var e in examples) {
     }
   }
 
-  function hideScalarDisplay(id){
-    out('in hide');
-    $('#'+id).attr('display', 'none');
+
+  function hideScalarDisplay(object, id){
+
+
+    out($(object).val());
+    if($(object).val() == 'Vector'){
+      id.style.display = 'block';
+    }else if($(object).val() == 'Scalar'){
+      id.style.display = 'none';
+    }
+
   }
 
   var favorite = [];
