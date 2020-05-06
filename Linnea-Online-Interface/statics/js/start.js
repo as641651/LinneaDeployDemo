@@ -1,6 +1,3 @@
-// $("#M_P_TD_2_UL_LI_2_DIV_INP_1_J_0").on("inputchange paste keyup select",function(){
-//   alert("FFFFFF");
-// });
 
 var observe;
 if (window.attachEvent) {
@@ -78,11 +75,11 @@ for (var e in examples) {
     listExamplesBody += examples[e].name;
     listExamplesBody += ":&nbsp ";
     listExamplesBody += examples[e].expr[0];
-    listExamplesBody += "</li><li class=\"\" style=\"padding-left: 175px;\">";
+    listExamplesBody += "</li><li class=\"\" style=\"padding-left: 205px;\">";
     listExamplesBody += examples[e].expr[1];
-    listExamplesBody += "</li><li class=\"\" style=\"padding-left: 175px;\">";
+    listExamplesBody += "</li><li class=\"\" style=\"padding-left: 205px;\">";
     listExamplesBody += examples[e].expr[2];
-    listExamplesBody += "</li><li  class=\"\" style=\"padding-left: 175px;\">";
+    listExamplesBody += "</li><li  class=\"\" style=\"padding-left: 205px;\">";
     listExamplesBody += examples[e].expr[3];
     listExamplesBody += "</li></ul></li>";
 
@@ -94,7 +91,7 @@ for (var e in examples) {
     listExamplesBody += examples[e].name;
     listExamplesBody += ":&nbsp ";
     listExamplesBody += examples[e].expr[0];
-    listExamplesBody += "</li><li class=\"\" style=\"padding-left: 128px;\">";
+    listExamplesBody += "</li><li class=\"\" style=\"padding-left: 118px;\">";
     listExamplesBody += examples[e].expr[1];
     listExamplesBody += "</li></ul></li>";
 
@@ -331,7 +328,6 @@ for (var e in examples) {
       tblFormatsView.cache[tensor] = format;
     },
     updateView: function(timeout) {
-
       clearTimeout(tblFormatsView.timerEvent);
       if (model.getError() !== "") {
         var hideTable = function() { $("#tblFormats").hide(); };
@@ -667,7 +663,7 @@ for (var e in examples) {
 
               listLinneaBody += "addmore";
               listLinneaBody += "\" class=\"mdl-button mdl-js-button mdl-button--icon\"";
-              listLinneaBody += "style=\"position: absolute; margin-left: 200px;\">";
+              listLinneaBody += "style=\"position: absolute; margin-left: 430px;\">";
 
 
 
