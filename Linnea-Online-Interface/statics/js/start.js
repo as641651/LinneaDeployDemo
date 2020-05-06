@@ -314,8 +314,8 @@ for (var e in examples) {
   timerEvent: null,
 
   updateView: function(timeout) {
-    clearTimeout(txtExprView.timerEvent);
-
+      clearTimeout(txtExprView.timerEvent);
+      $("#txtExpr").parent().removeClass('is-invalid');
     }
   };
 
@@ -326,6 +326,18 @@ for (var e in examples) {
 
     insertCacheEntry: function(tensor, format) {
       tblFormatsView.cache[tensor] = format;
+    },
+    createCacheEntry: function(listId) {
+      var dims = $("#" + listId).sortable("toArray");
+      var formats = [];
+      var ordering = [];
+
+      for (var i = 1; i < dims.length; ++i) {
+        formats.push($("#" + dims[i] + "_select").attr("data-val"));
+        ordering.push(parseInt(dims[i].split("_")[1]));
+      }
+
+      return { formats: formats, ordering: ordering };
     },
     updateView: function(timeout) {
       clearTimeout(tblFormatsView.timerEvent);
@@ -340,7 +352,17 @@ for (var e in examples) {
         model.all_IDs_GEN = [];
         for (j in model.input.juliaVars) {
           var variable = model.input.juliaVars[j];
+          var order = 0;
           if(/^[A-Z]/.test(variable)){
+            order = 2;
+          }else{
+            order = 1;
+          }
+          var cached = (tblFormatsView.cache.hasOwnProperty(j) && 
+                        tblFormatsView.cache[j].formats.length == order);
+
+          if(/^[A-Z]/.test(variable)){
+
             var matricecreator = [];
             model.input.test.push({id:j, name:variable});
 
@@ -663,7 +685,7 @@ for (var e in examples) {
 
               listLinneaBody += "addmore";
               listLinneaBody += "\" class=\"mdl-button mdl-js-button mdl-button--icon\"";
-              listLinneaBody += "style=\"position: absolute; margin-left: 430px;\">";
+              listLinneaBody += "style=\"position: absolute; margin-left: 150px;\">";
 
 
 
