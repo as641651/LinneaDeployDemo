@@ -72,7 +72,7 @@
                       Examples
                     </div>
                   </button>
-                  <ul id="listExamples" class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" style="font-size: 8px" for="btnExamples"></ul>
+                  <ul id="listExamples" class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" style="font-size: 6px" for="btnExamples"></ul>
                 </div>
               </td>
               <td style="width: 200px">
@@ -184,12 +184,31 @@
             </tr>
             <tr>
               <td>
-                <form>
-                  
+                <form>                 
                   <input id="Orthogonal" type="checkbox" name="properties" value="Orthogonal">
                   <label for="properties"  class="checkbox-inline">Orthogonal</label>
-
                 </form>
+              </td>
+              <td>
+                <form>
+                  <input id="OrthogonalRows" type="checkbox" name="properties" value="OrthogonalRows">
+                  <label for="properties"  class="checkbox-inline">OrthogonalRows</label>
+                </form>
+              </td>
+              <td>
+                <form>
+                  <input id="OrthogonalColumns" type="checkbox" name="properties" value="OrthogonalColumns">
+                  <label for="properties"  class="checkbox-inline">OrthogonalColumns</label>
+                </form>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <form>
+                  <input id="SPSD" type="checkbox" name="properties" value="SPSD">
+                  <label for="properties"  class="checkbox-inline">SPSD</label>
+                </form>
+                
               </td>
               <td>
                 <form>
@@ -276,6 +295,10 @@
   <script>
       $(document).on('submit', '#post-form',function(e){
       e.preventDefault();
+      $("#btnGetKernel").attr("disabled", true);
+      $("#btnDownloads").attr("disabled", true);
+      
+      $("#btnGetKernel").html("Processing...");
       $.ajax({
           type:'POST',
           url:'{% url "create" %}',
@@ -285,6 +308,10 @@
               action: 'post'
           },
           success:function(json){
+            $("#btnGetKernel").attr("disabled", false);
+            $("#btnDownloads").attr("disabled", false);
+      
+            $("#btnGetKernel").html("Generate Kernel");
             document.getElementById("post-form").reset();
 
             $("#lblError").css('visibility', 'hidden');
@@ -295,7 +322,10 @@
 
           },
           error : function(xhr,errmsg,err) {
-
+            $("#btnGetKernel").attr("disabled", false);
+            $("#btnDownloads").attr("disabled", false);
+      
+            $("#btnGetKernel").html("Generate Kernel");
             console.log(xhr.status + ": " + xhr.responseText);
             $('#txtComputeLoops').val("Your input expression had syntax error :(");
             $('#txtComputeLoops').html("Your input expression had syntax error :(");

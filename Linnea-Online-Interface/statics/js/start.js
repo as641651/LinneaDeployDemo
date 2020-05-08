@@ -54,12 +54,12 @@ var examples = {
     expr: ["\\(H^{\\dagger} = -H^{T}(HH^{T})\\) ", "\\(y_k=H^{\\dagger}y+x(I-HH^{\\dagger})\\)"],
     code: "H_dag=trans(H)*inv(H*trans(H))\ny_k=H_dag*y+(I+(-1*H_dag*H))*x",
   },
- //  input5:{
- //    name: "Stochastic Newton",
- //    expr: ["\\(A = k/k-1*B_{in}\\)", "\\(B = I_{n}\\)", "\\(C = -A^{T}*W_{k}*(W_{k})^{T}*A*B_{in}\\)", "\\(D=\\)"],
- //    //expr: "\\(B_{out}=((k/k-1)*B_{in}*(I_{n}+(-A^{T}*W_{k}*A*((k-1)*I_{1}+(W_{k})^{T}*A*B_{in}*A^{T}*W_{k})^{-1}*B_{in}*A^{T}*W_{k}))\\)",
- //    code: "Bout = ((k*inv(kminus1))*Bin*(In+(minus1*trans(A)*wk*(inv((kminus1*I1)+(trans(wk)*A*Bin*trans(A)*wk))*trans(wk)*A*Bin",
- // },
+  input5:{
+    name: "Stochastic Newton",
+    expr: ["\\(A = (k/k-1)*B_{in}\\)", "\\(B = I_{n}\\)", "\\(C = -A^{T}*W_{k}*W_{k}^{T}*A*B_{in}\\)", "\\(D=(k-1)*I_{1}\\)", "\\(E=W_{k}^{T}*A*B_{in}*A^{T}*B_{in}\\)","\\(B_{out}=A*(B+(C*(D+E)))\\)"],
+    //expr: "\\(B_{out}=((k/k-1)*B_{in}*(I_{n}+(-A^{T}*W_{k}*A*((k-1)*I_{1}+(W_{k})^{T}*A*B_{in}*A^{T}*W_{k})^{-1}*B_{in}*A^{T}*W_{k}))\\)",
+    code: "Bout=(k*inv(k-1))*Bin*(In+(-1*trans(A)*Wk*inv((k-1)*I1+trans(Wk)*A*Bin*trans(A)*Wk)*trans(Wk)*A*Bin))",
+ },
 
 };
 
@@ -71,34 +71,54 @@ for (var e in examples) {
     listExamplesBody += "<li id=\"example_";
     listExamplesBody += e;
     listExamplesBody += "\" class=\"mdl-menu__item\" style=\"height: 100px;\" >";
-    listExamplesBody += "<ul style=\"list-style: none; padding-left: 0;\"><li class=\"\">";
+    listExamplesBody += "<ul style=\"list-style: none; padding-left: 0;font-size: 11px;\"><li class=\"\">";
     listExamplesBody += examples[e].name;
     listExamplesBody += ":&nbsp ";
     listExamplesBody += examples[e].expr[0];
-    listExamplesBody += "</li><li class=\"\" style=\"padding-left: 205px;\">";
+    listExamplesBody += "</li><li class=\"\" style=\"padding-left: 163px;\">";
     listExamplesBody += examples[e].expr[1];
-    listExamplesBody += "</li><li class=\"\" style=\"padding-left: 205px;\">";
+    listExamplesBody += "</li><li class=\"\" style=\"padding-left: 163px;\">";
     listExamplesBody += examples[e].expr[2];
-    listExamplesBody += "</li><li  class=\"\" style=\"padding-left: 205px;\">";
+    listExamplesBody += "</li><li  class=\"\" style=\"padding-left: 163px;\">";
     listExamplesBody += examples[e].expr[3];
     listExamplesBody += "</li></ul></li>";
 
   }else if(examples[e].name == "Image Restoration"){
     listExamplesBody += "<li id=\"example_";
     listExamplesBody += e;
-    listExamplesBody += "\" class=\"mdl-menu__item\" style=\"height: 50px;\" >";
-    listExamplesBody += "<ul style=\"list-style: none; padding-left: 0;\"><li class=\"\">";
+    listExamplesBody += "\" class=\"mdl-menu__item\" style=\"height: 50px; \" >";
+    listExamplesBody += "<ul style=\"list-style: none; padding-left: 0;font-size: 11px;\"><li class=\"\">";
     listExamplesBody += examples[e].name;
     listExamplesBody += ":&nbsp ";
     listExamplesBody += examples[e].expr[0];
-    listExamplesBody += "</li><li class=\"\" style=\"padding-left: 118px;\">";
+    listExamplesBody += "</li><li class=\"\" style=\"padding-left: 116px;\">";
     listExamplesBody += examples[e].expr[1];
+    listExamplesBody += "</li></ul></li>";
+
+  }else if(examples[e].name == "Stochastic Newton"){
+    listExamplesBody += "<li id=\"example_";
+    listExamplesBody += e;
+    listExamplesBody += "\" class=\"mdl-menu__item\" style=\"height: 150px;\" >";
+    listExamplesBody += "<ul style=\"list-style: none; padding-left: 0;font-size: 11px;\"><li class=\"\">";
+    listExamplesBody += examples[e].name;
+    listExamplesBody += ":&nbsp ";
+    listExamplesBody += examples[e].expr[0];
+    listExamplesBody += "</li><li class=\"\" style=\"padding-left: 115px;\">";
+    listExamplesBody += examples[e].expr[1];
+    listExamplesBody += "</li><li  class=\"\" style=\"padding-left: 115px;\">";
+    listExamplesBody += examples[e].expr[2];
+    listExamplesBody += "</li><li  class=\"\" style=\"padding-left: 115px;\">";
+    listExamplesBody += examples[e].expr[3];
+    listExamplesBody += "</li><li  class=\"\" style=\"padding-left: 115px;\">";
+    listExamplesBody += examples[e].expr[4];
+    listExamplesBody += "</li><li  class=\"\" style=\"padding-left: 115px;\">";
+    listExamplesBody += examples[e].expr[5];
     listExamplesBody += "</li></ul></li>";
 
   }else{
     listExamplesBody += "<li id=\"example_";
     listExamplesBody += e;
-    listExamplesBody += "\" class=\"mdl-menu__item\">";
+    listExamplesBody += "\" class=\"mdl-menu__item\" style=\"font-size: 11px;\">";
 
     listExamplesBody += examples[e].name;
     listExamplesBody += ":&nbsp ";
@@ -113,6 +133,14 @@ $("#listExamples").html(listExamplesBody);
 for (var e in examples) {
 
   (function(code, formats) {
+    var setExample5 = function() {
+      out("4");
+      $("#txtExpr").css('height','64px');
+      $("#txtExpr").val(code);
+      $("#txtExpr").html(code);
+      $("#lblError").css('visibility', 'hidden');
+      model.setInput(code);
+    };
     var setExample4 = function() {
       out("4");
       $("#txtExpr").css('height','64px');
@@ -141,6 +169,8 @@ for (var e in examples) {
       $("#example_" + e).click(setExample4);
     }else if(examples[e].name == "Triangular Matrix Inversion"){
       $("#example_" + e).click(setExample3);
+    }else if(examples[e].name == "Stochastic Newton"){
+      $("#example_" + e).click(setExample5);
     }else{
       $("#example_" + e).click(setExample);
     }
@@ -328,6 +358,7 @@ for (var e in examples) {
       tblFormatsView.cache[tensor] = format;
     },
     createCacheEntry: function(listId) {
+      console.log("listId is " + listId);
       var dims = $("#" + listId).sortable("toArray");
       var formats = [];
       var ordering = [];
@@ -352,22 +383,15 @@ for (var e in examples) {
         model.all_IDs_GEN = [];
         for (j in model.input.juliaVars) {
           var variable = model.input.juliaVars[j];
-          var order = 0;
+          
           if(/^[A-Z]/.test(variable)){
-            order = 2;
-          }else{
-            order = 1;
-          }
-          var cached = (tblFormatsView.cache.hasOwnProperty(j) && 
-                        tblFormatsView.cache[j].formats.length == order);
-
-          if(/^[A-Z]/.test(variable)){
-
+           
             var matricecreator = [];
             model.input.test.push({id:j, name:variable});
 
             var M_TD_ID_1 = "M_TD_ID_1_J_" + j;
-            var M_TD_1_DIV_1  = "M_TD_1_DIV_1_J_" + j;
+            var M_TD_1_DIV_1 = "M_TD_1_DIV_1_J_" + j;
+            var M_TD_1_DIV_INP_1  = "M_TD_1_DIV_INP_1_J_" + j;
 
             var M_TD_ID_2 = "M_TD_ID_2_J_" + j;
 
@@ -414,29 +438,26 @@ for (var e in examples) {
             listLinneaBody += "<li id=\"";
             listLinneaBody += "\" class=\"ui-state-default\">";
             listLinneaBody += "<div id=\"";
+            listLinneaBody += M_TD_1_DIV_1;
             listLinneaBody += "\" class=\"mdl-textfield mdl-js-textfield ";
             listLinneaBody += "mdl-textfield--floating-label getmdl-select\" ";
             listLinneaBody += ">";
             listLinneaBody += "<input style=\"text-align: center; font-size: 11px; color: purple;\" class=\"mdl-textfield__input ";
             listLinneaBody += "format-input\" id=\"";
-            listLinneaBody += M_TD_1_DIV_1;
+            listLinneaBody += M_TD_1_DIV_INP_1;
 
             listLinneaBody += "\" type=\"text\" readonly ";
             listLinneaBody += "value=\" Matrix";
             listLinneaBody += "\" data-val=\" Matrix";
             listLinneaBody += "\"/>";
             listLinneaBody += "<label = style=\"text-align: center; font-family: sans-serif; font-size: 16px; color:black;\" class=\"mdl-textfield__label\" for=\"";
-            listLinneaBody += M_TD_1_DIV_1;
+            listLinneaBody += M_TD_1_DIV_INP_1;
             listLinneaBody += "\">";
             listLinneaBody += variable;
             listLinneaBody += "</label>";
             listLinneaBody += "<ul style=\"text-align: center;\" class=\"mdl-menu ";
             listLinneaBody += "mdl-js-menu \" for=\"";
             listLinneaBody += "\">";
-            //listLinneaBody += "<li style=\"margin-left: 23px;font-size: 11px;\" class=\"mdl-menu__item\" data-val=\"";
-            //listLinneaBody += "Vector\">Vector</li>";
-            //listLinneaBody += "<li style=\"margin-left: 23px;font-size: 11px;\" class=\"mdl-menu__item\" data-val=\"";
-            //listLinneaBody += "Scalar\">Scalar</li>";
             listLinneaBody += "</ul></div></li></ul>";
 
             listLinneaBody += "<td id=\"";
@@ -451,7 +472,7 @@ for (var e in examples) {
             listLinneaBody += "\" class=\"ui-state-default\" ";
             listLinneaBody += "style=\"width: 0px; padding: 0px\"></li>";
 
-
+          
 
             listLinneaBody += "<li id=\"";
             listLinneaBody += M_R_TD_2_UL_LI_2;
@@ -498,8 +519,21 @@ for (var e in examples) {
               listLinneaBody += "value=\"5000";
             }else if(model.input.expression == examples.input4.code && variable == "I"){
               listLinneaBody += "value=\"5000";
+            }else if(model.input.expression == examples.input5.code && variable == "Wk"){
+              listLinneaBody += "value=\"5000";
+            }else if(model.input.expression == examples.input5.code && variable == "A"){
+              listLinneaBody += "value=\"5000";
+            }else if(model.input.expression == examples.input5.code && variable == "Bin"){
+              listLinneaBody += "value=\"1000";
+            }else if(model.input.expression == examples.input5.code && variable == "Bout"){
+              listLinneaBody += "value=\"1000";
+            }else if(model.input.expression == examples.input5.code && variable == "In"){
+              listLinneaBody += "value=\"1000";
+            }else if(model.input.expression == examples.input5.code && variable == "I1"){
+              listLinneaBody += "value=\"1";
             }else{
               listLinneaBody += "value=\"";
+              
             }
 
             listLinneaBody += "\" style=\"font-size: 13px\" data-val=\"";
@@ -561,6 +595,18 @@ for (var e in examples) {
               listLinneaBody += "value=\"1000";
             }else if(model.input.expression == examples.input4.code && variable == "I"){
               listLinneaBody += "value=\"5000";
+            }else if(model.input.expression == examples.input5.code && variable == "Wk"){
+              listLinneaBody += "value=\"1";
+            }else if(model.input.expression == examples.input5.code && variable == "A"){
+              listLinneaBody += "value=\"1000";
+            }else if(model.input.expression == examples.input5.code && variable == "Bin"){
+              listLinneaBody += "value=\"1000";
+            }else if(model.input.expression == examples.input5.code && variable == "Bout"){
+              listLinneaBody += "value=\"1000";
+            }else if(model.input.expression == examples.input5.code && variable == "In"){
+              listLinneaBody += "value=\"1000";
+            }else if(model.input.expression == examples.input5.code && variable == "I1"){
+              listLinneaBody += "value=\"1";
             }else{
               listLinneaBody += "value=\"";
             }
@@ -582,124 +628,101 @@ for (var e in examples) {
             listLinneaBody += "<div class=\"\">";
             listLinneaBody += "</div></li>";
 
-            if(variable == 'I' || variable == 'O'){
-              listLinneaBody += "<li id=\"";
-              listLinneaBody += M_P_TD_2_UL_LI_2;
-              listLinneaBody += "\" class=\"ui-state-default\">";
-              listLinneaBody += "<div id=\"";
-              listLinneaBody += M_P_TD_2_UL_LI_2_DIV_1;
-              listLinneaBody += "\" class=\"content mdl-textfield mdl-js-textfield ";
-              listLinneaBody += "mdl-textfield--floating-label getmdl-select\" ";
-              listLinneaBody += ">";
-              listLinneaBody += "<input class=\"mdl-textfield__input ";
-              listLinneaBody += "format-input extrawide\" placeholder=\"None\"id=\"";
-              listLinneaBody += M_P_TD_2_UL_LI_2_DIV_INP_1;
-              listLinneaBody += "\" type=\"text\" name=\"property\" ";
+            
+
+            listLinneaBody += "<li id=\"";
+            listLinneaBody += M_P_TD_2_UL_LI_2;
+            listLinneaBody += "\" class=\"ui-state-default\">";
+            listLinneaBody += "<div id=\"";
+            listLinneaBody += M_P_TD_2_UL_LI_2_DIV_1;
+            listLinneaBody += "\" class=\"content mdl-textfield mdl-js-textfield ";
+            listLinneaBody += "mdl-textfield--floating-label getmdl-select\" ";
+            listLinneaBody += ">";
+            listLinneaBody += "<input class=\"mdl-textfield__input ";
+            listLinneaBody += "format-input extrawide\" placeholder=\"None\"id=\"";
+            listLinneaBody += M_P_TD_2_UL_LI_2_DIV_INP_1;
+            listLinneaBody += "\" type=\"text\" name=\"property\" ";
+
+            if (model.input.expression == examples.input1.code && variable == "X"){
+              listLinneaBody += "value=\"FullRank";
+            }else if(model.input.expression == examples.input2.code && variable == "X"){
+              listLinneaBody += "value=\"FullRank";
+            }else if(model.input.expression == examples.input2.code && variable == "S"){
+              listLinneaBody += "value=\"SPD";
+            }else if(model.input.expression == examples.input3.code && variable == "L00"){
+              listLinneaBody += "value=\"FullRank, LowerTriangular";
+            }else if(model.input.expression == examples.input3.code && variable == "L11"){
+              listLinneaBody += "value=\"FullRank, LowerTriangular";
+            }else if(model.input.expression == examples.input3.code && variable == "L22"){
+              listLinneaBody += "value=\"FullRank, LowerTriangular";
+            }else if(model.input.expression == examples.input3.code && variable == "L21"){
+              listLinneaBody += "value=\"FullRank";
+            }else if(model.input.expression == examples.input3.code && variable == "L10"){
+              listLinneaBody += "value=\"FullRank";
+            }else if(model.input.expression == examples.input3.code && variable == "L20"){
+              listLinneaBody += "value=\"FullRank";
+            }else if(model.input.expression == examples.input3.code && variable == "X21"){
               listLinneaBody += "value=\"";
-              listLinneaBody += "\" data-val=\"";
-              listLinneaBody += "\" style=\"font-size: 13px\">";
-              listLinneaBody += "<label class=\"mdl-textfield__label extrawide\" for=\"";
-              listLinneaBody += M_P_TD_2_UL_LI_2_DIV_INP_1;
-              listLinneaBody += "\">Properties:";
-              listLinneaBody += "</label>";
-              listLinneaBody += "<ul class=\"mdl-menu ";
-              listLinneaBody += "mdl-js-menu \" for=\"";
-              listLinneaBody += "\">";
-
-              listLinneaBody += "</ul>"
-
-
-
-
-              listLinneaBody += "</div>";
-              listLinneaBody += "</li>";
-
+            }else if(model.input.expression == examples.input3.code && variable == "X11"){
+              listLinneaBody += "value=\"";
+            }else if(model.input.expression == examples.input3.code && variable == "X10"){
+              listLinneaBody += "value=\"";
+            }else if(model.input.expression == examples.input3.code && variable == "X20"){
+              listLinneaBody += "value=\"";
+            }else if(model.input.expression == examples.input4.code && variable == "H"){
+              listLinneaBody += "value=\"FullRank";
+            }else if(model.input.expression == examples.input4.code && variable == "H_dag"){
+              listLinneaBody += "value=\"FullRank";
+            }else if(model.input.expression == examples.input5.code && variable == "Wk"){
+              listLinneaBody += "value=\"FullRank";
+            }else if(model.input.expression == examples.input5.code && variable == "A"){
+              listLinneaBody += "value=\"FullRank";
+            }else if(model.input.expression == examples.input5.code && variable == "Bin"){
+              listLinneaBody += "value=\"SPD";
+            }else if(model.input.expression == examples.input5.code && variable == "Bout"){
+              listLinneaBody += "value=\"SPD";
             }else{
-
-              listLinneaBody += "<li id=\"";
-              listLinneaBody += M_P_TD_2_UL_LI_2;
-              listLinneaBody += "\" class=\"ui-state-default\">";
-              listLinneaBody += "<div id=\"";
-              listLinneaBody += M_P_TD_2_UL_LI_2_DIV_1;
-              listLinneaBody += "\" class=\"content mdl-textfield mdl-js-textfield ";
-              listLinneaBody += "mdl-textfield--floating-label getmdl-select\" ";
-              listLinneaBody += ">";
-              listLinneaBody += "<input class=\"mdl-textfield__input ";
-              listLinneaBody += "format-input extrawide\" placeholder=\"None\"id=\"";
-              listLinneaBody += M_P_TD_2_UL_LI_2_DIV_INP_1;
-              listLinneaBody += "\" type=\"text\" name=\"property\" ";
-
-              if (model.input.expression == examples.input1.code && variable == "X"){
-                listLinneaBody += "value=\"FullRank";
-              }else if(model.input.expression == examples.input2.code && variable == "X"){
-                listLinneaBody += "value=\"FullRank";
-              }else if(model.input.expression == examples.input2.code && variable == "S"){
-                listLinneaBody += "value=\"SPD";
-              }else if(model.input.expression == examples.input3.code && variable == "L00"){
-                listLinneaBody += "value=\"FullRank, LowerTriangular";
-              }else if(model.input.expression == examples.input3.code && variable == "L11"){
-                listLinneaBody += "value=\"FullRank, LowerTriangular";
-              }else if(model.input.expression == examples.input3.code && variable == "L22"){
-                listLinneaBody += "value=\"FullRank, LowerTriangular";
-              }else if(model.input.expression == examples.input3.code && variable == "L21"){
-                listLinneaBody += "value=\"FullRank";
-              }else if(model.input.expression == examples.input3.code && variable == "L10"){
-                listLinneaBody += "value=\"FullRank";
-              }else if(model.input.expression == examples.input3.code && variable == "L20"){
-                listLinneaBody += "value=\"FullRank";
-              }else if(model.input.expression == examples.input3.code && variable == "X21"){
-                listLinneaBody += "value=\"";
-              }else if(model.input.expression == examples.input3.code && variable == "X11"){
-                listLinneaBody += "value=\"";
-              }else if(model.input.expression == examples.input3.code && variable == "X10"){
-                listLinneaBody += "value=\"";
-              }else if(model.input.expression == examples.input3.code && variable == "X20"){
-                listLinneaBody += "value=\"";
-              }else if(model.input.expression == examples.input4.code && variable == "H"){
-                listLinneaBody += "value=\"FullRank";
-              }else if(model.input.expression == examples.input4.code && variable == "H"){
-                listLinneaBody += "value=\"FullRank";
-              }else if(model.input.expression == examples.input4.code && variable == "H"){
-                listLinneaBody += "value=\"";
-              }else{
-                listLinneaBody += "value=\"";
-              }
-
-              listLinneaBody += "\" data-val=\"";
-              listLinneaBody += "\" style=\"font-size: 11px\">";
-              //disabled/
-              listLinneaBody += "<label class=\"mdl-textfield__label extrawide\" for=\"";
-              listLinneaBody += M_P_TD_2_UL_LI_2_DIV_INP_1;
-              listLinneaBody += "\">Properties:";
-              listLinneaBody += "</label>";
-              listLinneaBody += "<ul class=\"mdl-menu ";
-              listLinneaBody += "mdl-js-menu \" for=\"";
-              listLinneaBody += "\">";
-
-              listLinneaBody += "</ul>"
-
-
-
-              listLinneaBody += "<button onclick='addProperty(this," + j + ")' id=\"";
-              //listLinneaBody += "<button onclick='addProperty(this)' id=\"";
-
-              listLinneaBody += "addmore";
-              listLinneaBody += "\" class=\"mdl-button mdl-js-button mdl-button--icon\"";
-              listLinneaBody += "style=\"position: absolute; margin-left: 150px;\">";
-
-
-
-
-              listLinneaBody += "<i class=\"material-icons\">add</i><div class=\"mdl-tooltip\" data-mdl-for=\"addmore\">Examples</div></button>";
-
-
-              listLinneaBody += "</div>";
-              listLinneaBody += "</li>";
+              listLinneaBody += "value=\"";
             }
+
+            listLinneaBody += "\" data-val=\"";
+            listLinneaBody += "\" style=\"font-size: 11px\">";
+            //disabled/
+            listLinneaBody += "<label class=\"mdl-textfield__label extrawide\" for=\"";
+            listLinneaBody += M_P_TD_2_UL_LI_2_DIV_INP_1;
+            listLinneaBody += "\">Properties:";
+            listLinneaBody += "</label>";
+            listLinneaBody += "<ul class=\"mdl-menu ";
+            listLinneaBody += "mdl-js-menu \" for=\"";
+            listLinneaBody += "\">";
+
+            listLinneaBody += "</ul>"
+
+
+
+            listLinneaBody += "<button onclick='addProperty(this," + j + ")' id=\"";
+            //listLinneaBody += "<button onclick='addProperty(this)' id=\"";
+
+            listLinneaBody += "addmore";
+            listLinneaBody += "\" class=\"mdl-button mdl-js-button mdl-button--icon\"";
+            listLinneaBody += "style=\"position: absolute; margin-left: 258px;\">";
+
+
+
+
+            listLinneaBody += "<i class=\"material-icons\">add</i><div class=\"mdl-tooltip\" data-mdl-for=\"addmore\">Examples</div></button>";
+
+
+            listLinneaBody += "</div>";
+            listLinneaBody += "</li>";
+          
           }
           else {
             // for Variable IDS
             var V_TD_ID_1 = "V_TD_ID_1_J_" + j;
+            var V_TD_1_DIV_1 = "V_TD_1_DIV_1_J_" + j;
+            var V_TD_1_DIV_INP_1  = "V_TD_1_DIV_INP_1_J_" + j;
+
             var V_TD_ID_2 = "V_TD_ID_2_J_" + j;
             var V_TD_UL_ID_1 = "V_TD_UL_ID_1_J_" + j;
             var V_TD_UL_LI_ID_1 = "V_TD_UL_LI_ID_1_J_" + j;
@@ -717,8 +740,17 @@ for (var e in examples) {
             var vectorCreator = [];
 
             vectorCreator.push(variable);
+
+            vectorCreator.push(V_TD_1_DIV_INP_1);
+            model.all_IDs.push(V_TD_1_DIV_INP_1);
+            vectorCreator.push(makeid(3));
+
             vectorCreator.push(V_TD_UL_LI_DIV_INP_ID_1);
             model.all_IDs.push(V_TD_UL_LI_DIV_INP_ID_1);
+            vectorCreator.push(makeid(3));
+
+            vectorCreator.push(ADD_CLMNVEC_LI_DIV_INP_1);
+            model.all_IDs.push(ADD_CLMNVEC_LI_DIV_INP_1);
             vectorCreator.push(makeid(3));
 
             model.vec_IDs.push(vectorCreator);
@@ -739,26 +771,36 @@ for (var e in examples) {
             listLinneaBody += "<li id=\"";
             listLinneaBody += "\" class=\"ui-state-default\">";
             listLinneaBody += "<div id=\"";
+            listLinneaBody += V_TD_1_DIV_1;
             listLinneaBody += "\" class=\"mdl-textfield mdl-js-textfield ";
             listLinneaBody += "mdl-textfield--floating-label getmdl-select\" ";
             listLinneaBody += ">";
             listLinneaBody += "<input onchange='hideScalarDisplay(this," + ADD_CLMNVEC_LI_DIV_1 + ")' style=\"text-align: center; font-size: 11px; color: purple;\" class=\"format-input mdl-textfield__input ";
             listLinneaBody += "format-input\" id=\"";
-            listLinneaBody += V_TD_UL_ID_1;
+            listLinneaBody += V_TD_1_DIV_INP_1;
 
             listLinneaBody += "\" type=\"text\" readonly ";
-            listLinneaBody += "value=\" Vector";
-            listLinneaBody += "\" data-val=\" Row Vector";
-            listLinneaBody += "\"/>";
+
+            if (model.input.expression == examples.input5.code && variable == "k"){
+              out("in if");
+              listLinneaBody += "value=\" Scalar";
+              listLinneaBody += "\" data-val=\" Scalar";
+              listLinneaBody += "\"/>";
+            }else{
+              listLinneaBody += "value=\" Vector";
+              listLinneaBody += "\" data-val=\" Vector";
+              listLinneaBody += "\"/>";
+            }
+
             listLinneaBody += "<label = style=\"font-family: sans-serif;  text-align: center; font-size: 16px; color:black;\" class=\"mdl-textfield__label\" for=\"";
-            listLinneaBody += V_TD_UL_ID_1;
+            listLinneaBody += V_TD_1_DIV_INP_1;
             listLinneaBody += "\">";
             listLinneaBody += variable;
             listLinneaBody += "</label>";
             listLinneaBody += "<ul ";
             listLinneaBody += " style=\"text-align: center;background-color: #dfeaf4;\" class=\"mdl-menu ";
             listLinneaBody += "mdl-js-menu \" for=\"";
-            listLinneaBody += V_TD_UL_ID_1;
+            listLinneaBody += V_TD_1_DIV_INP_1;
             listLinneaBody += "\">";
             listLinneaBody += "<li  style=\"margin-left: 23px;font-size: 11px; \" class=\"mdl-menu__item show\" data-val=\"";
             listLinneaBody += "Vector\" >Vector</li>";
@@ -833,17 +875,23 @@ for (var e in examples) {
             listLinneaBody += "<li id=\"";
             listLinneaBody += ADD_CLMNVEC_LI_1;
             listLinneaBody += "\" class=\"ui-state-default\">";
+            
             listLinneaBody += "<div id=\"";
             listLinneaBody += ADD_CLMNVEC_LI_DIV_1;
             listLinneaBody += "\" class=\"mdl-textfield mdl-js-textfield ";
             listLinneaBody += "mdl-textfield--floating-label getmdl-select\" ";
+            if (model.input.expression == examples.input5.code && variable == "k"){
+              listLinneaBody += "style=\"display: none;\"";
+            }else{
+              listLinneaBody += "style=\"display: block;\"";
+            }
             listLinneaBody += ">";
             listLinneaBody += "<input style=\"font-size: 11px\" class=\"mdl-textfield__input ";
             listLinneaBody += "format-input\" id=\"";
             listLinneaBody += ADD_CLMNVEC_LI_DIV_INP_1;
             listLinneaBody += "\" type=\"text\" readonly ";
-            listLinneaBody += "value=\" Row Vector";
-            listLinneaBody += "\" data-val=\" Row Vector";
+            listLinneaBody += "value=\"Column Vector";
+            listLinneaBody += "\" data-val=\"Column Vector";
             listLinneaBody += "\"/>";
             listLinneaBody += "<label class=\"mdl-textfield__label\" for=\"";
             listLinneaBody += ADD_CLMNVEC_LI_DIV_INP_1;
@@ -861,13 +909,6 @@ for (var e in examples) {
           }
           listLinneaBody += "</ul></td></tr>";
         }
-        var s=0;
-        // for(s; s < model.all_IDs.length; s++){
-        //   $(model.all_IDs[s]).on("inputchange paste keyup select",function(){
-        //     alert("FFFFFF");
-        //   });
-
-        // }
 
         if (listLinneaBody !== "") {
           //out("begin the table initialization!!!!");
@@ -885,31 +926,41 @@ for (var e in examples) {
           $(".sortable").sortable({
             update: function(ev, ui) {
               var listId = ui.item.parent().attr('id');
-              out(listId);
               var tensor = listId.replace("dims", "");
 
-              // tblFormatsView.insertCacheEntry(tensor,
-              //    tblFormatsView.createCacheEntry(listId));
+              console.log('listId in sortable is: ' + listId);
+              console.log('tensor in sortable is: ' + tensor);
 
+              console.log('1');
+              // tblFormatsView.insertCacheEntry(tensor, 
+              //     tblFormatsView.createCacheEntry(listId));
+              
               model.cancelReq();
-             // model.setOutput("", "", "", "");
+              model.setOutput("", "", "", "");
             }
-          });
-          $(".format-input").on("inputchange change paste keyup select",function(){
+         });
+         $(".format-input").change(function() {
+          console.log('inputchange!!!!');
+          // var listId = $(this).parent().parent().parent().attr('id');
+          // var tensor = listId.replace("dims", "");
 
-            var listId = $(this).parent().parent().parent().attr('id');
-          //  var tensor = listId.replace("dims", "");
+          // console.log('listId in inputchange is: ' + listId);
+          // console.log('tensor in inputchange is: ' + tensor);
 
-            console.log('listId in inputchange is: ' + listId);
-          //  console.log('tensor in inputchange is: ' + tensor);
-
-            console.log('2');
-           // tblFormatsView.insertCacheEntry(tensor,
-           //     tblFormatsView.createCacheEntry(listId));
-
-           // model.cancelReq();
-           // model.setOutput("", "", "", "");
-          });
+          // console.log('2');
+          // // tblFormatsView.insertCacheEntry(tensor, 
+          //     tblFormatsView.createCacheEntry(listId));
+          
+          model.cancelReq();
+          model.setOutput("", "", "", "");
+        });
+        // for (t in model.input.juliaVars) {
+        //   if (model.input.juliaVars[t]) {
+        //     console.log('3');
+        //     tblFormatsView.insertCacheEntry(model.input.juliaVars[t], 
+        //         tblFormatsView.createCacheEntry("dims" + model.input.juliaVars[t]));
+        //   }
+        // }
 
 
           $("#tblFormats").show();
@@ -1038,15 +1089,16 @@ for (var e in examples) {
       }
     }
 
-    if(model.vec_GEN  !== undefined && model.vec_GEN.length != 0){
+    if(model.vec_GEN !== undefined && model.vec_GEN.length != 0){
       var i=0;
       var j=0;
       for (i; i<model.vec_GEN.length; i++){
-        inputGenerated += model.vec_GEN[i][2];
-        inputGenerated += " = ";
-        inputGenerated += $('#'+model.vec_GEN[i][1]).val();
-        inputGenerated += "\n";
-
+        if($('#'+model.vec_GEN[i][1]).val().trim() !== "Scalar"){
+          inputGenerated += model.vec_GEN[i][4];
+          inputGenerated += " = ";
+          inputGenerated += $('#'+model.vec_GEN[i][3]).val();
+          inputGenerated += "\n";
+        }
       }
     }
 
@@ -1063,9 +1115,27 @@ for (var e in examples) {
     if(model.vec_GEN  !== undefined && model.vec_GEN.length != 0){
       var i=0;
       var j=0;
+      out(model.vec_GEN);
       for (i; i< model.vec_GEN.length; i++){
-        inputGenerated += "ColumnVector " + model.vec_GEN[i][0] + "(" + model.vec_GEN[i][2] + ")<>";
-        inputGenerated += "\n";
+        out('this is identifier' + $('#'+model.vec_GEN[i][1]).val() + ';');
+        out('this is identifier' + $('#'+model.vec_GEN[i][5]).val() + ';');
+        out(typeof($('#'+model.vec_GEN[i][1]).val()));
+        out(typeof("Scalar"));
+        out($('#'+model.vec_GEN[i][1]).val() == "Scalar");
+        if($('#'+model.vec_GEN[i][1]).val().trim() == "Scalar"){
+          out('in scalar');
+          inputGenerated += "Scalar " + model.vec_GEN[i][0] + "<>";
+          inputGenerated += "\n";
+        }else{
+          if($('#'+model.vec_GEN[i][5]).val() == 'Row Vector'){
+            inputGenerated += "Row Vector " + model.vec_GEN[i][0] + "(" + model.vec_GEN[i][4] + ")<>";
+            inputGenerated += "\n";
+          }else{
+            inputGenerated += "ColumnVector " + model.vec_GEN[i][0] + "(" + model.vec_GEN[i][4] + ")<>";
+            inputGenerated += "\n";
+
+          }        
+        }
       }
     }
     inputGenerated += model.input.expression;
