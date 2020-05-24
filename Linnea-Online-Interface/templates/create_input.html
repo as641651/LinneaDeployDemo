@@ -317,6 +317,17 @@
             $("#lblError").css('visibility', 'hidden');
             $('#txtComputeLoops').val(json.answer);
             $('#txtComputeLoops').html(json.answer);
+            var elmnt = document.getElementById("btnDownloads");
+            elmnt.scrollIntoView({
+              behavior: "smooth",
+              block: "start", // or "end"
+            });
+             // or "auto" or "instant"
+            //     block: "start" // or "end");
+            // $("#txtComputeLoops").scrollIntoView({
+            //     behavior: "smooth", // or "auto" or "instant"
+            //     block: "start" // or "end"
+            // });
             out(json.description);
 
 

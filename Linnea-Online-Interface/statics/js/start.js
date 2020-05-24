@@ -32,152 +32,6 @@ function inittxtExpr () {
 }
 
 
-var examples = {
-
-  input1: {
-    name: "Least Squares",
-    expr: "\\(b = (X^TX)^{-1}X^Ty\\)",
-    code: "b=inv(trans(X)*X)*trans(X)*y",
-  },
-  input2:{
-    name: "Generalized Least Squares",
-    expr: "\\(z = (X^TS^{-1}X)^{-1}X^TS^{-1}y\\)",
-    code: "z=inv(trans(X)*inv(S)*X)*trans(X)*inv(S)*y",
-  },
-  input3:{
-    name: "Triangular Matrix Inversion",
-    expr: ["\\(X_{10} = L_{10} L_{00}^{-1}\\)" , "\\(X_{20} = L_{20}+L_{22}^{-1}L_{21}L_{11}^{-1}L_{10}\\)","\\(X_{11} = L_{11}^{-1}\\)", "\\(X_{21} = -L_{22}^{-1}L_{21}\\)"],
-    code: "X10=L10*inv(L00)\nX20=L20+(inv(L22)*L21*inv(L11)*L10)\nX11=inv(L11)\nX21=inv(L22)*L21*-1",
-  },
-  input4:{
-    name: "Image Restoration",
-    expr: ["\\(H^{\\dagger} = -H^{T}(HH^{T})\\) ", "\\(y_k=H^{\\dagger}y+x(I-HH^{\\dagger})\\)"],
-    code: "H_dag=trans(H)*inv(H*trans(H))\ny_k=H_dag*y+(I+(-1*H_dag*H))*x",
-  },
-  input5:{
-    name: "Stochastic Newton",
-    expr: ["\\(A = (k/k-1)*B_{in}\\)", "\\(B = I_{n}\\)", "\\(C = -A^{T}*W_{k}*W_{k}^{T}*A*B_{in}\\)", "\\(D=(k-1)*I_{1}\\)", "\\(E=W_{k}^{T}*A*B_{in}*A^{T}*B_{in}\\)","\\(B_{out}=A*(B+(C*(D+E)))\\)"],
-    //expr: "\\(B_{out}=((k/k-1)*B_{in}*(I_{n}+(-A^{T}*W_{k}*A*((k-1)*I_{1}+(W_{k})^{T}*A*B_{in}*A^{T}*W_{k})^{-1}*B_{in}*A^{T}*W_{k}))\\)",
-    code: "Bout=(k*inv(k-1))*Bin*(In+(-1*trans(A)*Wk*inv((k-1)*I1+trans(Wk)*A*Bin*trans(A)*Wk)*trans(Wk)*A*Bin))",
- },
-
-};
-
-var listExamplesBody = "";
-for (var e in examples) {
-
-  //:&nbsp;
-  if(examples[e].name == "Triangular Matrix Inversion" ){
-    listExamplesBody += "<li id=\"example_";
-    listExamplesBody += e;
-    listExamplesBody += "\" class=\"mdl-menu__item\" style=\"height: 100px;\" >";
-    listExamplesBody += "<ul style=\"list-style: none; padding-left: 0;font-size: 11px;\"><li class=\"\">";
-    listExamplesBody += examples[e].name;
-    listExamplesBody += ":&nbsp ";
-    listExamplesBody += examples[e].expr[0];
-    listExamplesBody += "</li><li class=\"\" style=\"padding-left: 163px;\">";
-    listExamplesBody += examples[e].expr[1];
-    listExamplesBody += "</li><li class=\"\" style=\"padding-left: 163px;\">";
-    listExamplesBody += examples[e].expr[2];
-    listExamplesBody += "</li><li  class=\"\" style=\"padding-left: 163px;\">";
-    listExamplesBody += examples[e].expr[3];
-    listExamplesBody += "</li></ul></li>";
-
-  }else if(examples[e].name == "Image Restoration"){
-    listExamplesBody += "<li id=\"example_";
-    listExamplesBody += e;
-    listExamplesBody += "\" class=\"mdl-menu__item\" style=\"height: 50px; \" >";
-    listExamplesBody += "<ul style=\"list-style: none; padding-left: 0;font-size: 11px;\"><li class=\"\">";
-    listExamplesBody += examples[e].name;
-    listExamplesBody += ":&nbsp ";
-    listExamplesBody += examples[e].expr[0];
-    listExamplesBody += "</li><li class=\"\" style=\"padding-left: 116px;\">";
-    listExamplesBody += examples[e].expr[1];
-    listExamplesBody += "</li></ul></li>";
-
-  }else if(examples[e].name == "Stochastic Newton"){
-    listExamplesBody += "<li id=\"example_";
-    listExamplesBody += e;
-    listExamplesBody += "\" class=\"mdl-menu__item\" style=\"height: 150px;\" >";
-    listExamplesBody += "<ul style=\"list-style: none; padding-left: 0;font-size: 11px;\"><li class=\"\">";
-    listExamplesBody += examples[e].name;
-    listExamplesBody += ":&nbsp ";
-    listExamplesBody += examples[e].expr[0];
-    listExamplesBody += "</li><li class=\"\" style=\"padding-left: 115px;\">";
-    listExamplesBody += examples[e].expr[1];
-    listExamplesBody += "</li><li  class=\"\" style=\"padding-left: 115px;\">";
-    listExamplesBody += examples[e].expr[2];
-    listExamplesBody += "</li><li  class=\"\" style=\"padding-left: 115px;\">";
-    listExamplesBody += examples[e].expr[3];
-    listExamplesBody += "</li><li  class=\"\" style=\"padding-left: 115px;\">";
-    listExamplesBody += examples[e].expr[4];
-    listExamplesBody += "</li><li  class=\"\" style=\"padding-left: 115px;\">";
-    listExamplesBody += examples[e].expr[5];
-    listExamplesBody += "</li></ul></li>";
-
-  }else{
-    listExamplesBody += "<li id=\"example_";
-    listExamplesBody += e;
-    listExamplesBody += "\" class=\"mdl-menu__item\" style=\"font-size: 11px;\">";
-
-    listExamplesBody += examples[e].name;
-    listExamplesBody += ":&nbsp ";
-    listExamplesBody += examples[e].expr;
-    listExamplesBody += "</li>";
-
-  }
-
-}
-$("#listExamples").html(listExamplesBody);
-
-for (var e in examples) {
-
-  (function(code, formats) {
-    var setExample5 = function() {
-      out("4");
-      $("#txtExpr").css('height','64px');
-      $("#txtExpr").val(code);
-      $("#txtExpr").html(code);
-      $("#lblError").css('visibility', 'hidden');
-      model.setInput(code);
-    };
-    var setExample4 = function() {
-      out("4");
-      $("#txtExpr").css('height','64px');
-      $("#txtExpr").val(code);
-      $("#txtExpr").html(code);
-      $("#lblError").css('visibility', 'hidden');
-      model.setInput(code);
-    };
-    var setExample3 = function() {
-      out("3");
-      $("#txtExpr").css('height','128px');
-      $("#txtExpr").val(code);
-      $("#txtExpr").html(code);
-      $("#lblError").css('visibility', 'hidden');
-      model.setInput(code);
-    };
-    var setExample = function() {
-      out("else");
-      $("#txtExpr").css('height','32px');
-      $("#txtExpr").val(code);
-      $("#txtExpr").html(code);
-      $("#lblError").css('visibility', 'hidden');
-      model.setInput(code);
-    };
-    if(examples[e].name == "Image Restoration"){
-      $("#example_" + e).click(setExample4);
-    }else if(examples[e].name == "Triangular Matrix Inversion"){
-      $("#example_" + e).click(setExample3);
-    }else if(examples[e].name == "Stochastic Newton"){
-      $("#example_" + e).click(setExample5);
-    }else{
-      $("#example_" + e).click(setExample);
-    }
-    $("#lblError").css('visibility', 'hidden');
-
-  })(examples[e].code, examples[e].formats);
-}
 
 
 
@@ -221,7 +75,6 @@ for (var e in examples) {
     if (namesArray) {
         name = "";
         for (var i = 0; i < namesArray.length; i++) {
-            //out(ifVarExists(StrObj,namesArray[i]));
             if (i != 0) name += separateNamesBy;
             if(((namesArray[i] == ban_inv) || (namesArray[i] == ban_trans)) || (scannedarray.includes(namesArray[i])))continue;
             name += namesArray[i];
@@ -286,7 +139,6 @@ for (var e in examples) {
     },
 
     setInput: function(expression) {
-      out("starting setInput!!!!");
       var inputExpr;
       var temp_1;
       var temp_2 = [];
@@ -358,14 +210,12 @@ for (var e in examples) {
       tblFormatsView.cache[tensor] = format;
     },
     createCacheEntry: function(listId) {
-      console.log("listId is " + listId);
-      var dims = $("#" + listId).sortable("toArray");
       var formats = [];
       var ordering = [];
 
-      for (var i = 1; i < dims.length; ++i) {
-        formats.push($("#" + dims[i] + "_select").attr("data-val"));
-        ordering.push(parseInt(dims[i].split("_")[1]));
+      for (var i = 0; i < listId.length; ++i) {
+        formats.push($("#" + listId[i]).val());
+        ordering.push(listId[i]);
       }
 
       return { formats: formats, ordering: ordering };
@@ -383,49 +233,43 @@ for (var e in examples) {
         model.all_IDs_GEN = [];
         for (j in model.input.juliaVars) {
           var variable = model.input.juliaVars[j];
-          
+          var cached = (tblFormatsView.cache.hasOwnProperty(model.input.juliaVars[j]) && 1);
+
           if(/^[A-Z]/.test(variable)){
            
             var matricecreator = [];
             model.input.test.push({id:j, name:variable});
 
-            var M_TD_ID_1 = "M_TD_ID_1_J_" + j;
-            var M_TD_1_DIV_1 = "M_TD_1_DIV_1_J_" + j;
-            var M_TD_1_DIV_INP_1  = "M_TD_1_DIV_INP_1_J_" + j;
+            var name = "M_NAME_" + j;
+            var M_TD_INP_1 = "M_" + j + "_0";
 
-            var M_TD_ID_2 = "M_TD_ID_2_J_" + j;
-
-            var M_TD_2_UL_1 = "M_TD_2_UL_1_J_" + j;
-            var M_TD_2_UL_LI_1 = "M_TD_2_UL_LI_1_J_" + j;
-
-            var M_R_TD_2_UL_LI_2 = "M_R_TD_2_UL_LI_2_J_" + j;
-            var M_R_TD_2_UL_LI_2_DIV_1 = "M_R_TD_2_UL_LI_2_DIV_1_J_" + j;
-            var M_R_TD_2_UL_LI_2_DIV_INP_1 = "M_R_TD_2_UL_LI_2_DIV_INP_1_J_" + j;
-
-            var M_C_TD_2_UL_LI_2 = "M_C_TD_2_UL_LI_2_J_" + j;
-            var M_C_TD_2_UL_LI_2_DIV_1 = "M_C_TD_2_UL_LI_2_DIV_1_J_" + j;
-            var M_C_TD_2_UL_LI_2_DIV_INP_1 = "M_C_TD_2_UL_LI_2_DIV_INP_1_J_" + j;
-
-            var M_P_TD_2_UL_LI_2 = "M_P_TD_2_UL_LI_2_J_" + j;
-            var M_P_TD_2_UL_LI_2_DIV_1 = "M_P_TD_2_UL_LI_2_DIV_1_J_" + j;
-            var M_P_TD_2_UL_LI_2_DIV_INP_1 = "M_P_TD_2_UL_LI_2_DIV_INP_1_J_" + j;
-
-            var M_P_TD_2_UL_LI_2_DIV_B_1 = "M_P_TD_2_UL_LI_2_DIV_B_1_J_" + j;
+            var M_R_TD_2_UL_LI_2_DIV_INP_1 = "M_" + j + "_1";
+            var M_C_TD_2_UL_LI_2_DIV_INP_1 = "M_" + j + "_2";
+            var M_P_TD_2_UL_LI_2_DIV_INP_1 = "M_" + j + "_3";
 
             matricecreator.push(variable);
             matricecreator.push(M_R_TD_2_UL_LI_2_DIV_INP_1);
-            model.all_IDs.push(M_R_TD_2_UL_LI_2_DIV_INP_1);
+            //model.all_IDs.push(M_R_TD_2_UL_LI_2_DIV_INP_1);
             matricecreator.push(makeid(3));
             matricecreator.push(M_C_TD_2_UL_LI_2_DIV_INP_1);
-            model.all_IDs.push(M_C_TD_2_UL_LI_2_DIV_INP_1);
+            //model.all_IDs.push(M_C_TD_2_UL_LI_2_DIV_INP_1);
             matricecreator.push(makeid(3));
             matricecreator.push(M_P_TD_2_UL_LI_2_DIV_INP_1);
-            model.all_IDs.push(M_P_TD_2_UL_LI_2_DIV_INP_1);
+            //model.all_IDs.push(M_P_TD_2_UL_LI_2_DIV_INP_1);
             model.mat_IDs.push(matricecreator);
+
+            var mat_ID_cache = [];
+            mat_ID_cache.push(M_R_TD_2_UL_LI_2_DIV_INP_1, M_C_TD_2_UL_LI_2_DIV_INP_1, M_P_TD_2_UL_LI_2_DIV_INP_1);
+            model.all_IDs.push(mat_ID_cache);
+            mat_ID_cache = [];
+
+            var format_R = cached ? tblFormatsView.cache[variable].formats[0] : "0";
+            var format_C = cached ? tblFormatsView.cache[variable].formats[1] : "0";
+            var format_P = cached ? tblFormatsView.cache[variable].formats[2] : "";
+              
 
             listLinneaBody += "<tr>";
             listLinneaBody += "<td id=\"";
-            listLinneaBody += M_TD_ID_1;
             listLinneaBody += "\" class=\"mdl-data-table__cell--non-numeric\" ";
             listLinneaBody += "width=\"100\" style=\"padding: 0px\">";
             listLinneaBody += "<div align=\"left\" ";
@@ -438,20 +282,20 @@ for (var e in examples) {
             listLinneaBody += "<li id=\"";
             listLinneaBody += "\" class=\"ui-state-default\">";
             listLinneaBody += "<div id=\"";
-            listLinneaBody += M_TD_1_DIV_1;
             listLinneaBody += "\" class=\"mdl-textfield mdl-js-textfield ";
             listLinneaBody += "mdl-textfield--floating-label getmdl-select\" ";
             listLinneaBody += ">";
             listLinneaBody += "<input style=\"text-align: center; font-size: 11px; color: purple;\" class=\"mdl-textfield__input ";
             listLinneaBody += "format-input\" id=\"";
-            listLinneaBody += M_TD_1_DIV_INP_1;
-
+            listLinneaBody += M_TD_INP_1;
             listLinneaBody += "\" type=\"text\" readonly ";
             listLinneaBody += "value=\" Matrix";
             listLinneaBody += "\" data-val=\" Matrix";
             listLinneaBody += "\"/>";
-            listLinneaBody += "<label = style=\"text-align: center; font-family: sans-serif; font-size: 16px; color:black;\" class=\"mdl-textfield__label\" for=\"";
-            listLinneaBody += M_TD_1_DIV_INP_1;
+            listLinneaBody += "<label id=\"";
+            listLinneaBody += name;
+            listLinneaBody += "\" style=\"text-align: center; font-family: sans-serif; font-size: 16px; color:black;\" class=\"mdl-textfield__label\" for=\"";
+            listLinneaBody += M_TD_INP_1;
             listLinneaBody += "\">";
             listLinneaBody += variable;
             listLinneaBody += "</label>";
@@ -461,81 +305,27 @@ for (var e in examples) {
             listLinneaBody += "</ul></div></li></ul>";
 
             listLinneaBody += "<td id=\"";
-            listLinneaBody += M_TD_ID_2;
             listLinneaBody += "\" class=\"mdl-data-table__cell--non-numeric\" ";
             listLinneaBody += "style=\"padding: 0px\">";
             listLinneaBody += "<ul id=\"";
-            listLinneaBody += M_TD_2_UL_1;
             listLinneaBody += "\" class=\"ui-state-default sortable\">";
             listLinneaBody += "<li id=\"";
-            listLinneaBody += M_TD_2_UL_LI_1;
             listLinneaBody += "\" class=\"ui-state-default\" ";
             listLinneaBody += "style=\"width: 0px; padding: 0px\"></li>";
 
-          
-
             listLinneaBody += "<li id=\"";
-            listLinneaBody += M_R_TD_2_UL_LI_2;
             listLinneaBody += "\" class=\"ui-state-default\">";
             listLinneaBody += "<div id=\"";
-            listLinneaBody += M_R_TD_2_UL_LI_2_DIV_1;
             listLinneaBody += "\" class=\"mdl-textfield mdl-js-textfield ";
             listLinneaBody += "mdl-textfield--floating-label getmdl-select\" ";
             listLinneaBody += ">";
             listLinneaBody += "<input class=\"mdl-textfield__input ";
             listLinneaBody += "format-input\" id=\"";
             listLinneaBody += M_R_TD_2_UL_LI_2_DIV_INP_1;
-            listLinneaBody += "\" type=\"text\"  ";
+            listLinneaBody += "\" type=\"text\" ";
 
-            if (model.input.expression == examples.input1.code && variable == 'X'){
-              listLinneaBody += "value=\"1500";
-            }else if(model.input.expression == examples.input2.code && variable == "X"){
-              listLinneaBody += "value=\"2500";
-            }else if(model.input.expression == examples.input2.code && variable == "S"){
-              listLinneaBody += "value=\"2500";
-            }else if(model.input.expression == examples.input3.code && variable == "L00"){
-              listLinneaBody += "value=\"2000";
-            }else if(model.input.expression == examples.input3.code && variable == "L11"){
-              listLinneaBody += "value=\"200";
-            }else if(model.input.expression == examples.input3.code && variable == "L22"){
-              listLinneaBody += "value=\"2000";
-            }else if(model.input.expression == examples.input3.code && variable == "L21"){
-              listLinneaBody += "value=\"2000";
-            }else if(model.input.expression == examples.input3.code && variable == "L10"){
-              listLinneaBody += "value=\"200";
-            }else if(model.input.expression == examples.input3.code && variable == "L20"){
-              listLinneaBody += "value=\"2000";
-            }else if(model.input.expression == examples.input3.code && variable == "X21"){
-              listLinneaBody += "value=\"2000";
-            }else if(model.input.expression == examples.input3.code && variable == "X11"){
-              listLinneaBody += "value=\"200";
-            }else if(model.input.expression == examples.input3.code && variable == "X10"){
-              listLinneaBody += "value=\"200";
-            }else if(model.input.expression == examples.input3.code && variable == "X20"){
-              listLinneaBody += "value=\"2000";
-            }else if(model.input.expression == examples.input4.code && variable == "H"){
-              listLinneaBody += "value=\"1000";
-            }else if(model.input.expression == examples.input4.code && variable == "H_dag"){
-              listLinneaBody += "value=\"5000";
-            }else if(model.input.expression == examples.input4.code && variable == "I"){
-              listLinneaBody += "value=\"5000";
-            }else if(model.input.expression == examples.input5.code && variable == "Wk"){
-              listLinneaBody += "value=\"5000";
-            }else if(model.input.expression == examples.input5.code && variable == "A"){
-              listLinneaBody += "value=\"5000";
-            }else if(model.input.expression == examples.input5.code && variable == "Bin"){
-              listLinneaBody += "value=\"1000";
-            }else if(model.input.expression == examples.input5.code && variable == "Bout"){
-              listLinneaBody += "value=\"1000";
-            }else if(model.input.expression == examples.input5.code && variable == "In"){
-              listLinneaBody += "value=\"1000";
-            }else if(model.input.expression == examples.input5.code && variable == "I1"){
-              listLinneaBody += "value=\"1";
-            }else{
-              listLinneaBody += "value=\"";
-              
-            }
-
+            listLinneaBody += "value=\"";
+            listLinneaBody += format_R;
             listLinneaBody += "\" style=\"font-size: 13px\" data-val=\"";
             listLinneaBody += "\"/>";
             listLinneaBody += "<label class=\"mdl-textfield__label\" for=\"";
@@ -551,10 +341,8 @@ for (var e in examples) {
 
 
             listLinneaBody += "<li id=\"";
-            listLinneaBody += M_C_TD_2_UL_LI_2;
             listLinneaBody += "\" class=\"ui-state-default\">";
             listLinneaBody += "<div id=\"";
-            listLinneaBody += M_C_TD_2_UL_LI_2_DIV_1;
             listLinneaBody += "\" class=\"mdl-textfield mdl-js-textfield ";
             listLinneaBody += "mdl-textfield--floating-label getmdl-select\" ";
             listLinneaBody += ">";
@@ -563,54 +351,9 @@ for (var e in examples) {
             listLinneaBody += M_C_TD_2_UL_LI_2_DIV_INP_1;
             listLinneaBody += "\" type=\"text\"  ";
 
-            if (model.input.expression == examples.input1.code && variable == "X"){
-              listLinneaBody += "value=\"1000";
-            }else if(model.input.expression == examples.input2.code && variable == "X"){
-              listLinneaBody += "value=\"500";
-            }else if(model.input.expression == examples.input2.code && variable == "S"){
-              listLinneaBody += "value=\"2500";
-            }else if(model.input.expression == examples.input3.code && variable == "L00"){
-              listLinneaBody += "value=\"2000";
-            }else if(model.input.expression == examples.input3.code && variable == "L11"){
-              listLinneaBody += "value=\"200";
-            }else if(model.input.expression == examples.input3.code && variable == "L22"){
-              listLinneaBody += "value=\"2000";
-            }else if(model.input.expression == examples.input3.code && variable == "L21"){
-              listLinneaBody += "value=\"200";
-            }else if(model.input.expression == examples.input3.code && variable == "L10"){
-              listLinneaBody += "value=\"2000";
-            }else if(model.input.expression == examples.input3.code && variable == "L20"){
-              listLinneaBody += "value=\"2000";
-            }else if(model.input.expression == examples.input3.code && variable == "X21"){
-              listLinneaBody += "value=\"200";
-            }else if(model.input.expression == examples.input3.code && variable == "X11"){
-              listLinneaBody += "value=\"200";
-            }else if(model.input.expression == examples.input3.code && variable == "X10"){
-              listLinneaBody += "value=\"2000";
-            }else if(model.input.expression == examples.input3.code && variable == "X20"){
-              listLinneaBody += "value=\"2000";
-            }else if(model.input.expression == examples.input4.code && variable == "H"){
-              listLinneaBody += "value=\"5000";
-            }else if(model.input.expression == examples.input4.code && variable == "H_dag"){
-              listLinneaBody += "value=\"1000";
-            }else if(model.input.expression == examples.input4.code && variable == "I"){
-              listLinneaBody += "value=\"5000";
-            }else if(model.input.expression == examples.input5.code && variable == "Wk"){
-              listLinneaBody += "value=\"1";
-            }else if(model.input.expression == examples.input5.code && variable == "A"){
-              listLinneaBody += "value=\"1000";
-            }else if(model.input.expression == examples.input5.code && variable == "Bin"){
-              listLinneaBody += "value=\"1000";
-            }else if(model.input.expression == examples.input5.code && variable == "Bout"){
-              listLinneaBody += "value=\"1000";
-            }else if(model.input.expression == examples.input5.code && variable == "In"){
-              listLinneaBody += "value=\"1000";
-            }else if(model.input.expression == examples.input5.code && variable == "I1"){
-              listLinneaBody += "value=\"1";
-            }else{
-              listLinneaBody += "value=\"";
-            }
-
+            listLinneaBody += "value=\"";
+            listLinneaBody += format_C;
+ 
             listLinneaBody += "\" style=\"font-size: 13px\" data-val=\"";
             listLinneaBody += "\"/>";
             listLinneaBody += "<label class=\"mdl-textfield__label\" for=\"";
@@ -631,10 +374,8 @@ for (var e in examples) {
             
 
             listLinneaBody += "<li id=\"";
-            listLinneaBody += M_P_TD_2_UL_LI_2;
             listLinneaBody += "\" class=\"ui-state-default\">";
             listLinneaBody += "<div id=\"";
-            listLinneaBody += M_P_TD_2_UL_LI_2_DIV_1;
             listLinneaBody += "\" class=\"content mdl-textfield mdl-js-textfield ";
             listLinneaBody += "mdl-textfield--floating-label getmdl-select\" ";
             listLinneaBody += ">";
@@ -643,51 +384,11 @@ for (var e in examples) {
             listLinneaBody += M_P_TD_2_UL_LI_2_DIV_INP_1;
             listLinneaBody += "\" type=\"text\" name=\"property\" ";
 
-            if (model.input.expression == examples.input1.code && variable == "X"){
-              listLinneaBody += "value=\"FullRank";
-            }else if(model.input.expression == examples.input2.code && variable == "X"){
-              listLinneaBody += "value=\"FullRank";
-            }else if(model.input.expression == examples.input2.code && variable == "S"){
-              listLinneaBody += "value=\"SPD";
-            }else if(model.input.expression == examples.input3.code && variable == "L00"){
-              listLinneaBody += "value=\"FullRank, LowerTriangular";
-            }else if(model.input.expression == examples.input3.code && variable == "L11"){
-              listLinneaBody += "value=\"FullRank, LowerTriangular";
-            }else if(model.input.expression == examples.input3.code && variable == "L22"){
-              listLinneaBody += "value=\"FullRank, LowerTriangular";
-            }else if(model.input.expression == examples.input3.code && variable == "L21"){
-              listLinneaBody += "value=\"FullRank";
-            }else if(model.input.expression == examples.input3.code && variable == "L10"){
-              listLinneaBody += "value=\"FullRank";
-            }else if(model.input.expression == examples.input3.code && variable == "L20"){
-              listLinneaBody += "value=\"FullRank";
-            }else if(model.input.expression == examples.input3.code && variable == "X21"){
-              listLinneaBody += "value=\"";
-            }else if(model.input.expression == examples.input3.code && variable == "X11"){
-              listLinneaBody += "value=\"";
-            }else if(model.input.expression == examples.input3.code && variable == "X10"){
-              listLinneaBody += "value=\"";
-            }else if(model.input.expression == examples.input3.code && variable == "X20"){
-              listLinneaBody += "value=\"";
-            }else if(model.input.expression == examples.input4.code && variable == "H"){
-              listLinneaBody += "value=\"FullRank";
-            }else if(model.input.expression == examples.input4.code && variable == "H_dag"){
-              listLinneaBody += "value=\"FullRank";
-            }else if(model.input.expression == examples.input5.code && variable == "Wk"){
-              listLinneaBody += "value=\"FullRank";
-            }else if(model.input.expression == examples.input5.code && variable == "A"){
-              listLinneaBody += "value=\"FullRank";
-            }else if(model.input.expression == examples.input5.code && variable == "Bin"){
-              listLinneaBody += "value=\"SPD";
-            }else if(model.input.expression == examples.input5.code && variable == "Bout"){
-              listLinneaBody += "value=\"SPD";
-            }else{
-              listLinneaBody += "value=\"";
-            }
+            listLinneaBody += "value=\"";
+            listLinneaBody += format_P;
 
             listLinneaBody += "\" data-val=\"";
             listLinneaBody += "\" style=\"font-size: 11px\">";
-            //disabled/
             listLinneaBody += "<label class=\"mdl-textfield__label extrawide\" for=\"";
             listLinneaBody += M_P_TD_2_UL_LI_2_DIV_INP_1;
             listLinneaBody += "\">Properties:";
@@ -701,7 +402,6 @@ for (var e in examples) {
 
 
             listLinneaBody += "<button onclick='addProperty(this," + j + ")' id=\"";
-            //listLinneaBody += "<button onclick='addProperty(this)' id=\"";
 
             listLinneaBody += "addmore";
             listLinneaBody += "\" class=\"mdl-button mdl-js-button mdl-button--icon\"";
@@ -719,9 +419,12 @@ for (var e in examples) {
           }
           else {
             // for Variable IDS
+
+            var name = "V_NAME_" + j;
+            
             var V_TD_ID_1 = "V_TD_ID_1_J_" + j;
             var V_TD_1_DIV_1 = "V_TD_1_DIV_1_J_" + j;
-            var V_TD_1_DIV_INP_1  = "V_TD_1_DIV_INP_1_J_" + j;
+            var V_TD_1_DIV_INP_1  = "V_" + j + "_1";
 
             var V_TD_ID_2 = "V_TD_ID_2_J_" + j;
             var V_TD_UL_ID_1 = "V_TD_UL_ID_1_J_" + j;
@@ -730,30 +433,39 @@ for (var e in examples) {
             // for Column-Row Vector IDS
             var ADD_CLMNVEC_LI_1 = "ADD_CLMNVEC_LI_1" + j;
             var ADD_CLMNVEC_LI_DIV_1 = "ADD_CLMNVEC_LI_DIV_1" + j;
-            var ADD_CLMNVEC_LI_DIV_INP_1 = "ADD_CLMNVEC_LI_DIV_INP_1" + j;
+            var ADD_CLMNVEC_LI_DIV_INP_1 = "V_" + j + "_3";
 
             // for size IDS
             var V_TD_UL_LI_ID_2 = "V_TD_UL_LI_ID_2_J_" + j;
             var V_TD_UL_LI_DIV_ID_1 = "V_TD_UL_LI_DIV_ID_1_J_" + j;
-            var V_TD_UL_LI_DIV_INP_ID_1 = "V_TD_UL_LI_DIV_INP_ID_1_J_" + j;
+            var V_TD_UL_LI_DIV_INP_ID_1 = "V_" + j + "_2";
 
             var vectorCreator = [];
 
             vectorCreator.push(variable);
 
             vectorCreator.push(V_TD_1_DIV_INP_1);
-            model.all_IDs.push(V_TD_1_DIV_INP_1);
+            //model.all_IDs.push(V_TD_1_DIV_INP_1);
             vectorCreator.push(makeid(3));
 
             vectorCreator.push(V_TD_UL_LI_DIV_INP_ID_1);
-            model.all_IDs.push(V_TD_UL_LI_DIV_INP_ID_1);
+            //model.all_IDs.push(V_TD_UL_LI_DIV_INP_ID_1);
             vectorCreator.push(makeid(3));
 
             vectorCreator.push(ADD_CLMNVEC_LI_DIV_INP_1);
-            model.all_IDs.push(ADD_CLMNVEC_LI_DIV_INP_1);
+            //model.all_IDs.push(ADD_CLMNVEC_LI_DIV_INP_1);
             vectorCreator.push(makeid(3));
 
             model.vec_IDs.push(vectorCreator);
+
+            var vec_ID_cache = [];
+            vec_ID_cache.push(V_TD_1_DIV_INP_1, V_TD_UL_LI_DIV_INP_ID_1, ADD_CLMNVEC_LI_DIV_INP_1);
+            model.all_IDs.push(vec_ID_cache);
+            vec_ID_cache = [];
+            
+            var format_T = cached ? tblFormatsView.cache[variable].formats[0] : "Vector";
+            var format_S = cached ? tblFormatsView.cache[variable].formats[1] : "0";
+            var format_CR = cached ? tblFormatsView.cache[variable].formats[2] : "Column Vector";
 
             // Variable name
             listLinneaBody += "<tr>";
@@ -781,18 +493,16 @@ for (var e in examples) {
 
             listLinneaBody += "\" type=\"text\" readonly ";
 
-            if (model.input.expression == examples.input5.code && variable == "k"){
-              out("in if");
-              listLinneaBody += "value=\" Scalar";
-              listLinneaBody += "\" data-val=\" Scalar";
-              listLinneaBody += "\"/>";
-            }else{
-              listLinneaBody += "value=\" Vector";
-              listLinneaBody += "\" data-val=\" Vector";
-              listLinneaBody += "\"/>";
-            }
+            
+            listLinneaBody += "value=\""
+            listLinneaBody += format_T;
+            listLinneaBody += "\" data-val=\"Vector";
+            listLinneaBody += "\"/>";
+          
 
-            listLinneaBody += "<label = style=\"font-family: sans-serif;  text-align: center; font-size: 16px; color:black;\" class=\"mdl-textfield__label\" for=\"";
+            listLinneaBody += "<label id=\"";
+            listLinneaBody += name;
+            listLinneaBody += "\" style=\"font-family: sans-serif;  text-align: center; font-size: 16px; color:black;\" class=\"mdl-textfield__label\" for=\"";
             listLinneaBody += V_TD_1_DIV_INP_1;
             listLinneaBody += "\">";
             listLinneaBody += variable;
@@ -840,25 +550,9 @@ for (var e in examples) {
             listLinneaBody += V_TD_UL_LI_DIV_INP_ID_1;
             listLinneaBody += "\" type=\"text\"  ";
 
-            if (model.input.expression == examples.input1.code && variable == "y"){
-              listLinneaBody += "value=\"1500";
-            }else if(model.input.expression == examples.input2.code && variable == "z"){
-              listLinneaBody += "value=\"500";
-            }else if(model.input.expression == examples.input2.code && variable == "y"){
-              listLinneaBody += "value=\"2500";
-            }else if(model.input.expression == examples.input1.code && variable == "b"){
-              listLinneaBody += "value=\"1000";
-            }else if(model.input.expression == examples.input4.code && variable == "y_k"){
-              listLinneaBody += "value=\"5000";
-            }else if(model.input.expression == examples.input4.code && variable == "y"){
-              listLinneaBody += "value=\"1000";
-            }else if(model.input.expression == examples.input4.code && variable == "x"){
-              listLinneaBody += "value=\"5000";
-            }else{
-              listLinneaBody += "value=\"";
-            }
-
-
+            listLinneaBody += "value=\"";
+            listLinneaBody += format_S;
+          
             listLinneaBody += "\" style=\"font-size: 13px\" data-val=\"";
             listLinneaBody += "\"/>";
             listLinneaBody += "</label>";
@@ -880,17 +574,15 @@ for (var e in examples) {
             listLinneaBody += ADD_CLMNVEC_LI_DIV_1;
             listLinneaBody += "\" class=\"mdl-textfield mdl-js-textfield ";
             listLinneaBody += "mdl-textfield--floating-label getmdl-select\" ";
-            if (model.input.expression == examples.input5.code && variable == "k"){
-              listLinneaBody += "style=\"display: none;\"";
-            }else{
-              listLinneaBody += "style=\"display: block;\"";
-            }
+            listLinneaBody += "style=\"display: block;\"";
+            
             listLinneaBody += ">";
             listLinneaBody += "<input style=\"font-size: 11px\" class=\"mdl-textfield__input ";
             listLinneaBody += "format-input\" id=\"";
             listLinneaBody += ADD_CLMNVEC_LI_DIV_INP_1;
             listLinneaBody += "\" type=\"text\" readonly ";
-            listLinneaBody += "value=\"Column Vector";
+            listLinneaBody += "value=\""
+            listLinneaBody += format_CR;
             listLinneaBody += "\" data-val=\"Column Vector";
             listLinneaBody += "\"/>";
             listLinneaBody += "<label class=\"mdl-textfield__label\" for=\"";
@@ -911,7 +603,6 @@ for (var e in examples) {
         }
 
         if (listLinneaBody !== "") {
-          //out("begin the table initialization!!!!");
           $("#listLinneas").html(listLinneaBody);
           getmdlSelect.init(".getmdl-select");
           model.mat_GEN = model.mat_IDs.slice();
@@ -920,47 +611,26 @@ for (var e in examples) {
           model.vec_IDs = [];
 
           model.all_IDs_GEN = model.all_IDs.slice();
-          //out(model.all_IDs_GEN);
           model.all_IDs = [];
-          //out("up sortable");
-          $(".sortable").sortable({
-            update: function(ev, ui) {
-              var listId = ui.item.parent().attr('id');
-              var tensor = listId.replace("dims", "");
-
-              console.log('listId in sortable is: ' + listId);
-              console.log('tensor in sortable is: ' + tensor);
-
-              console.log('1');
-              // tblFormatsView.insertCacheEntry(tensor, 
-              //     tblFormatsView.createCacheEntry(listId));
-              
-              model.cancelReq();
-              model.setOutput("", "", "", "");
-            }
-         });
-         $(".format-input").change(function() {
-          console.log('inputchange!!!!');
-          // var listId = $(this).parent().parent().parent().attr('id');
-          // var tensor = listId.replace("dims", "");
-
-          // console.log('listId in inputchange is: ' + listId);
-          // console.log('tensor in inputchange is: ' + tensor);
-
-          // console.log('2');
-          // // tblFormatsView.insertCacheEntry(tensor, 
-          //     tblFormatsView.createCacheEntry(listId));
           
-          model.cancelReq();
-          model.setOutput("", "", "", "");
+         $(".format-input").on('inputchange change keyup paste',function() {
+          var listId = $(this).attr('id');
+          var name = $('#'+listId.charAt(0)+"_NAME_"+listId.charAt(2)).html();
+          
+          inputArray=[];
+          inputArray.push(listId.charAt(0)+'_'+listId.charAt(2)+'_1');
+          inputArray.push(listId.charAt(0)+'_'+listId.charAt(2)+'_2');
+          inputArray.push(listId.charAt(0)+'_'+listId.charAt(2)+'_3');
+          tblFormatsView.insertCacheEntry(name, 
+              tblFormatsView.createCacheEntry(inputArray));
+          
         });
-        // for (t in model.input.juliaVars) {
-        //   if (model.input.juliaVars[t]) {
-        //     console.log('3');
-        //     tblFormatsView.insertCacheEntry(model.input.juliaVars[t], 
-        //         tblFormatsView.createCacheEntry("dims" + model.input.juliaVars[t]));
-        //   }
-        // }
+        for (t in model.input.juliaVars) {
+          if (model.input.juliaVars[t]) {
+            tblFormatsView.insertCacheEntry(model.input.juliaVars[t], 
+                tblFormatsView.createCacheEntry(model.all_IDs_GEN[t]));
+          }
+        }
 
 
           $("#tblFormats").show();
@@ -970,6 +640,215 @@ for (var e in examples) {
       }
     }
   };
+
+  var examples = {
+
+    input1:{
+      name: "Least Squares",
+      expr: "\\(b := (X^TX)^{-1}X^Ty\\)",
+      format: {
+        b: { formats: ["Vector","1000","Column Vector"] },
+        X: { formats: ["1500","1000","FullRank"] },
+        y: { formats: ["Vector","1500","Column Vector"] },
+      },
+      code: "b=inv(trans(X)*X)*trans(X)*y",
+    },
+    input2:{
+      name: "Generalized Least Squares",
+      expr: "\\(z := (X^TS^{-1}X)^{-1}X^TS^{-1}y\\)",
+      format: {
+        X: {formats: ["2500","500","FullRank"]},
+        S: {formats: ["2500","2500","SPD"]},
+        z: {formats: ["Vector", "500", "Column Vector"]},
+        y: {formats: ["Vector", "2500", "Column Vector"]},
+      },
+      code: "z=inv(trans(X)*inv(S)*X)*trans(X)*inv(S)*y",
+    },
+    input3:{
+      name: "Triangular Matrix Inversion",
+      expr: ["\\(X_{10} := L_{10} L_{00}^{-1}\\)" , "\\(X_{20} := L_{20}+L_{22}^{-1}L_{21}L_{11}^{-1}L_{10}\\)","\\(X_{11} := L_{11}^{-1}\\)", "\\(X_{21} := -L_{22}^{-1}L_{21}\\)"],
+      format: {
+        X10: {formats: ["200", "2000", ""]},
+        L10: {formats: ["200", "2000", "FullRank"]},
+        L00: {formats: ["2000", "2000", "FullRank, LowerTriangular"]},
+        X20: {formats: ["2000", "2000", ""]},
+        L20: {formats: ["2000", "2000", "FullRank"]},
+        L22: {formats: ["2000", "2000", "FullRank, LowerTriangular"]},
+        L21: {formats: ["2000", "200", "FullRank"]},
+        L11: {formats: ["200", "200", "FullRank, LowerTriangular"]},
+        X11: {formats: ["200", "200", ""]},
+        X21: {formats: ["2000", "200", ""]},
+      },
+      code: "X10=L10*inv(L00)\nX20=L20+(inv(L22)*L21*inv(L11)*L10)\nX11=inv(L11)\nX21=inv(L22)*L21*-1",
+    },
+    input4:{
+      name: "Image Restoration",
+      expr: ["\\(H^{\\dagger} := -H^{T}(HH^{T})\\) ", "\\(y_k := H^{\\dagger}y+x(I-HH^{\\dagger})\\)"],
+      format: {
+        H_dag: {formats: ["5000", "1000", "FullRank"]},
+        H: {formats: ["1000", "5000", "FullRank"]},
+        y_k: {formats: ["Vector", "5000", "Column Vector"]},
+        y: {formats: ["Vector", "1000", "Column Vector"]},
+        I: {formats: ["5000", "5000", ""]},
+        x: {formats: ["Vector", "5000", "Column Vector"]},
+      },
+      code: "H_dag=trans(H)*inv(H*trans(H))\ny_k=H_dag*y+(I+(-1*H_dag*H))*x",
+    },
+    input5:{
+      name: "Stochastic Newton",
+      expr: ["\\( B_k := \\frac{k}{k-1}B_{k-1} \\Bigl(I_n - A^T W_k \\bigl((k-1)I_l\\)", "\\(+W_k^T A B_{k-1} A^T W_k \\bigr)^{-1} W_k^T A B_{k-1} \\Bigr)\\)"],
+      format: {
+        Bout: {formats: ["1000", "1000", "SPD"]},
+        k: {formats: ["Scalar", "0", ""]},
+        Bin: {formats: ["1000", "1000", "SPD"]},
+        In: {formats: ["1000", "1000", ""]},
+        A: {formats: ["5000", "1000", "FullRank"]},
+        Wk: {formats: ["5000", "1", "FullRank"]},
+        I1: {formats: ["1", "1", ""]},
+      },
+      //&+ W_k^T A B_{k-1} A^T W_k \\bigr)^{-1} W_k^T A B_{k-1} \\Bigr)\\end{align}",
+      //expr: ["\\(A = (k/k-1)*B_{in}\\)", "\\(B = I_{n}\\)", "\\(C = -A^{T}*W_{k}*W_{k}^{T}*A*B_{in}\\)", "\\(D=(k-1)*I_{1}\\)", "\\(E=W_{k}^{T}*A*B_{in}*A^{T}*B_{in}\\)","\\(B_{out}=A*(B+(C*(D+E)))\\)"],
+      //expr: "\\(B_{out}=((k/k-1)*B_{in}*(I_{n}+(-A^{T}*W_{k}*A*((k-1)*I_{1}+(W_{k})^{T}*A*B_{in}*A^{T}*W_{k})^{-1}*B_{in}*A^{T}*W_{k}))\\)",
+     code: "Bout=(k*inv(k-1))*Bin*(In+(-1*trans(A)*Wk*inv((k-1)*I1+trans(Wk)*A*Bin*trans(A)*Wk)*trans(Wk)*A*Bin))",
+   },
+  
+  };
+  
+  var listExamplesBody = "";
+  for (var e in examples) {
+  
+    //:&nbsp;
+    if(examples[e].name == "Triangular Matrix Inversion" ){
+      listExamplesBody += "<li id=\"example_";
+      listExamplesBody += e;
+      listExamplesBody += "\" class=\"mdl-menu__item\" style=\"height: 115px;\" >";
+      listExamplesBody += "<ul style=\"list-style: none; padding-top: 10px;padding-left: 0px;padding-bottom:10px;font-size: 11px;\"><li class=\"\">";
+      listExamplesBody += examples[e].name;
+      listExamplesBody += ":&nbsp ";
+      listExamplesBody += examples[e].expr[0];
+      listExamplesBody += "</li><li class=\"\" style=\"padding-left: 163px;\">";
+      listExamplesBody += examples[e].expr[1];
+      listExamplesBody += "</li><li class=\"\" style=\"padding-left: 163px;\">";
+      listExamplesBody += examples[e].expr[2];
+      listExamplesBody += "</li><li  class=\"\" style=\"padding-left: 163px;\">";
+      listExamplesBody += examples[e].expr[3];
+      listExamplesBody += "</li></ul></li>";
+  
+    }else if(examples[e].name == "Image Restoration"){
+      listExamplesBody += "<li id=\"example_";
+      listExamplesBody += e;
+      listExamplesBody += "\" class=\"mdl-menu__item\" style=\"height: 70px; \" >";
+      listExamplesBody += "<ul style=\"list-style: none;  padding-top: 10px;padding-left: 0px;padding-bottom:10px;;font-size: 11px;\"><li class=\"\">";
+      listExamplesBody += examples[e].name;
+      listExamplesBody += ":&nbsp ";
+      listExamplesBody += examples[e].expr[0];
+      listExamplesBody += "</li><li class=\"\" style=\"padding-left: 116px;\">";
+      listExamplesBody += examples[e].expr[1];
+      listExamplesBody += "</li></ul></li>";
+  
+    }else if(examples[e].name == "Stochastic Newton"){
+      listExamplesBody += "<li id=\"example_";
+      listExamplesBody += e;
+      listExamplesBody += "\" class=\"mdl-menu__item\" style=\"height: 70px; font-size: 11px;\">";
+      listExamplesBody += "<ul style=\"list-style: none;  padding-top: 10px;padding-left: 0px;padding-bottom:10px;font-size: 11px;\"><li class=\"\">";
+      listExamplesBody += examples[e].name;
+      listExamplesBody += ":&nbsp ";
+      listExamplesBody += examples[e].expr[0];
+      listExamplesBody += "</li><li class=\"\" style=\"padding-left: 116px;\">";
+      listExamplesBody += examples[e].expr[1];
+      
+      listExamplesBody += "</li></ul></li>";
+  
+    }else{
+      
+      listExamplesBody += "<li id=\"example_";
+      listExamplesBody += e;
+      listExamplesBody += "\" class=\"mdl-menu__item\" style=\"font-size: 11px;\">";
+  
+      listExamplesBody += examples[e].name;
+      listExamplesBody += ":&nbsp ";
+      listExamplesBody += examples[e].expr;
+      listExamplesBody += "</li>";
+  
+    }
+  
+  }
+  $("#listExamples").html(listExamplesBody);
+  
+  // for (var e in examples) {
+  //   (function(code, format) {
+  //     var setExample = function() {
+  //       $("#txtExpr").val(code);
+  //       for (var f in format) {
+  //         tblFormatsView.insertCacheEntry(f,format[f]);
+  //       }
+  //       model.setInput(code);
+  //     };
+  //     $("#example_" + e).click(setExample);
+  //     $("#lblError").css('visibility', 'hidden');
+  //   })(examples[e].code, examples[e].format);
+  // }
+  for (var e in examples) {
+  
+    (function(code, format) {
+      var setExample5 = function() {
+        for (var f in format) {
+          tblFormatsView.insertCacheEntry(f,format[f]);
+        }
+        out("4");
+        $("#txtExpr").css('height','64px');
+        $("#txtExpr").val(code);
+        $("#txtExpr").html(code);
+        $("#lblError").css('visibility', 'hidden');
+        model.setInput(code);
+      };
+      var setExample4 = function() {
+        for (var f in format) {
+          tblFormatsView.insertCacheEntry(f,format[f]);
+        }
+        out("4");
+        $("#txtExpr").css('height','64px');
+        $("#txtExpr").val(code);
+        $("#txtExpr").html(code);
+        $("#lblError").css('visibility', 'hidden');
+        model.setInput(code);
+      };
+      var setExample3 = function() {
+        for (var f in format) {
+          tblFormatsView.insertCacheEntry(f,format[f]);
+        }
+        out("3");
+        $("#txtExpr").css('height','128px');
+        $("#txtExpr").val(code);
+        $("#txtExpr").html(code);
+        $("#lblError").css('visibility', 'hidden');
+        model.setInput(code);
+      };
+      var setExample = function() {
+        for (var f in format) {
+          tblFormatsView.insertCacheEntry(f,format[f]);
+        }
+        out("else");
+        $("#txtExpr").css('height','32px');
+        $("#txtExpr").val(code);
+        $("#txtExpr").html(code);
+        $("#lblError").css('visibility', 'hidden');
+        model.setInput(code);
+      };
+      if(examples[e].name == "Image Restoration"){
+        $("#example_" + e).click(setExample4);
+      }else if(examples[e].name == "Triangular Matrix Inversion"){
+        $("#example_" + e).click(setExample3);
+      }else if(examples[e].name == "Stochastic Newton"){
+        $("#example_" + e).click(setExample5);
+      }else{
+        $("#example_" + e).click(setExample);
+      }
+      $("#lblError").css('visibility', 'hidden');
+  
+    })(examples[e].code, examples[e].format);
+  }
+  
 
   model.addInputView(txtExprView.updateView);
   model.addInputView(tblFormatsView.updateView);
@@ -1044,12 +923,12 @@ for (var e in examples) {
      favorite.push($(this).val());
     });
     var properties = favorite.join(", ");
-    $('#'+inputInto).val(properties).trigger('inputchange');
+    $('#'+inputInto).val(properties).trigger('change');
     var parentID = $(this).closest('li').attr('id');
     modal.style.display = "none";
     inputInto = " ";
     favorite = [];
-    //out(favorite);
+   
   }
 
   function clearProperty(request){
@@ -1057,7 +936,6 @@ for (var e in examples) {
     $('#'+inputInto).val(properties).trigger('inputchange');
     var parentID = $(this).closest('li').attr('id');
 
-    // save your value where you want
     modal.style.display = "none";
     inputInto = " ";
 
@@ -1068,9 +946,7 @@ for (var e in examples) {
   function generateInput(){
     var inputGenerated = "";
     inputGenerated += "\n"
-    out(model.mat_GEN);
-    out(model.vec_GEN);
-
+    
     if(model.mat_GEN  !== undefined && model.mat_GEN.length != 0){
       var i=0;
       var j=0;
@@ -1115,15 +991,8 @@ for (var e in examples) {
     if(model.vec_GEN  !== undefined && model.vec_GEN.length != 0){
       var i=0;
       var j=0;
-      out(model.vec_GEN);
       for (i; i< model.vec_GEN.length; i++){
-        out('this is identifier' + $('#'+model.vec_GEN[i][1]).val() + ';');
-        out('this is identifier' + $('#'+model.vec_GEN[i][5]).val() + ';');
-        out(typeof($('#'+model.vec_GEN[i][1]).val()));
-        out(typeof("Scalar"));
-        out($('#'+model.vec_GEN[i][1]).val() == "Scalar");
         if($('#'+model.vec_GEN[i][1]).val().trim() == "Scalar"){
-          out('in scalar');
           inputGenerated += "Scalar " + model.vec_GEN[i][0] + "<>";
           inputGenerated += "\n";
         }else{
@@ -1140,18 +1009,19 @@ for (var e in examples) {
     }
     inputGenerated += model.input.expression;
 
-    out('inputGenerated is ' + inputGenerated);
-    out("\n");
-    out("hidden input value before assign: " + $("#description").val());
+    
     $("#description").val(inputGenerated);
-    out("hidden input value after assign: " + $("#description").val());
-
-
   }
 
   function downloadOutput(){
-    out("in download!")
     var blob = new Blob([$('#txtComputeLoops').val()],
               {type: "text/plain;charset=utf-8"});
     saveAs(blob, "Linnea_Algorithm.jl");
   }
+
+
+// gulp merge javascript files
+// LTT
+//// scroll into view
+
+

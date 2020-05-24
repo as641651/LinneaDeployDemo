@@ -2,6 +2,7 @@ from linnea.web_interface import run_linnea
 from django.shortcuts import render
 from django.http import JsonResponse
 from .models import SResult, FResult
+import pkg_resources
 
 def create_input(request):
     Success_Results = SResult.objects.all()
@@ -17,7 +18,7 @@ def create_input(request):
             SResult.objects.create(
                 description = description,
                 result = answer,
-                git_version = '3d1ce0ed251180eb31bc7f8dcbb169e43c6cfff6',
+                git_version = pkg_resources.get_distribution("linnea").version,
             )
             response_data['answer'] = answer
         except Exception as e:
@@ -26,11 +27,11 @@ def create_input(request):
                 description = description,
                 result = e,
                 reason = 'Expression Error!!!',
-                git_version = '3d1ce0ed251180eb31bc7f8dcbb169e43c6cfff6',
+                git_version = pkg_resources.get_distribution("linnea").version,
             )
             response_data['answer'] = e
         
-        response_data['git_version'] = '3d1ce0ed251180eb31bc7f8dcbb169e43c6cfff6'
+        response_data['git_version'] = pkg_resources.get_distribution("linnea").version
         
 
         ########
