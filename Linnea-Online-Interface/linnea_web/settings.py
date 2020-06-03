@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'import_export',
     'linnea_demo_app',
 ]
 
@@ -75,16 +76,16 @@ WSGI_APPLICATION = 'linnea_web.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 #MAC
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'linnea_db',
-#         'USER': 'sinahk',
-#         'PASSWORD': 'sad',
-#         'HOST': '127.0.0.1',
-#         'PORT': '5432',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'linnea_db',
+        'USER': 'sinahk',
+        'PASSWORD': 'sad',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+    }
+}
 
 #UBUNTU
 #DATABASES = {
@@ -108,16 +109,16 @@ WSGI_APPLICATION = 'linnea_web.wsgi.application'
 #    }
 #}
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'HOST': os.environ.get('DB_HOST'),
-        'NAME': os.environ.get('DB_NAME'),
-        'USER': os.environ.get('DB_USER'),
-        'PASSWORD': os.environ.get('DB_PASS'),
-        'PORT': 5432,
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'HOST': os.environ.get('DB_HOST'),
+#         'NAME': os.environ.get('DB_NAME'),
+#         'USER': os.environ.get('DB_USER'),
+#         'PASSWORD': os.environ.get('DB_PASS'),
+#         'PORT': 5432,
+#     }
+# }
 
 #print(DATABASES)
 #exit(-1)
