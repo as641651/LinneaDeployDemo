@@ -38,4 +38,4 @@ RUN chown -R user:user /vol/
 # This means owner can do everything, but rest can only read and execute
 RUN chmod -R 755 /vol/
 
-USER user
+#USER user
