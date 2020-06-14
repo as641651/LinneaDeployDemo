@@ -683,7 +683,7 @@ function inittxtExpr () {
     },
     input4:{
       name: "Image Restoration",
-      expr: ["\\(H^{\\dagger} := -H^{T}(HH^{T})\\) ", "\\(y_k := H^{\\dagger}y+x(I-HH^{\\dagger})\\)"],
+      expr: ["\\(H^{\\dagger} := H^{T}(HH^{T})^{-1}\\) ", "\\(y_k := H^{\\dagger}y+(I_n-H^{\\dagger}H)x_k\\)"],
       format: {
         H_dag: {formats: ["5000", "1000", "FullRank"]},
         H: {formats: ["1000", "5000", "FullRank"]},
@@ -775,19 +775,6 @@ function inittxtExpr () {
   }
   $("#listExamples").html(listExamplesBody);
   
-  // for (var e in examples) {
-  //   (function(code, format) {
-  //     var setExample = function() {
-  //       $("#txtExpr").val(code);
-  //       for (var f in format) {
-  //         tblFormatsView.insertCacheEntry(f,format[f]);
-  //       }
-  //       model.setInput(code);
-  //     };
-  //     $("#example_" + e).click(setExample);
-  //     $("#lblError").css('visibility', 'hidden');
-  //   })(examples[e].code, examples[e].format);
-  // }
   for (var e in examples) {
   
     (function(code, format) {
@@ -797,7 +784,7 @@ function inittxtExpr () {
         }
         out("4");
         $("#txtExpr").css('height','64px');
-        $("#txtExpr").val(code);
+        $("#txtExpr").val(code).trigger('inputchange');
         $("#txtExpr").html(code);
         $("#lblError").css('visibility', 'hidden');
         model.setInput(code);
@@ -808,7 +795,7 @@ function inittxtExpr () {
         }
         out("4");
         $("#txtExpr").css('height','64px');
-        $("#txtExpr").val(code);
+        $("#txtExpr").val(code).trigger('inputchange');
         $("#txtExpr").html(code);
         $("#lblError").css('visibility', 'hidden');
         model.setInput(code);
@@ -819,7 +806,7 @@ function inittxtExpr () {
         }
         out("3");
         $("#txtExpr").css('height','128px');
-        $("#txtExpr").val(code);
+        $("#txtExpr").val(code).trigger('inputchange');
         $("#txtExpr").html(code);
         $("#lblError").css('visibility', 'hidden');
         model.setInput(code);
@@ -830,7 +817,7 @@ function inittxtExpr () {
         }
         out("else");
         $("#txtExpr").css('height','32px');
-        $("#txtExpr").val(code);
+        $("#txtExpr").val(code).trigger('inputchange');
         $("#txtExpr").html(code);
         $("#lblError").css('visibility', 'hidden');
         model.setInput(code);
@@ -1009,6 +996,7 @@ function inittxtExpr () {
     }
     inputGenerated += model.input.expression;
 
+    
     
     $("#description").val(inputGenerated);
   }

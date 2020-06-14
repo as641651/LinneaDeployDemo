@@ -20,6 +20,6 @@ from linnea_demo_app.views import create_input
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', create_input, name="create")
-
+    path('', create_input, name="create"),
+    
 ]

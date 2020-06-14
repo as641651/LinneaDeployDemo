@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-red.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/default.min.css">
 
     <link rel="stylesheet" href=" {% static 'css/style.css' %}">
@@ -52,15 +53,20 @@
     <div class="mdl-grid" style="border: 1px solid #FFFFFF">
       <div class="mdl-layout-spacer"></div>
       <div class="mdl-cell mdl-cell--9-col">
-        <p style="margin: auto; font-size: 1em;">Input a <strong>Linear algebra expression</strong> to generate code that computes it:</p>
-        <p style="margin: auto; font-size: 1em;">For Specifying <strong> Vector </strong> please start the vector's name with <strong> lower alphabet </strong>, and for specifying <strong> Matrix </strong> start it with <strong>capital alphabet </strong> </p>
+        <!-- <p style="margin: auto; font-size: 1em;">Input a <strong>Linear algebra expression</strong> to generate code that computes it:</p> -->
+        <p style="margin: auto; font-size: 0.9em;"> Input a linear algebra expression to generate code that computes it. The following operations are allowed:</p><p style="margin: auto; font-size: 0.9em;"> Multiplication (*), addition (+), subtraction (-), transposition (trans(X)), and inversion (inv(X)).</p><p style="margin: auto; font-size: 0.9em;"> As operands, matrices, vectors, and scalars are supported. The names of matrices have to begin with an uppercase letter; the names of vectors and scalars have to begin with a lowercase letter. Constant scalars, for example 1.5 or -2, can be used directly.</p>
+        <!-- <p style="margin: auto; font-size: 1em;">For Specifying <strong> Vector </strong> please start the vector's name with <strong> lower alphabet </strong>, and for specifying <strong> Matrix </strong> start it with <strong>capital alphabet </strong> </p> -->
 
 
         <table style="width: 100%">
             <tr>
               <td>
                 <div class="mdl-textfield mdl-js-textfield is-dirty is-upgraded" style="width: 100%">
-                  <textarea id="txtExpr" rows="1" class="mdl-textfield__input" placeholder="Expression" value="" style="margin-top: 2px; border: 2px solid #ccc; background-color: #f8f8f8; padding: 5px; font-family: Tahoma, sans-serif; spellcheck="false" autocomplete="false" autocorrect="false" autocapitalize="false"></textarea>
+                  <form method="POST" id="dim-sug">
+                    {% csrf_token %}
+                
+                    <textarea id="txtExpr" rows="1" class="mdl-textfield__input" placeholder="Expression" value="" style="margin-top: 2px; border: 2px solid #ccc; background-color: #f8f8f8; padding: 5px; font-family: Tahoma, sans-serif;" spellcheck="false" autocomplete="false" autocorrect="false" autocapitalize="false"></textarea>
+                  </form>
                   <span id="lblError" class="mdl-textfield__error" style="font-size: 14px" ></span>
                 </div>
               </td>
@@ -80,7 +86,7 @@
                   {% csrf_token %}
                   <input type="hidden" class="form-control" id="description" placeholder="Title" value="4444">
 
-                  <button type="submit" id="btnGetKernel" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect demo-btn" onclick="generateInput()"> Generate Kernel </button>
+                  <button type="submit" id="btnGetKernel" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect demo-btn" onclick="generateInput()">  Generate Algorithm </button>
               </form>
               </td>
             </tr>
@@ -95,9 +101,9 @@
         <table class="mdl-data-table mdl-js-data-table" style="width: 100%; margin-bottom: 8px">
           <thead>
             <tr>
-              <th class="mdl-data-table__cell--non-numeric" width="100px;"><div align="center" style="position:relative; top:-1px"><big>Variables</big></div></th>
+              <th class="mdl-data-table__cell--non-numeric" width="100px;"><div align="center" style="position:relative; top:-1px"><big>Operands</big></div></th>
               <th class="mdl-data-table__cell--non-numeric" style="padding-left: auto">
-                <div style="display:inline "><big>Format&nbsp;</big></div>
+                <div style="display:inline "><big>Properties&nbsp;</big></div>
                 <!-- <div style="display:inline">(Enter the number of rows and columns)</div>
                 <div style="display:inline">(Select the Property)</div> -->
               </th>
@@ -114,30 +120,34 @@
     <div class="mdl-grid" style="padding-top: 6px; ; border: 1px solid #FFFFFF;">
       <div class="mdl-layout-spacer"></div>
       <div class="mdl-cell mdl-cell--9-col">
+        <p style="margin: auto; font-size: 0.75em;"> Linnea minimizes the number of floating-point operations. The generated algorithm is the best one that is found within x seconds. Additional features of Linnea, such as a longer generation time or the option to generate multiple algorithms can be accessed by installing Linnea.</p>
         <div id="panelKernels" class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
           <table style="width: 100%">
             <tr>
               <td>
                 <div class="mdl-tabs__tab-bar" style="justify-content: flex-start">
-                    <a href="#compute-panel" class="mdl-tabs__tab is-active">Algorithm Generated</a>
+                    <a href="#compute-panel" class="mdl-tabs__tab is-active">Generated Algorithm</a>
                 </div>
               </td>
               <td style="width: 200px" align="right">
                 <button id="btnDownloads" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect demo-btn" style="width: 200px;" onclick = "downloadOutput()">Download</button>
+                <!-- <div class="mdl-tooltip" data-mdl-for="btnDownloads">
+                  The generated code is provided "as is", without warranty of any kind. In order to improve Linnea, all submitted input expressions are stored.
+                </div> -->
               </td>
             </tr>
           </table>
           <div class="mdl-tabs__panel is-active" id="compute-panel">
             <pre style="margin-top: 0px; margin-bottom: 44px; display:block;">
-              <code id="txtComputeLoops" class="lang-cpp hljs" val="">/* The generated Algorithm will appear here */</code>
+              <code id="txtComputeLoops" class="lang-cpp hljs" val=""># The generated algorithm will appear here. </code>
             </pre>
           </div>
         </div>
+
       </div>
       <div class="mdl-layout-spacer"></div>
 
-
-
+      
     </div>
 
 
@@ -253,6 +263,16 @@
                 </form>
               </td>
             </tr>
+            <tr>
+              <td>
+                <form>
+                  
+                  <input id="Symmetric" type="checkbox" name="properties" value="Symmetric">
+                  <label for="properties"  class="checkbox-inline">Symmetric</label>
+
+                </form>
+              </td>
+            </tr>
 
 
           </table>
@@ -285,7 +305,9 @@
                 background-color: #737373;
                 color: white;
                 text-align: center;">
-      <p>&copy; Copyright 2020</p>
+                  <p style="margin: auto; font-size: 0.60em; width: 72em; line-height:15px; padding-top: 5px;"> The generated code is provided "as is", without warranty of any kind. In order to improve Linnea, all submitted input expressions are stored. If you have questions, comments, or encounter bugs, please post an issue on <a href="//github.com/HPAC/linnea/issues"> [GitHub]</a>.</p>     
+                   
+      <p>&copy; Copyright <b><a href="http://hpac.rwth-aachen.de/">HPAC</a></b> Team 2020</p>
     </div>
 
 
@@ -293,16 +315,45 @@
   </body>
   <script type="text/javascript" src="{% static 'js/start.js' %}"></script>
   <script>
+    out('sssss');
+
+    $(document).on('inputchange change keyup paste', '#dim-sug',function(e){
+      $.ajax({
+        type:'POST',
+        url:'{% url "create" %}',
+        data:{
+            event: 'keyup',
+            description:$('#txtExpr').val(),
+            csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+            action: 'post'
+        },
+        success:function(json){
+          out('in success');
+          out(json.answer);
+          
+      
+        },
+        error : function(xhr,errmsg,err) {
+          
+          console.log(xhr.status + ": " + xhr.responseText);
+          
+        }
+      });
+    });
+  </script>
+  <script>
       $(document).on('submit', '#post-form',function(e){
       e.preventDefault();
       $("#btnGetKernel").attr("disabled", true);
       $("#btnDownloads").attr("disabled", true);
       
-      $("#btnGetKernel").html("Processing...");
+      $("#btnGetKernel").html("<i class='fa fa-circle-o-notch fa-spin'></i> Generating");
+      
       $.ajax({
           type:'POST',
           url:'{% url "create" %}',
           data:{
+              event: 'submit',
               description:$('#description').val(),
               csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
               action: 'post'
@@ -313,7 +364,7 @@
       
             $("#btnGetKernel").html("Generate Kernel");
             document.getElementById("post-form").reset();
-
+           
             $("#lblError").css('visibility', 'hidden');
             $('#txtComputeLoops').val(json.answer);
             $('#txtComputeLoops').html(json.answer);
@@ -329,7 +380,7 @@
             //     block: "start" // or "end"
             // });
             out(json.description);
-
+            // out(json.dimensions);
 
           },
           error : function(xhr,errmsg,err) {
