@@ -31,29 +31,23 @@ def create_input(request):
                     git_version = pkg_resources.get_distribution("linnea").version,
                 )
                 response_data['answer'] = e
-            
+
             response_data['git_version'] = pkg_resources.get_distribution("linnea").version
         elif event == 'keyup':
-            input2 = """
-                n = 100
+            try:
+                answer = dependent_dimensions(description)
 
-                ColumnVector y(n) <>
-                ColumnVector z(n) <>
-                Matrix S(n, n) <>
-                Matrix X(n, n) <>
+                response_data['answer'] = answer
 
-                z = (inv((trans(X) * inv(S) * X)) * trans(X) * inv(S) * y)
-            """
+                print(description)
+                print(dependent_dimensions(description))
 
-
-            response_data['answer'] = str(dependent_dimensions(input2))
-        ########
-        # Post.objects.create(
-        #     description = description,
-        #     answer = response_data['answer'],
-        #     git_version = response_data['git_version'],
-        #     )
+            except Exception as e:
             
+                response_data['answer'] = e
+                
+
+
         return JsonResponse(response_data)
 
         # return render(request, 'create_input.html', {'posts':posts})
@@ -83,3 +77,10 @@ def create_input(request):
 
 
 # """
+
+ ########
+        # Post.objects.create(
+        #     description = description,
+        #     answer = response_data['answer'],
+        #     git_version = response_data['git_version'],
+        #     )

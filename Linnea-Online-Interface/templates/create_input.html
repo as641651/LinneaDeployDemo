@@ -2,8 +2,10 @@
 <html lang="en">
   <head>
     <title>Linnea</title>
+    
     {% load static %}
 
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -64,7 +66,7 @@
                 <div class="mdl-textfield mdl-js-textfield is-dirty is-upgraded" style="width: 100%">
                   <form method="POST" id="dim-sug">
                     {% csrf_token %}
-                
+
                     <textarea id="txtExpr" rows="1" class="mdl-textfield__input" placeholder="Expression" value="" style="margin-top: 2px; border: 2px solid #ccc; background-color: #f8f8f8; padding: 5px; font-family: Tahoma, sans-serif;" spellcheck="false" autocomplete="false" autocorrect="false" autocapitalize="false"></textarea>
                   </form>
                   <span id="lblError" class="mdl-textfield__error" style="font-size: 14px" ></span>
@@ -120,7 +122,7 @@
     <div class="mdl-grid" style="padding-top: 6px; ; border: 1px solid #FFFFFF;">
       <div class="mdl-layout-spacer"></div>
       <div class="mdl-cell mdl-cell--9-col">
-        <p style="margin: auto; font-size: 0.75em;"> Linnea minimizes the number of floating-point operations. The generated algorithm is the best one that is found within x seconds. Additional features of Linnea, such as a longer generation time or the option to generate multiple algorithms can be accessed by installing Linnea.</p>
+        <p style="margin: auto; font-size: 0.75em;"> Linnea minimizes the number of floating-point operations. The generated algorithm is the best one that is found within 10 seconds. Additional features of Linnea, such as a longer generation time or the option to generate multiple algorithms can be accessed by installing Linnea.</p>
         <div id="panelKernels" class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
           <table style="width: 100%">
             <tr>
@@ -147,7 +149,7 @@
       </div>
       <div class="mdl-layout-spacer"></div>
 
-      
+
     </div>
 
 
@@ -169,10 +171,10 @@
                 <th colspan="3">
                   All Properties:
                 </th>
-                
+
               </thead>
             </tr>
-            <tr>
+            <tr class="w3-white">
               <td>
                 <form>
                   <input id="FullRank" type="checkbox" name="properties" value="FullRank">
@@ -187,14 +189,14 @@
               </td>
               <td>
                 <form>
-                  <input id="RowPanel" type="checkbox" name="properties" value="RowPanel">
-                  <label for="properties"  class="checkbox-inline">RowPanel</label>
+                  <input id="RowPanel" type="checkbox" name="properties" value="Symmetric">
+                  <label for="properties"  class="checkbox-inline">Symmetric</label>
                 </form>
               </td>
             </tr>
-            <tr>
+            <tr class="w3-white">
               <td>
-                <form>                 
+                <form>
                   <input id="Orthogonal" type="checkbox" name="properties" value="Orthogonal">
                   <label for="properties"  class="checkbox-inline">Orthogonal</label>
                 </form>
@@ -212,17 +214,17 @@
                 </form>
               </td>
             </tr>
-            <tr>
+            <tr class="w3-white">
               <td>
                 <form>
                   <input id="SPSD" type="checkbox" name="properties" value="SPSD">
                   <label for="properties"  class="checkbox-inline">SPSD</label>
                 </form>
-                
+
               </td>
               <td>
                 <form>
-                  
+
                   <input id="LowerTriangular" type="checkbox" name="properties" value="LowerTriangular">
                   <label for="properties"  class="checkbox-inline">LowerTriangular</label>
 
@@ -230,17 +232,17 @@
               </td>
               <td>
                 <form>
-                  
+
                   <input id="UpperTriangular" type="checkbox" name="properties" value="UpperTriangular">
                   <label for="properties"  class="checkbox-inline">UpperTriangular</label>
 
                 </form>
               </td>
-              
+
             </tr>
-            <tr>
+            <tr class="w3-white">
               <td>
-                <form>   
+                <form>
                   <input id="Diagonal" type="checkbox" name="properties" value="Diagonal">
                   <label for="properties"  class="checkbox-inline">Diagonal</label>
 
@@ -248,7 +250,7 @@
               </td>
               <td>
                 <form>
-                  
+
                   <input id="UnitDiagonal" type="checkbox" name="properties" value="UnitDiagonal">
                   <label for="properties"  class="checkbox-inline">UnitDiagonal</label>
 
@@ -256,24 +258,12 @@
               </td>
               <td>
                 <form>
-                  
-                  <input id="Square" type="checkbox" name="properties" value="Square">
-                  <label for="properties"  class="checkbox-inline">Square</label>
-
+                  <input id="Square" type="checkbox" name="properties" value="Permutation">
+                  <label for="properties"  class="checkbox-inline">Permutation</label>
                 </form>
               </td>
             </tr>
-            <tr>
-              <td>
-                <form>
-                  
-                  <input id="Symmetric" type="checkbox" name="properties" value="Symmetric">
-                  <label for="properties"  class="checkbox-inline">Symmetric</label>
-
-                </form>
-              </td>
-            </tr>
-
+           
 
           </table>
           <div class="mdl-layout-spacer"></div>
@@ -296,59 +286,138 @@
 
 
     <!-- </footer> -->
-    <div style="position: fixed;
+    <div class="myfooter">
+                  <p style="margin: auto; font-size: 0.60em; width: 72em; line-height:15px; padding-top: 5px;"> The generated code is provided "as is", without warranty of any kind. In order to improve Linnea, all submitted input expressions are stored. If you have questions, comments, or encounter bugs, please post an issue on <a href="//github.com/HPAC/linnea/issues"> GitHub</a>.</p>
 
-                left: 0;
-                bottom: 0;
-                width: 100%;
-                heigth: 20px;
-                background-color: #737373;
-                color: white;
-                text-align: center;">
-                  <p style="margin: auto; font-size: 0.60em; width: 72em; line-height:15px; padding-top: 5px;"> The generated code is provided "as is", without warranty of any kind. In order to improve Linnea, all submitted input expressions are stored. If you have questions, comments, or encounter bugs, please post an issue on <a href="//github.com/HPAC/linnea/issues"> [GitHub]</a>.</p>     
-                   
-      <p>&copy; Copyright <b><a href="http://hpac.rwth-aachen.de/">HPAC</a></b> Team 2020</p>
-    </div>
+      <p style="margin-top: 0; margin-bottom: 0;">&copy; Copyright <b><a href="http://hpac.rwth-aachen.de/">HPAC</a></b> Team 2020</p>
+    </div> 
 
+    <!-- <div style="background-color: #0099cc;
+                color: #ffffff;
+                text-align: center;
+                font-size: 12px;">
+      <p>Resize the browser window to see how the content respond to the resizing.</p>
+    </div> -->
+    
 
 
   </body>
   <script type="text/javascript" src="{% static 'js/start.js' %}"></script>
   <script>
-    out('sssss');
-
+    
+     
     $(document).on('inputchange change keyup paste', '#dim-sug',function(e){
+      var inputString = $("#txtExpr").val();
+      if(inputString == ""){
+        $("#tblFormats").hide();
+      }else{
+        model.setInput(inputString.trim());
+        $("#lblError").css('visibility', 'hidden');
+      }
+
+      //out($('#description').val());
+      //out($('#description').val());
+      
       $.ajax({
+        
         type:'POST',
         url:'{% url "create" %}',
         data:{
             event: 'keyup',
-            description:$('#txtExpr').val(),
+            description:$('#description').val(),
             csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
             action: 'post'
         },
         success:function(json){
-          out('in success');
-          out(json.answer);
+          $("#btnGetKernel").attr("disabled", false);
+          $("#btnDownloads").attr("disabled", false);
+
+          var dm1 = json.answer.split(']]');
+          out(dm1);
+          dada = [];
+          dm4 = {};
+          for(d in dm1){
+            //dr = reverse(dm1[d]);
+            //out(typeof(dr))
+            out(dm1[d]);
+            if(dm1[d].length > 1){
+              dx = dm1[d].replace(/[\[\]\"&]+/g,'');
+              dx = dx.trim();
+              ss = dx.split(',');
+              var sss = [];
+              var ii=0;
+              for(ii; ii<ss.length;ii=ii+1){
+                ss[ii] = ss[ii].trim();
+                if(ss[ii].length >0){
+                  sss.push(ss[ii]);
+                }
+              }
+              //out(sss);
+              da = [];
+              var ii=0;
+              for(ii; ii<sss.length;ii=ii+2){
+                if(sss[ii].length >0){
+                  da.push(sss[ii]+":"+sss[ii+1]);
+                }
+              }
+
+              // var ii=0; 
+              // for(ii; ii<da.length;ii=ii+1){
+              //   var dda = da;
+              //   dda = removeItemAll(dda,da[ii]);
+              //   dm4[da[ii]] = dda
+              // }
+              
+            }
+            dada.push(da);
+          }
+
+          //out(tblFormatsView.cache);
+          //out(dada);
+          for(d in dada){
+            var ii=0; 
+            for(ii; ii<dada[d].length;ii=ii+1){
+              var dda = dada[d];
+              //dda = removeItemAll(dda,dada[d][ii]);
+              dm4[dada[d][ii]] = dda
+            }
+
+          }
+          //out(dm4);
           
-      
+
+          
+
+          
+
+
         },
         error : function(xhr,errmsg,err) {
-          
+          $("#tblFormats").hide();
           console.log(xhr.status + ": " + xhr.responseText);
-          
+         
+          $("#btnGetKernel").attr("disabled", true);
+          $("#btnDownloads").attr("disabled", true);
+
+          $("#btnGetKernel").html("Generate Kernel");
+          $('#txtComputeLoops').val("Your input expression had syntax error :(");
+          $('#txtComputeLoops').html("Your input expression had syntax error :(");
+
+          $("#lblError").css('visibility', 'visible');
+          $('#lblError').val('Error: Invalid Expression!');
+          $('#lblError').html('Error: Invalid Expression!');
         }
       });
-    });
+      });
   </script>
   <script>
       $(document).on('submit', '#post-form',function(e){
       e.preventDefault();
       $("#btnGetKernel").attr("disabled", true);
       $("#btnDownloads").attr("disabled", true);
-      
+
       $("#btnGetKernel").html("<i class='fa fa-circle-o-notch fa-spin'></i> Generating");
-      
+
       $.ajax({
           type:'POST',
           url:'{% url "create" %}',
@@ -361,10 +430,10 @@
           success:function(json){
             $("#btnGetKernel").attr("disabled", false);
             $("#btnDownloads").attr("disabled", false);
-      
+
             $("#btnGetKernel").html("Generate Kernel");
             document.getElementById("post-form").reset();
-           
+
             $("#lblError").css('visibility', 'hidden');
             $('#txtComputeLoops').val(json.answer);
             $('#txtComputeLoops').html(json.answer);
@@ -384,13 +453,14 @@
 
           },
           error : function(xhr,errmsg,err) {
+            $("#tblFormats").hide();
             $("#btnGetKernel").attr("disabled", false);
             $("#btnDownloads").attr("disabled", false);
-      
+
             $("#btnGetKernel").html("Generate Kernel");
             console.log(xhr.status + ": " + xhr.responseText);
-            $('#txtComputeLoops').val("Your input expression had syntax error :(");
-            $('#txtComputeLoops').html("Your input expression had syntax error :(");
+            $('#txtComputeLoops').val("Conflict in sizes of the inputs :(");
+            $('#txtComputeLoops').html("Conflict in sizes of the inputs :(");
 
             $("#lblError").css('visibility', 'visible');
             $('#lblError').val('Error: Invalid Expression!');

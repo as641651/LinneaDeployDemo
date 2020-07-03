@@ -1,5 +1,8 @@
-
+var sina = 'sina';
+var dada = [];
+var dm4 = {};
 var observe;
+
 if (window.attachEvent) {
     observe = function (element, event, handler) {
         element.attachEvent('on'+event, handler);
@@ -31,168 +34,194 @@ function inittxtExpr () {
     resize();
 }
 
+function out(blah){
+  console.log(blah);
+} ;
 
 
-
-
-  function out(blah){
-    console.log(blah);
-  } ;
-
-
-  function makeid(length) {
-    var result           = '';
-    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-    var charactersLength = characters.length;
-    for ( var i = 0; i < length; i++ ) {
-       result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
+function makeid(length) {
+  var result           = '';
+  var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  var charactersLength = characters.length;
+  for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
+  return result;
+}
 
-  $("#txtExpr").keyup(function() {
 
-    var inputString = $("#txtExpr").val();
-    if(inputString == ""){
-      $("#tblFormats").hide();
-    }else{
-      model.setInput(inputString.trim());
-      $("#lblError").css('visibility', 'hidden');
+function reverse(str){
+  let reversed = "";    
+  for (var i = str.length - 1; i >= 0; i--){        
+    reversed += str[i];
+  }    
+  return reversed;
+}
+
+function removeItemAll(arr, value) {
+  var i = 0;
+  while (i < arr.length) {
+    if (arr[i] === value) {
+      arr.splice(i, 1);
+    } else {
+      ++i;
     }
-  });
-
-
-  //select2js
-
-
-  function getVarNamesFromString(StrObj) {
-    var separateNamesBy = ", ";
-    var name = "<none>"; // if no match, use this
-    var namesArray = StrObj.match(/[a-zA-Z_][a-zA-Z0-9_]*/gi);
-    var scannedarray = [];
-    var ban_inv = "inv";
-    var ban_trans = "trans";
-    if (namesArray) {
-        name = "";
-        for (var i = 0; i < namesArray.length; i++) {
-            if (i != 0) name += separateNamesBy;
-            if(((namesArray[i] == ban_inv) || (namesArray[i] == ban_trans)) || (scannedarray.includes(namesArray[i])))continue;
-            name += namesArray[i];
-            scannedarray.push(namesArray[i]);
-        }
-    }
-    return name
   }
+  return arr;
+}
 
-  var currentVariableId = 0;
-  var model = {
-    input: {
-      expression: "",
-      juliaVars:{},
-
-      Matrices:{
-        Name:"",
-        Columns:"",
-        Rows:"",
-        Properties:[],
-      },
-      Vectors:{
-        Name:"",
-        size:"",
-      },
-      error: "",
-    },
-    output: {
-      fullCode: "",
-      error: ""
-    },
-    req: null,
-
-    inputViews: [],
-    outputViews: [],
-    reqViews: [],
-
-    mat_IDs: [],
-    vec_IDs: [],
-    all_IDs: [],
-    mat_GEN: [],
-    vec_GEN: [],
-    all_IDs_GEN: [],
-
-    addInputView: function(newView) {
-      model.inputViews.push(newView);
-      newView(400);
-    },
-    updateInputViews: function() {
-      for (v in model.inputViews) {
-        model.inputViews[v](400);
-      }
-    },
-    addOutputView: function(newView) {
-      model.outputViews.push(newView);
-      newView(0);
-    },
-    updateOutputViews: function() {
-      for (v in model.outputViews) {
-        model.outputViews[v](0);
-      }
-    },
-
-    setInput: function(expression) {
-      var inputExpr;
-      var temp_1;
-      var temp_2 = [];
-      model.setOutput("", "");
-
-      model.input.expression = expression;
-      if (model.input.expression.length > 256) {
-        model.input.juliaVars = {};
-        model.input.error = "Input expression is too long";
-      } else {
-        inputExpr = getVarNamesFromString(expression.trim());
-        inputExpr = inputExpr.replace(/\s/g, '');
-
-        if(inputExpr.includes(',')){
-          temp_1 = inputExpr.split(',');
-          var temp1 = temp_1.filter(function (el) {
-            return el != "";
-          })
-          model.input.juliaVars = temp1;
-        }else{
-          temp_2.push(inputExpr);
-          var temp2 = temp_2.filter(function (el) {
-            return el != "";
-          })
-          model.input.juliaVars = [temp2];
-        }
-        model.input.error = "";
-
-      }
-      model.updateInputViews();
-    },
-    setOutput: function(fullCode, error) {
-      model.output = { fullCode: fullCode, error: error };
-      model.updateOutputViews();
-    },
-    setReq: function(req) {
-      model.req = req;
-      model.updateReqViews();
-    },
-
-    cancelReq: function() {
-      if (model.req) {
-        if (model.req.readyState !== 4) {
-          model.req.abort();
-        }
-        model.setReq(null);
-      }
-    },
-    getError: function() {
-      return (model.output.error !== "") ? model.output.error : model.input.error;
+function writedim(object){
+  out(object);
+  var var_tag = object.getAttribute("variable");
+  var value = object.value;
+  out(var_tag);
+  out(value);
+  out(dm4[var_tag]);
+  var ii =0;
+  for(ii;ii<dm4[var_tag].length;ii++){
+    if(var_tag != dm4[var_tag][ii]){
+      out(dm4[var_tag][ii]);
+      out(`input[variable = '${dm4[var_tag][ii]}'`);
+      $(`input[variable = '${dm4[var_tag][ii]}']` ).html(value).trigger('inputchange');
+      $(`input[variable = '${dm4[var_tag][ii]}']`).val(value).trigger('inputchange');
     }
-  };
+  }
+  //out(tblFormatsView.cache);
+}
 
-  var txtExprView = {
+//select2js
+
+
+function getVarNamesFromString(StrObj) {
+  var separateNamesBy = ", ";
+  var name = "<none>"; // if no match, use this
+  var namesArray = StrObj.match(/[a-zA-Z_][a-zA-Z0-9_]*/gi);
+  var scannedarray = [];
+  var ban_inv = "inv";
+  var ban_trans = "trans";
+  if (namesArray) {
+      name = "";
+      for (var i = 0; i < namesArray.length; i++) {
+          if (i != 0) name += separateNamesBy;
+          if(((namesArray[i] == ban_inv) || (namesArray[i] == ban_trans)) || (scannedarray.includes(namesArray[i])))continue;
+          name += namesArray[i];
+          scannedarray.push(namesArray[i]);
+      }
+  }
+  return name
+}
+
+
+
+var currentVariableId = 0;
+var model = {
+  input: {
+    expression: "",
+    juliaVars:{},
+
+    Matrices:{
+      ID:{},
+      Columns:"",
+      Rows:"",
+      Properties:[],
+    },
+    Vectors:{
+      ID: {},
+      size:"",
+    },
+    error: "",
+  },
+  output: {
+    fullCode: "",
+    error: ""
+  },
+  req: null,
+
+  inputViews: [],
+  outputViews: [],
+  reqViews: [],
+
+  mat_IDs: [],
+  vec_IDs: [],
+  all_IDs: [],
+  mat_GEN: [],
+  vec_GEN: [],
+  all_IDs_GEN: [],
+
+  addInputView: function(newView) {
+    model.inputViews.push(newView);
+    newView(400);
+  },
+  updateInputViews: function() {
+    for (v in model.inputViews) {
+      model.inputViews[v](400);
+    }
+  },
+  addOutputView: function(newView) {
+    model.outputViews.push(newView);
+    newView(0);
+  },
+  updateOutputViews: function() {
+    for (v in model.outputViews) {
+      model.outputViews[v](0);
+    }
+  },
+
+  setInput: function(expression) {
+    var inputExpr;
+    var temp_1;
+    var temp_2 = [];
+    model.setOutput("", "");
+
+    model.input.expression = expression;
+    if (model.input.expression.length > 256) {
+      model.input.juliaVars = {};
+      model.input.error = "Input expression is too long";
+    } else {
+      inputExpr = getVarNamesFromString(expression.trim());
+      inputExpr = inputExpr.replace(/\s/g, '');
+
+      if(inputExpr.includes(',')){
+        temp_1 = inputExpr.split(',');
+        var temp1 = temp_1.filter(function (el) {
+          return el != "";
+        })
+        model.input.juliaVars = temp1;
+      }else{
+        temp_2.push(inputExpr);
+        var temp2 = temp_2.filter(function (el) {
+          return el != "";
+        })
+        model.input.juliaVars = [temp2];
+      }
+      model.input.error = "";
+
+    }
+    model.updateInputViews();
+  },
+  setOutput: function(fullCode, error) {
+    model.output = { fullCode: fullCode, error: error };
+    model.updateOutputViews();
+  },
+  setReq: function(req) {
+    model.req = req;
+    model.updateReqViews();
+  },
+
+  cancelReq: function() {
+    if (model.req) {
+      if (model.req.readyState !== 4) {
+        model.req.abort();
+      }
+      model.setReq(null);
+    }
+  },
+  getError: function() {
+    return (model.output.error !== "") ? model.output.error : model.input.error;
+  }
+};
+
+var txtExprView = {
   timerEvent: null,
 
   updateView: function(timeout) {
@@ -236,10 +265,12 @@ function inittxtExpr () {
           var cached = (tblFormatsView.cache.hasOwnProperty(model.input.juliaVars[j]) && 1);
 
           if(/^[A-Z]/.test(variable)){
-           
+
             var matricecreator = [];
             model.input.test.push({id:j, name:variable});
-
+            if(variable){
+              model.input.Matrices.ID += {id:j, name:String(variable)};
+            }
             var name = "M_NAME_" + j;
             var M_TD_INP_1 = "M_" + j + "_0";
 
@@ -266,7 +297,7 @@ function inittxtExpr () {
             var format_R = cached ? tblFormatsView.cache[variable].formats[0] : "0";
             var format_C = cached ? tblFormatsView.cache[variable].formats[1] : "0";
             var format_P = cached ? tblFormatsView.cache[variable].formats[2] : "";
-              
+
 
             listLinneaBody += "<tr>";
             listLinneaBody += "<td id=\"";
@@ -327,7 +358,9 @@ function inittxtExpr () {
             listLinneaBody += "value=\"";
             listLinneaBody += format_R;
             listLinneaBody += "\" style=\"font-size: 13px\" data-val=\"";
-            listLinneaBody += "\"/>";
+            listLinneaBody += "\" variable=\"";
+            listLinneaBody += `${variable}:0`;
+            listLinneaBody += "\" onchange = 'writedim(this)'/>";
             listLinneaBody += "<label class=\"mdl-textfield__label\" for=\"";
             listLinneaBody += M_R_TD_2_UL_LI_2_DIV_INP_1;
             listLinneaBody += "\">Rows: ";
@@ -353,9 +386,11 @@ function inittxtExpr () {
 
             listLinneaBody += "value=\"";
             listLinneaBody += format_C;
- 
+
             listLinneaBody += "\" style=\"font-size: 13px\" data-val=\"";
-            listLinneaBody += "\"/>";
+            listLinneaBody += "\" variable=\"";
+            listLinneaBody += `${variable}:1`;
+            listLinneaBody += "\" onchange = 'writedim(this)'/>";
             listLinneaBody += "<label class=\"mdl-textfield__label\" for=\"";
             listLinneaBody += M_C_TD_2_UL_LI_2_DIV_INP_1;
             listLinneaBody += "\">Columns: ";
@@ -371,7 +406,7 @@ function inittxtExpr () {
             listLinneaBody += "<div class=\"\">";
             listLinneaBody += "</div></li>";
 
-            
+
 
             listLinneaBody += "<li id=\"";
             listLinneaBody += "\" class=\"ui-state-default\">";
@@ -415,13 +450,13 @@ function inittxtExpr () {
 
             listLinneaBody += "</div>";
             listLinneaBody += "</li>";
-          
+
           }
           else {
             // for Variable IDS
 
             var name = "V_NAME_" + j;
-            
+
             var V_TD_ID_1 = "V_TD_ID_1_J_" + j;
             var V_TD_1_DIV_1 = "V_TD_1_DIV_1_J_" + j;
             var V_TD_1_DIV_INP_1  = "V_" + j + "_1";
@@ -462,7 +497,7 @@ function inittxtExpr () {
             vec_ID_cache.push(V_TD_1_DIV_INP_1, V_TD_UL_LI_DIV_INP_ID_1, ADD_CLMNVEC_LI_DIV_INP_1);
             model.all_IDs.push(vec_ID_cache);
             vec_ID_cache = [];
-            
+
             var format_T = cached ? tblFormatsView.cache[variable].formats[0] : "Vector";
             var format_S = cached ? tblFormatsView.cache[variable].formats[1] : "0";
             var format_CR = cached ? tblFormatsView.cache[variable].formats[2] : "Column Vector";
@@ -493,12 +528,12 @@ function inittxtExpr () {
 
             listLinneaBody += "\" type=\"text\" readonly ";
 
-            
+
             listLinneaBody += "value=\""
             listLinneaBody += format_T;
             listLinneaBody += "\" data-val=\"Vector";
             listLinneaBody += "\"/>";
-          
+
 
             listLinneaBody += "<label id=\"";
             listLinneaBody += name;
@@ -552,9 +587,11 @@ function inittxtExpr () {
 
             listLinneaBody += "value=\"";
             listLinneaBody += format_S;
-          
+
             listLinneaBody += "\" style=\"font-size: 13px\" data-val=\"";
-            listLinneaBody += "\"/>";
+            listLinneaBody += "\" variable=\"";
+            listLinneaBody += `${variable}:0`;
+            listLinneaBody += "\" onchange = 'writedim(this)'/>";
             listLinneaBody += "</label>";
             listLinneaBody += "<label class=\"mdl-textfield__label\" for=\"";
             listLinneaBody += V_TD_UL_LI_DIV_INP_ID_1;
@@ -569,13 +606,13 @@ function inittxtExpr () {
             listLinneaBody += "<li id=\"";
             listLinneaBody += ADD_CLMNVEC_LI_1;
             listLinneaBody += "\" class=\"ui-state-default\">";
-            
+
             listLinneaBody += "<div id=\"";
             listLinneaBody += ADD_CLMNVEC_LI_DIV_1;
             listLinneaBody += "\" class=\"mdl-textfield mdl-js-textfield ";
             listLinneaBody += "mdl-textfield--floating-label getmdl-select\" ";
             listLinneaBody += "style=\"display: block;\"";
-            
+
             listLinneaBody += ">";
             listLinneaBody += "<input style=\"font-size: 11px\" class=\"mdl-textfield__input ";
             listLinneaBody += "format-input\" id=\"";
@@ -603,34 +640,71 @@ function inittxtExpr () {
         }
 
         if (listLinneaBody !== "") {
-          $("#listLinneas").html(listLinneaBody);
-          getmdlSelect.init(".getmdl-select");
-          model.mat_GEN = model.mat_IDs.slice();
-          model.mat_IDs = [];
-          model.vec_GEN = model.vec_IDs.slice();
-          model.vec_IDs = [];
+            $("#listLinneas").html(listLinneaBody);
+            getmdlSelect.init(".getmdl-select");
+            model.mat_GEN = model.mat_IDs.slice();
+            model.mat_IDs = [];
+            model.vec_GEN = model.vec_IDs.slice();
+            model.vec_IDs = [];
 
-          model.all_IDs_GEN = model.all_IDs.slice();
-          model.all_IDs = [];
-          
-         $(".format-input").on('inputchange change keyup paste',function() {
-          var listId = $(this).attr('id');
-          var name = $('#'+listId.charAt(0)+"_NAME_"+listId.charAt(2)).html();
-          
-          inputArray=[];
-          inputArray.push(listId.charAt(0)+'_'+listId.charAt(2)+'_1');
-          inputArray.push(listId.charAt(0)+'_'+listId.charAt(2)+'_2');
-          inputArray.push(listId.charAt(0)+'_'+listId.charAt(2)+'_3');
-          tblFormatsView.insertCacheEntry(name, 
-              tblFormatsView.createCacheEntry(inputArray));
-          
-        });
-        for (t in model.input.juliaVars) {
-          if (model.input.juliaVars[t]) {
-            tblFormatsView.insertCacheEntry(model.input.juliaVars[t], 
-                tblFormatsView.createCacheEntry(model.all_IDs_GEN[t]));
+            model.all_IDs_GEN = model.all_IDs.slice();
+            model.all_IDs = [];
+
+          $(".format-input").on('inputchange change keyup paste',function() {
+            var listId = $(this).attr('id');
+            var name = $('#'+listId.charAt(0)+"_NAME_"+listId.charAt(2)).html();
+
+            inputArray=[];
+            inputArray.push(listId.charAt(0)+'_'+listId.charAt(2)+'_1');
+            inputArray.push(listId.charAt(0)+'_'+listId.charAt(2)+'_2');
+            inputArray.push(listId.charAt(0)+'_'+listId.charAt(2)+'_3');
+            tblFormatsView.insertCacheEntry(name,
+                tblFormatsView.createCacheEntry(inputArray));
+
+          });
+          for (t in model.input.juliaVars) {
+            if (model.input.juliaVars[t]) {
+              tblFormatsView.insertCacheEntry(model.input.juliaVars[t],
+                  tblFormatsView.createCacheEntry(model.all_IDs_GEN[t]));
+            }
           }
-        }
+
+          //out(model.mat_GEN);
+          var dim_suggest_input = "";
+          dim_suggest_input += "n = 1000";
+          dim_suggest_input += "\n";
+
+          if(model.mat_GEN  !== undefined && model.mat_GEN.length != 0){
+            var i=0;
+            var j=0;
+            for (i; i< model.mat_GEN.length; i++){
+              dim_suggest_input += "Matrix " + model.mat_GEN[i][0] + "(n,n)" + " <>";
+              dim_suggest_input += "\n";
+            }
+          }
+
+          if(model.vec_GEN  !== undefined && model.vec_GEN.length != 0){
+            var i=0;
+            var j=0;
+            for (i; i< model.vec_GEN.length; i++){
+              if($('#'+model.vec_GEN[i][1]).val().trim() == "Scalar"){
+                dim_suggest_input += "Scalar " + model.vec_GEN[i][0] + "<>";
+                dim_suggest_input += "\n";
+              }else{
+                if($('#'+model.vec_GEN[i][5]).val() == 'Row Vector'){
+                  dim_suggest_input += "Row Vector " + model.vec_GEN[i][0] + "(n)<>";
+                  dim_suggest_input += "\n";
+                }else{
+                  dim_suggest_input += "ColumnVector " + model.vec_GEN[i][0] + "(n)<>";
+                  dim_suggest_input += "\n";
+
+                }
+              }
+            }
+          }
+          dim_suggest_input += model.input.expression;
+          $("#description").val(dim_suggest_input);
+          
 
 
           $("#tblFormats").show();
@@ -711,12 +785,12 @@ function inittxtExpr () {
       //expr: "\\(B_{out}=((k/k-1)*B_{in}*(I_{n}+(-A^{T}*W_{k}*A*((k-1)*I_{1}+(W_{k})^{T}*A*B_{in}*A^{T}*W_{k})^{-1}*B_{in}*A^{T}*W_{k}))\\)",
      code: "Bout=(k*inv(k-1))*Bin*(In+(-1*trans(A)*Wk*inv((k-1)*I1+trans(Wk)*A*Bin*trans(A)*Wk)*trans(Wk)*A*Bin))",
    },
-  
+
   };
-  
+
   var listExamplesBody = "";
   for (var e in examples) {
-  
+
     //:&nbsp;
     if(examples[e].name == "Triangular Matrix Inversion" ){
       listExamplesBody += "<li id=\"example_";
@@ -733,7 +807,7 @@ function inittxtExpr () {
       listExamplesBody += "</li><li  class=\"\" style=\"padding-left: 163px;\">";
       listExamplesBody += examples[e].expr[3];
       listExamplesBody += "</li></ul></li>";
-  
+
     }else if(examples[e].name == "Image Restoration"){
       listExamplesBody += "<li id=\"example_";
       listExamplesBody += e;
@@ -745,7 +819,7 @@ function inittxtExpr () {
       listExamplesBody += "</li><li class=\"\" style=\"padding-left: 116px;\">";
       listExamplesBody += examples[e].expr[1];
       listExamplesBody += "</li></ul></li>";
-  
+
     }else if(examples[e].name == "Stochastic Newton"){
       listExamplesBody += "<li id=\"example_";
       listExamplesBody += e;
@@ -756,36 +830,36 @@ function inittxtExpr () {
       listExamplesBody += examples[e].expr[0];
       listExamplesBody += "</li><li class=\"\" style=\"padding-left: 116px;\">";
       listExamplesBody += examples[e].expr[1];
-      
+
       listExamplesBody += "</li></ul></li>";
-  
+
     }else{
-      
+
       listExamplesBody += "<li id=\"example_";
       listExamplesBody += e;
       listExamplesBody += "\" class=\"mdl-menu__item\" style=\"font-size: 11px;\">";
-  
+
       listExamplesBody += examples[e].name;
       listExamplesBody += ":&nbsp ";
       listExamplesBody += examples[e].expr;
       listExamplesBody += "</li>";
-  
+
     }
-  
+
   }
   $("#listExamples").html(listExamplesBody);
-  
+
   for (var e in examples) {
-  
+
     (function(code, format) {
       var setExample5 = function() {
         for (var f in format) {
           tblFormatsView.insertCacheEntry(f,format[f]);
         }
-        out("4");
+        //out("4");
         $("#txtExpr").css('height','64px');
         $("#txtExpr").val(code).trigger('inputchange');
-        $("#txtExpr").html(code);
+        $("#txtExpr").html(code).trigger('inputchange');
         $("#lblError").css('visibility', 'hidden');
         model.setInput(code);
       };
@@ -793,10 +867,10 @@ function inittxtExpr () {
         for (var f in format) {
           tblFormatsView.insertCacheEntry(f,format[f]);
         }
-        out("4");
+        //out("4");
         $("#txtExpr").css('height','64px');
         $("#txtExpr").val(code).trigger('inputchange');
-        $("#txtExpr").html(code);
+        $("#txtExpr").html(code).trigger('inputchange');
         $("#lblError").css('visibility', 'hidden');
         model.setInput(code);
       };
@@ -804,10 +878,10 @@ function inittxtExpr () {
         for (var f in format) {
           tblFormatsView.insertCacheEntry(f,format[f]);
         }
-        out("3");
+        //out("3");
         $("#txtExpr").css('height','128px');
         $("#txtExpr").val(code).trigger('inputchange');
-        $("#txtExpr").html(code);
+        $("#txtExpr").html(code).trigger('inputchange');
         $("#lblError").css('visibility', 'hidden');
         model.setInput(code);
       };
@@ -815,10 +889,10 @@ function inittxtExpr () {
         for (var f in format) {
           tblFormatsView.insertCacheEntry(f,format[f]);
         }
-        out("else");
+        //out("else");
         $("#txtExpr").css('height','32px');
         $("#txtExpr").val(code).trigger('inputchange');
-        $("#txtExpr").html(code);
+        $("#txtExpr").html(code).trigger('inputchange');
         $("#lblError").css('visibility', 'hidden');
         model.setInput(code);
       };
@@ -832,10 +906,10 @@ function inittxtExpr () {
         $("#example_" + e).click(setExample);
       }
       $("#lblError").css('visibility', 'hidden');
-  
+
     })(examples[e].code, examples[e].format);
   }
-  
+
 
   model.addInputView(txtExprView.updateView);
   model.addInputView(tblFormatsView.updateView);
@@ -870,7 +944,7 @@ function inittxtExpr () {
   function hideScalarDisplay(object, id){
 
 
-    out($(object).val());
+    //out($(object).val());
     if($(object).val() == 'Vector'){
       id.style.display = 'block';
     }else if($(object).val() == 'Scalar'){
@@ -885,15 +959,16 @@ function inittxtExpr () {
     currentVariableId = id;
     modal.style.display = "block";
     var thisID = $(object).attr('id');
-    out($(object).val());
+    //out($(object).val());
     inputInto = $(object).closest("div.content").find("input").attr('id');
     listofproperties = $('#'+inputInto).val().trim().split(',');
-    out(listofproperties);
+    //out(listofproperties);
     //out('this id is: ' + thisID);
     $('input:checkbox').removeAttr('checked');
 
     for(lst in listofproperties){
-        out($('#'+listofproperties[lst].trim()));
+        //
+        //out($('#'+listofproperties[lst].trim()));
         $('#'+listofproperties[lst].trim()).prop('checked', true);
         //$("input[name='listofproperties[lst]']:checked");
     }
@@ -915,7 +990,7 @@ function inittxtExpr () {
     modal.style.display = "none";
     inputInto = " ";
     favorite = [];
-   
+
   }
 
   function clearProperty(request){
@@ -933,7 +1008,7 @@ function inittxtExpr () {
   function generateInput(){
     var inputGenerated = "";
     inputGenerated += "\n"
-    
+
     if(model.mat_GEN  !== undefined && model.mat_GEN.length != 0){
       var i=0;
       var j=0;
@@ -990,14 +1065,14 @@ function inittxtExpr () {
             inputGenerated += "ColumnVector " + model.vec_GEN[i][0] + "(" + model.vec_GEN[i][4] + ")<>";
             inputGenerated += "\n";
 
-          }        
+          }
         }
       }
     }
     inputGenerated += model.input.expression;
 
-    
-    
+
+
     $("#description").val(inputGenerated);
   }
 
@@ -1011,5 +1086,3 @@ function inittxtExpr () {
 // gulp merge javascript files
 // LTT
 //// scroll into view
-
-
