@@ -333,13 +333,13 @@
           $("#btnDownloads").attr("disabled", false);
 
           var dm1 = json.answer.split(']]');
-          out(dm1);
+          //out(dm1);
           dada = [];
           dm4 = {};
           for(d in dm1){
             //dr = reverse(dm1[d]);
             //out(typeof(dr))
-            out(dm1[d]);
+            //out(dm1[d]);
             if(dm1[d].length > 1){
               dx = dm1[d].replace(/[\[\]\"&]+/g,'');
               dx = dx.trim();
@@ -448,7 +448,7 @@
             //     behavior: "smooth", // or "auto" or "instant"
             //     block: "start" // or "end"
             // });
-            out(json.description);
+            // out(json.description);
             // out(json.dimensions);
 
           },

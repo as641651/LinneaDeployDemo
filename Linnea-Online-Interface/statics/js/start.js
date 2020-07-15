@@ -71,17 +71,17 @@ function removeItemAll(arr, value) {
 }
 
 function writedim(object){
-  out(object);
+  //out(object);
   var var_tag = object.getAttribute("variable");
   var value = object.value;
-  out(var_tag);
-  out(value);
-  out(dm4[var_tag]);
+  //out(var_tag);
+  //out(value);
+  //out(dm4[var_tag]);
   var ii =0;
   for(ii;ii<dm4[var_tag].length;ii++){
     if(var_tag != dm4[var_tag][ii]){
-      out(dm4[var_tag][ii]);
-      out(`input[variable = '${dm4[var_tag][ii]}'`);
+      //out(dm4[var_tag][ii]);
+      //out(`input[variable = '${dm4[var_tag][ii]}'`);
       $(`input[variable = '${dm4[var_tag][ii]}']` ).html(value).trigger('inputchange');
       $(`input[variable = '${dm4[var_tag][ii]}']`).val(value).trigger('inputchange');
     }
@@ -595,7 +595,12 @@ var txtExprView = {
             listLinneaBody += "</label>";
             listLinneaBody += "<label class=\"mdl-textfield__label\" for=\"";
             listLinneaBody += V_TD_UL_LI_DIV_INP_ID_1;
-            listLinneaBody += "\">Size: ";
+            if(format_T == "Scalar"){
+              listLinneaBody += "\">Value: ";
+            }else{
+              listLinneaBody += "\">Size: ";
+            }
+            
             listLinneaBody += "</label>";
             listLinneaBody += "<ul class=\"mdl-menu ";
             listLinneaBody += "mdl-js-menu \" for=\"";
@@ -611,8 +616,12 @@ var txtExprView = {
             listLinneaBody += ADD_CLMNVEC_LI_DIV_1;
             listLinneaBody += "\" class=\"mdl-textfield mdl-js-textfield ";
             listLinneaBody += "mdl-textfield--floating-label getmdl-select\" ";
-            listLinneaBody += "style=\"display: block;\"";
-
+            //if(model.input.expression == "Bout=(k*inv(k-1))*Bin*(In+(-1*trans(A)*Wk*inv((k-1)*I1+trans(Wk)*A*Bin*trans(A)*Wk)*trans(Wk)*A*Bin))" && variable == "k"){
+            if(format_T == "Scalar"){
+              listLinneaBody += "style=\"display: none;\"";
+            }else{
+              listLinneaBody += "style=\"display: block;\"";
+            }
             listLinneaBody += ">";
             listLinneaBody += "<input style=\"font-size: 11px\" class=\"mdl-textfield__input ";
             listLinneaBody += "format-input\" id=\"";
@@ -947,8 +956,10 @@ var txtExprView = {
     //out($(object).val());
     if($(object).val() == 'Vector'){
       id.style.display = 'block';
+      //out($("#"+id))
     }else if($(object).val() == 'Scalar'){
       id.style.display = 'none';
+      //$("#"+id).html('value');
     }
 
   }
