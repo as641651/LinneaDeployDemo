@@ -37,7 +37,7 @@ def create_input(request):
             try:
                 answer = dependent_dimensions(description)
 
-                response_data['answer'] = answer
+                response_data['answer'] = str(answer)
 
                 print(description)
                 print(dependent_dimensions(description))
