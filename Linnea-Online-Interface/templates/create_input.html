@@ -87,7 +87,6 @@
               <form method="POST" id="post-form">
                   {% csrf_token %}
                   <input type="hidden" class="form-control" id="description" placeholder="Title" value="4444">
-
                   <button type="submit" id="btnGetKernel" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect demo-btn" onclick="generateInput()">  Generate Algorithm </button>
               </form>
               </td>
@@ -316,7 +315,7 @@
       }
 
       //out($('#description').val());
-      //out($('#description').val());
+      out($('#description').val());
       
       $.ajax({
         
@@ -331,17 +330,15 @@
         success:function(json){
           $("#btnGetKernel").attr("disabled", false);
           $("#btnDownloads").attr("disabled", false);
-
-          var dm1 = json.answer.split(']]');
+          //out(json.answer)
+          var dm1 = json.answer.split(']}');
           //out(dm1);
           dada = [];
           dm4 = {};
           for(d in dm1){
-            //dr = reverse(dm1[d]);
-            //out(typeof(dr))
             //out(dm1[d]);
             if(dm1[d].length > 1){
-              dx = dm1[d].replace(/[\[\]\"&]+/g,'');
+              dx = dm1[d].replace(/[\[\]\{\}\(\)\'\"&]+/g,'');
               dx = dx.trim();
               ss = dx.split(',');
               var sss = [];
@@ -360,13 +357,6 @@
                   da.push(sss[ii]+":"+sss[ii+1]);
                 }
               }
-
-              // var ii=0; 
-              // for(ii; ii<da.length;ii=ii+1){
-              //   var dda = da;
-              //   dda = removeItemAll(dda,da[ii]);
-              //   dm4[da[ii]] = dda
-              // }
               
             }
             dada.push(da);

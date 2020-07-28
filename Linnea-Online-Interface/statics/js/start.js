@@ -13,7 +13,8 @@ else {
         element.addEventListener(event, handler, false);
     };
 }
-function inittxtExpr () {
+
+function inittxtExpr() {
     var text = document.getElementById('txtExpr');
     function resize () {
         text.style.height = 'auto';
@@ -74,10 +75,12 @@ function writedim(object){
   //out(object);
   var var_tag = object.getAttribute("variable");
   var value = object.value;
+  //out(dm4);
   //out(var_tag);
   //out(value);
   //out(dm4[var_tag]);
   var ii =0;
+
   for(ii;ii<dm4[var_tag].length;ii++){
     if(var_tag != dm4[var_tag][ii]){
       //out(dm4[var_tag][ii]);
@@ -276,7 +279,14 @@ var txtExprView = {
 
             var M_R_TD_2_UL_LI_2_DIV_INP_1 = "M_" + j + "_1";
             var M_C_TD_2_UL_LI_2_DIV_INP_1 = "M_" + j + "_2";
-            var M_P_TD_2_UL_LI_2_DIV_INP_1 = "M_" + j + "_3";
+            var M_P_TD_2_UL_LI_2_DIV_INP_1 = "M_" + j + "_4";
+            
+            // for Matrice type IDS
+            var ADD_MATTYPE_LI_1 = "ADD_MATTYPE_LI_1" + j;
+            var ADD_MATTYPE_LI_DIV_1 = "ADD_MATTYPE_LI_DIV_1" + j;
+            var ADD_MATTYPE_LI_DIV_INP_1 = "M_" + j + "_3";
+
+
 
             matricecreator.push(variable);
             matricecreator.push(M_R_TD_2_UL_LI_2_DIV_INP_1);
@@ -290,13 +300,14 @@ var txtExprView = {
             model.mat_IDs.push(matricecreator);
 
             var mat_ID_cache = [];
-            mat_ID_cache.push(M_R_TD_2_UL_LI_2_DIV_INP_1, M_C_TD_2_UL_LI_2_DIV_INP_1, M_P_TD_2_UL_LI_2_DIV_INP_1);
+            mat_ID_cache.push(M_R_TD_2_UL_LI_2_DIV_INP_1, M_C_TD_2_UL_LI_2_DIV_INP_1, ADD_MATTYPE_LI_DIV_INP_1, M_P_TD_2_UL_LI_2_DIV_INP_1);
             model.all_IDs.push(mat_ID_cache);
             mat_ID_cache = [];
 
             var format_R = cached ? tblFormatsView.cache[variable].formats[0] : "0";
             var format_C = cached ? tblFormatsView.cache[variable].formats[1] : "0";
-            var format_P = cached ? tblFormatsView.cache[variable].formats[2] : "";
+            var format_T = cached ? tblFormatsView.cache[variable].formats[2] : "General";
+            var format_P = cached ? tblFormatsView.cache[variable].formats[3] : "";
 
 
             listLinneaBody += "<tr>";
@@ -406,6 +417,45 @@ var txtExprView = {
             listLinneaBody += "<div class=\"\">";
             listLinneaBody += "</div></li>";
 
+            // Matrice Type
+            listLinneaBody += "<li id=\"";
+            listLinneaBody += ADD_MATTYPE_LI_1;
+            listLinneaBody += "\" class=\"ui-state-default\">";
+
+            listLinneaBody += "<div id=\"";
+            listLinneaBody += ADD_MATTYPE_LI_DIV_1;
+            listLinneaBody += "\" class=\"mdl-textfield mdl-js-textfield ";
+            listLinneaBody += "mdl-textfield--floating-label getmdl-select\" ";
+            //if(model.input.expression == "Bout=(k*inv(k-1))*Bin*(In+(-1*trans(A)*Wk*inv((k-1)*I1+trans(Wk)*A*Bin*trans(A)*Wk)*trans(Wk)*A*Bin))" && variable == "k"){
+            if(format_T == "Scalar"){
+              listLinneaBody += "style=\"display: none;\"";
+            }else{
+              listLinneaBody += "style=\"display: block;\"";
+            }
+            listLinneaBody += ">";
+            listLinneaBody += "<input style=\"font-size: 11px\" class=\"mdl-textfield__input ";
+            listLinneaBody += "format-input\" id=\"";
+            listLinneaBody += ADD_MATTYPE_LI_DIV_INP_1;
+            listLinneaBody += "\" type=\"text\" readonly ";
+            listLinneaBody += "value=\""
+            listLinneaBody += format_T;
+            listLinneaBody += "\" data-val=\"General";
+            listLinneaBody += "\"/>";
+            listLinneaBody += "<label class=\"mdl-textfield__label\" for=\"";
+            listLinneaBody += ADD_MATTYPE_LI_DIV_INP_1;
+            listLinneaBody += "\">Type: ";
+            listLinneaBody += "</label>";
+            listLinneaBody += "<ul class=\"mdl-menu ";
+            listLinneaBody += "mdl-js-menu \" for=\"";
+            listLinneaBody += ADD_MATTYPE_LI_DIV_INP_1;
+            listLinneaBody += "\">";
+            listLinneaBody += "<li class=\"mdl-menu__item\" style=\"font-size: 11px\" data-val=\"";
+            listLinneaBody += "d\">General</li>";
+            listLinneaBody += "<li class=\"mdl-menu__item\" style=\"font-size: 11px\" data-val=\"";
+            listLinneaBody += "s\">Identity</li>";
+            listLinneaBody += "<li class=\"mdl-menu__item\" style=\"font-size: 11px\" data-val=\"";
+            listLinneaBody += "s\">Zero</li>";
+            listLinneaBody += "</ul></div></li>";
 
 
             listLinneaBody += "<li id=\"";
@@ -667,6 +717,7 @@ var txtExprView = {
             inputArray.push(listId.charAt(0)+'_'+listId.charAt(2)+'_1');
             inputArray.push(listId.charAt(0)+'_'+listId.charAt(2)+'_2');
             inputArray.push(listId.charAt(0)+'_'+listId.charAt(2)+'_3');
+            inputArray.push(listId.charAt(0)+'_'+listId.charAt(2)+'_4');
             tblFormatsView.insertCacheEntry(name,
                 tblFormatsView.createCacheEntry(inputArray));
 
@@ -728,39 +779,39 @@ var txtExprView = {
 
     input1:{
       name: "Least Squares",
-      expr: "\\(b := (X^TX)^{-1}X^Ty\\)",
+      expr: "\\(b := (X^T X)^{-1} X^T y\\)",
       format: {
         b: { formats: ["Vector","1000","Column Vector"] },
-        X: { formats: ["1500","1000","FullRank"] },
+        X: { formats: ["1500","1000","General","FullRank"] },
         y: { formats: ["Vector","1500","Column Vector"] },
       },
       code: "b=inv(trans(X)*X)*trans(X)*y",
     },
     input2:{
       name: "Generalized Least Squares",
-      expr: "\\(z := (X^TS^{-1}X)^{-1}X^TS^{-1}y\\)",
+      expr: "\\(b := (X^T M^{-1} X)^{-1} X^T M^{-1} y\\)",
       format: {
-        X: {formats: ["2500","500","FullRank"]},
-        S: {formats: ["2500","2500","SPD"]},
-        z: {formats: ["Vector", "500", "Column Vector"]},
+        X: {formats: ["2500","500","General","FullRank"]},
+        M: {formats: ["2500","2500","General","SPD"]},
+        b: {formats: ["Vector", "500", "Column Vector"]},
         y: {formats: ["Vector", "2500", "Column Vector"]},
       },
-      code: "z=inv(trans(X)*inv(S)*X)*trans(X)*inv(S)*y",
+      code: "b=inv(trans(X)*inv(M)*X)*trans(X)*inv(M)*y",
     },
     input3:{
       name: "Triangular Matrix Inversion",
-      expr: ["\\(X_{10} := L_{10} L_{00}^{-1}\\)" , "\\(X_{20} := L_{20}+L_{22}^{-1}L_{21}L_{11}^{-1}L_{10}\\)","\\(X_{11} := L_{11}^{-1}\\)", "\\(X_{21} := -L_{22}^{-1}L_{21}\\)"],
+      expr: ["\\(X_{10} := L_{10} L_{00}^{-1}\\)" , "\\(X_{20} := L_{20} + L_{22}^{-1} L_{21} L_{11}^{-1} L_{10}\\)","\\(X_{11} := L_{11}^{-1}\\)", "\\(X_{21} := -L_{22}^{-1} L_{21}\\)"],
       format: {
-        X10: {formats: ["200", "2000", ""]},
-        L10: {formats: ["200", "2000", "FullRank"]},
-        L00: {formats: ["2000", "2000", "FullRank, LowerTriangular"]},
-        X20: {formats: ["2000", "2000", ""]},
-        L20: {formats: ["2000", "2000", "FullRank"]},
-        L22: {formats: ["2000", "2000", "FullRank, LowerTriangular"]},
-        L21: {formats: ["2000", "200", "FullRank"]},
-        L11: {formats: ["200", "200", "FullRank, LowerTriangular"]},
-        X11: {formats: ["200", "200", ""]},
-        X21: {formats: ["2000", "200", ""]},
+        X10: {formats: ["200","2000","General",""]},
+        L10: {formats: ["200","2000","General","FullRank"]},
+        L00: {formats: ["2000","2000","General","FullRank, LowerTriangular"]},
+        X20: {formats: ["2000","2000","General",""]},
+        L20: {formats: ["2000","2000","General","FullRank"]},
+        L22: {formats: ["2000","2000","General","FullRank, LowerTriangular"]},
+        L21: {formats: ["2000","200","General","FullRank"]},
+        L11: {formats: ["200","200","General","FullRank, LowerTriangular"]},
+        X11: {formats: ["200","200","General",""]},
+        X21: {formats: ["2000","200","General",""]},
       },
       code: "X10=L10*inv(L00)\nX20=L20+(inv(L22)*L21*inv(L11)*L10)\nX11=inv(L11)\nX21=inv(L22)*L21*-1",
     },
@@ -768,11 +819,11 @@ var txtExprView = {
       name: "Image Restoration",
       expr: ["\\(H^{\\dagger} := H^{T}(HH^{T})^{-1}\\) ", "\\(y_k := H^{\\dagger}y+(I_n-H^{\\dagger}H)x_k\\)"],
       format: {
-        H_dag: {formats: ["5000", "1000", "FullRank"]},
-        H: {formats: ["1000", "5000", "FullRank"]},
+        H_dag: {formats: ["5000", "1000", "General", "FullRank"]},
+        H: {formats: ["1000", "5000", "General", "FullRank"]},
         y_k: {formats: ["Vector", "5000", "Column Vector"]},
         y: {formats: ["Vector", "1000", "Column Vector"]},
-        I: {formats: ["5000", "5000", ""]},
+        I: {formats: ["5000", "5000", "General", ""]},
         x: {formats: ["Vector", "5000", "Column Vector"]},
       },
       code: "H_dag=trans(H)*inv(H*trans(H))\ny_k=H_dag*y+(I+(-1*H_dag*H))*x",
@@ -781,13 +832,13 @@ var txtExprView = {
       name: "Stochastic Newton",
       expr: ["\\( B_k := \\frac{k}{k-1}B_{k-1} \\Bigl(I_n - A^T W_k \\bigl((k-1)I_l\\)", "\\(+W_k^T A B_{k-1} A^T W_k \\bigr)^{-1} W_k^T A B_{k-1} \\Bigr)\\)"],
       format: {
-        Bout: {formats: ["1000", "1000", "SPD"]},
+        Bout: {formats: ["1000", "1000", "General", "SPD"]},
         k: {formats: ["Scalar", "0", ""]},
-        Bin: {formats: ["1000", "1000", "SPD"]},
-        In: {formats: ["1000", "1000", ""]},
-        A: {formats: ["5000", "1000", "FullRank"]},
-        Wk: {formats: ["5000", "1", "FullRank"]},
-        I1: {formats: ["1", "1", ""]},
+        Bin: {formats: ["1000", "1000", "General", "SPD"]},
+        In: {formats: ["1000", "1000", "General", ""]},
+        A: {formats: ["5000", "1000", "General", "FullRank"]},
+        Wk: {formats: ["5000", "1", "General", "FullRank"]},
+        I1: {formats: ["1", "1", "General", ""]},
       },
       //&+ W_k^T A B_{k-1} A^T W_k \\bigr)^{-1} W_k^T A B_{k-1} \\Bigr)\\end{align}",
       //expr: ["\\(A = (k/k-1)*B_{in}\\)", "\\(B = I_{n}\\)", "\\(C = -A^{T}*W_{k}*W_{k}^{T}*A*B_{in}\\)", "\\(D=(k-1)*I_{1}\\)", "\\(E=W_{k}^{T}*A*B_{in}*A^{T}*B_{in}\\)","\\(B_{out}=A*(B+(C*(D+E)))\\)"],
