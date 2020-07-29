@@ -383,19 +383,19 @@
 
         },
         error : function(xhr,errmsg,err) {
-          $("#tblFormats").hide();
+          //$("#tblFormats").hide();
           console.log(xhr.status + ": " + xhr.responseText);
          
-          $("#btnGetKernel").attr("disabled", true);
-          $("#btnDownloads").attr("disabled", true);
+          //$("#btnGetKernel").attr("disabled", true);
+          //$("#btnDownloads").attr("disabled", true);
 
-          $("#btnGetKernel").html("Generate Kernel");
-          $('#txtComputeLoops').val("Your input expression had syntax error :(");
-          $('#txtComputeLoops').html("Your input expression had syntax error :(");
+          //$("#btnGetKernel").html("Generate Kernel");
+          //$('#txtComputeLoops').val("Your input expression had syntax error :(");
+          //$('#txtComputeLoops').html("Your input expression had syntax error :(");
 
-          $("#lblError").css('visibility', 'visible');
-          $('#lblError').val('Error: Invalid Expression!');
-          $('#lblError').html('Error: Invalid Expression!');
+          //$("#lblError").css('visibility', 'visible');
+          //$('#lblError').val('Error: Invalid Expression!');
+          //$('#lblError').html('Error: Invalid Expression!');
         }
       });
       });

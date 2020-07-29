@@ -286,6 +286,10 @@ var txtExprView = {
             var ADD_MATTYPE_LI_DIV_1 = "ADD_MATTYPE_LI_DIV_1" + j;
             var ADD_MATTYPE_LI_DIV_INP_1 = "M_" + j + "_3";
 
+            // for hiding properties
+            var ADD_PROPERTY_LI_DIV_1 = "PROPERTY_LI_DIV_1" + j;
+            
+
 
 
             matricecreator.push(variable);
@@ -433,7 +437,7 @@ var txtExprView = {
               listLinneaBody += "style=\"display: block;\"";
             }
             listLinneaBody += ">";
-            listLinneaBody += "<input style=\"font-size: 11px\" class=\"mdl-textfield__input ";
+            listLinneaBody += "<input onchange='hidePropertyDisplay(this," + ADD_PROPERTY_LI_DIV_1 + ")' style=\"font-size: 11px\" class=\"mdl-textfield__input ";
             listLinneaBody += "format-input\" id=\"";
             listLinneaBody += ADD_MATTYPE_LI_DIV_INP_1;
             listLinneaBody += "\" type=\"text\" readonly ";
@@ -461,6 +465,7 @@ var txtExprView = {
             listLinneaBody += "<li id=\"";
             listLinneaBody += "\" class=\"ui-state-default\">";
             listLinneaBody += "<div id=\"";
+            listLinneaBody += ADD_PROPERTY_LI_DIV_1;
             listLinneaBody += "\" class=\"content mdl-textfield mdl-js-textfield ";
             listLinneaBody += "mdl-textfield--floating-label getmdl-select\" ";
             listLinneaBody += ">";
@@ -524,6 +529,7 @@ var txtExprView = {
             var V_TD_UL_LI_ID_2 = "V_TD_UL_LI_ID_2_J_" + j;
             var V_TD_UL_LI_DIV_ID_1 = "V_TD_UL_LI_DIV_ID_1_J_" + j;
             var V_TD_UL_LI_DIV_INP_ID_1 = "V_" + j + "_2";
+            var V_TD_UL_LI_DIV_INP_ID_LB_1 = "V_TD_UL_LI_DIV_INP_ID_LB_1_J_" + j;
 
             var vectorCreator = [];
 
@@ -572,7 +578,7 @@ var txtExprView = {
             listLinneaBody += "\" class=\"mdl-textfield mdl-js-textfield ";
             listLinneaBody += "mdl-textfield--floating-label getmdl-select\" ";
             listLinneaBody += ">";
-            listLinneaBody += "<input onchange='hideScalarDisplay(this," + ADD_CLMNVEC_LI_DIV_1 + ")' style=\"text-align: center; font-size: 11px; color: purple;\" class=\"format-input mdl-textfield__input ";
+            listLinneaBody += "<input onchange='hideScalarDisplay(this," + ADD_CLMNVEC_LI_DIV_1 + ", " + V_TD_UL_LI_DIV_INP_ID_LB_1 + ")' style=\"text-align: center; font-size: 11px; color: purple;\" class=\"format-input mdl-textfield__input ";
             listLinneaBody += "format-input\" id=\"";
             listLinneaBody += V_TD_1_DIV_INP_1;
 
@@ -643,7 +649,9 @@ var txtExprView = {
             listLinneaBody += `${variable}:0`;
             listLinneaBody += "\" onchange = 'writedim(this)'/>";
             listLinneaBody += "</label>";
-            listLinneaBody += "<label class=\"mdl-textfield__label\" for=\"";
+            listLinneaBody += "<label id=\"";
+            listLinneaBody += V_TD_UL_LI_DIV_INP_ID_LB_1;
+            listLinneaBody += "\" class=\"mdl-textfield__label\" for=\"";
             listLinneaBody += V_TD_UL_LI_DIV_INP_ID_1;
             if(format_T == "Scalar"){
               listLinneaBody += "\">Value: ";
@@ -1001,14 +1009,35 @@ var txtExprView = {
   }
 
 
-  function hideScalarDisplay(object, id){
-
-
+  function hideScalarDisplay(object, id, id2){
+    //out(id2);
+    //out(id2.id);
+    var id2_id = id2.id;
     //out($(object).val());
     if($(object).val() == 'Vector'){
       id.style.display = 'block';
+      //id2.innerHTML = 'Size';
+      $('#'+id2_id).text('Size');
       //out($("#"+id))
     }else if($(object).val() == 'Scalar'){
+      id.style.display = 'none';
+      $('#'+id2_id).text('Value');
+      //id2.innerHTML = 'Value';
+      //$("#"+id).html('value');
+    }
+
+  }
+
+  function hidePropertyDisplay(object, id){
+    //out($(object).val());
+    if($(object).val() == 'General'){
+      id.style.display = 'block';
+      
+      //out($("#"+id))
+    }else if($(object).val() == 'Identity'){
+      id.style.display = 'none';
+      //$("#"+id).html('value');
+    }else if($(object).val() == 'Zero'){
       id.style.display = 'none';
       //$("#"+id).html('value');
     }
