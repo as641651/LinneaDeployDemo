@@ -10,11 +10,14 @@ def create_input(request):
 
     if request.POST.get('action') == 'post':
         description = request.POST.get('description')
+        print(description)
         event = request.POST.get('event')
+        print(event)
         response_data['description'] = description
 
         if event == 'submit':
             try:
+                
                 answer = run_linnea(description)
                 SResult.objects.create(
                     description = description,
@@ -35,11 +38,12 @@ def create_input(request):
             response_data['git_version'] = pkg_resources.get_distribution("linnea").version
         elif event == 'keyup':
             try:
+                print('hello')
                 answer = dependent_dimensions(description)
-
+                
                 response_data['answer'] = str(answer)
 
-                print(description)
+                
                 print(dependent_dimensions(description))
 
             except Exception as e:

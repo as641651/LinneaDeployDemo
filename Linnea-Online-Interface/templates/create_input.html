@@ -303,22 +303,63 @@
   </body>
   <script type="text/javascript" src="{% static 'js/start.js' %}"></script>
   <script>
-    
-     
-    $(document).on('inputchange change keyup paste', '#dim-sug',function(e){
-      var inputString = $("#txtExpr").val();
-      if(inputString == ""){
-        $("#tblFormats").hide();
-      }else{
-        model.setInput(inputString.trim());
-        $("#lblError").css('visibility', 'hidden');
-      }
-
-      //out($('#description').val());
+    $('#description').val()
+    function fetchdims(){
       out($('#description').val());
+
+      out(tblFormatsView.cache);
+      out(model.input.juliaVars);
       
-      $.ajax({
+      out(tblFormatsView.cache[model.input.juliaVars[0]]);
+      if(tblFormatsView.cache !== undefined && model.input.juliaVars !== undefined && model.input.juliaVars.length != 0){
+        var dim_suggest_input = "";
+        dim_suggest_input += "n = 1000";
+        dim_suggest_input += "\n";
+        for(var v in model.input.juliaVars){
+          var id_v = model.input.juliaVars[v];
+          if (tblFormatsView.cache[`${id_v}`] !== undefined){  
+            if (/^[a-z]/.test(id_v)){
+              if(tblFormatsView.cache[`${id_v}`].formats[0] == "Scalar"){
+                dim_suggest_input += "Scalar " + id_v + "(n) <>";
+              }else{ 
+                if(tblFormatsView.cache[`${id_v}`].formats[2] == "Row Vector"){
+                  dim_suggest_input += "RowVector " + id_v + "(n) <>";
+                }else if(tblFormatsView.cache[`${id_v}`].formats[2] == "Column Vector"){
+                  dim_suggest_input += "ColumnVector " + id_v + "(n) <>";
+                }
+              }
+              dim_suggest_input += "\n";
+            }
+          }
+
+        }
+        for(var v in model.input.juliaVars){
+          var id_v = model.input.juliaVars[v];
+          // console.log(model.input.juliaVars[v]);
+          // console.log(typeof(model.input.juliaVars[v]));
+          // console.log(tblFormatsView.cache[`${id_v}`].ordering);
+
+          if (tblFormatsView.cache[`${id_v}`] !== undefined){
+            if (/^[A-Z]/.test(id_v)){
+              if(tblFormatsView.cache[`${id_v}`].formats[2] == "General"){
+                dim_suggest_input += "Matrix " + id_v + "(n,n)" + " <>";
+              }else if(tblFormatsView.cache[`${id_v}`].formats[2] == "Identity"){
+                dim_suggest_input += "IdentityMatrix " + id_v + "(n,n)" + " <>";
+              }else if(tblFormatsView.cache[`${id_v}`].formats[2] == "Zero"){
+                dim_suggest_input += "ZeroMatrix " + id_v + "(n,n)" + " <>";
+              }
+              dim_suggest_input += "\n";
+            }
+          }
+        }
         
+        dim_suggest_input += model.input.expression;
+        $("#description").val(dim_suggest_input);
+
+        
+          
+      }
+      $.ajax({      
         type:'POST',
         url:'{% url "create" %}',
         data:{
@@ -330,6 +371,9 @@
         success:function(json){
           $("#btnGetKernel").attr("disabled", false);
           $("#btnDownloads").attr("disabled", false);
+          $("#lblError").css('visibility', 'visible');
+          $('#lblError').val(json.answer);
+          $('#lblError').html(json.answer);
           //out(json.answer)
           var dm1 = json.answer.split(']]');
           //out(dm1);
@@ -374,17 +418,11 @@
 
           }
           //out(dm4);
-          
-
-          
-
-          
-
-
+ 
         },
         error : function(xhr,errmsg,err) {
           //$("#tblFormats").hide();
-          console.log(xhr.status + ": " + xhr.responseText);
+          //console.log(xhr.status + ": " + xhr.responseText);
          
           //$("#btnGetKernel").attr("disabled", true);
           //$("#btnDownloads").attr("disabled", true);
@@ -393,12 +431,32 @@
           //$('#txtComputeLoops').val("Your input expression had syntax error :(");
           //$('#txtComputeLoops').html("Your input expression had syntax error :(");
 
-          //$("#lblError").css('visibility', 'visible');
-          //$('#lblError').val('Error: Invalid Expression!');
-          //$('#lblError').html('Error: Invalid Expression!');
+          $("#lblError").css('visibility', 'visible');
+          $('#lblError').val('Error: Not valid expression or inconsostency in properties of variables!');
+          $('#lblError').html('Error: Not valid expression or inconsostency in properties of variables!');
         }
       });
-      });
+
+    }
+    $(document).ready(function(){
+      setInterval(fetchdims,2000);
+    });
+
+
+    $(document).on('inputchange change keyup paste', '#dim-sug',function(e){
+      var inputString = $("#txtExpr").val();
+      if(inputString == ""){
+        $("#tblFormats").hide();
+      }else{
+        model.setInput(inputString.trim());
+        $("#lblError").css('visibility', 'hidden');
+      }
+
+      //out($('#description').val());
+      
+      
+      
+    });
   </script>
   <script>
       $(document).on('submit', '#post-form',function(e){
@@ -407,7 +465,7 @@
       $("#btnDownloads").attr("disabled", true);
 
       $("#btnGetKernel").html("<i class='fa fa-circle-o-notch fa-spin'></i> Generating");
-
+      console.log($('#description').val());
       $.ajax({
           type:'POST',
           url:'{% url "create" %}',
@@ -443,14 +501,14 @@
 
           },
           error : function(xhr,errmsg,err) {
-            $("#tblFormats").hide();
+            //$("#tblFormats").hide();
             $("#btnGetKernel").attr("disabled", false);
             $("#btnDownloads").attr("disabled", false);
 
             $("#btnGetKernel").html("Generate Kernel");
             console.log(xhr.status + ": " + xhr.responseText);
-            $('#txtComputeLoops').val("Conflict in sizes of the inputs :(");
-            $('#txtComputeLoops').html("Conflict in sizes of the inputs :(");
+            $('#txtComputeLoops').val("Conflict in inputs :(");
+            $('#txtComputeLoops').html("Conflict in inputs :(");
 
             $("#lblError").css('visibility', 'visible');
             $('#lblError').val('Error: Invalid Expression!');

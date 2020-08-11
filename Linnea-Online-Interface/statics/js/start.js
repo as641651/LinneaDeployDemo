@@ -74,21 +74,55 @@ function removeItemAll(arr, value) {
 function writedim(object){
   //out(object);
   var var_tag = object.getAttribute("variable");
+  var var_id = object.getAttribute("id");
+  console.log('This is id: ' + var_id);
   var value = object.value;
+
+  // $('#'+var_id).on('keydown', function(event){
+  //   var key = String.fromCharCode(event.which);
+  //   if (!event.shiftKey) {
+  //       key = key.toLowerCase();
+  //   }
+  //   $('.two').val( value + key );
+  // });​
   //out(dm4);
   //out(var_tag);
   //out(value);
   //out(dm4[var_tag]);
+  out($('#'+var_id));
+  
+  out('hello');
   var ii =0;
-
-  for(ii;ii<dm4[var_tag].length;ii++){
-    if(var_tag != dm4[var_tag][ii]){
-      //out(dm4[var_tag][ii]);
-      //out(`input[variable = '${dm4[var_tag][ii]}'`);
-      $(`input[variable = '${dm4[var_tag][ii]}']` ).html(value).trigger('inputchange');
-      $(`input[variable = '${dm4[var_tag][ii]}']`).val(value).trigger('inputchange');
+  //var value = $(this).val();
+  //val = val.replace(/[^\w]+/g, "");
+  if(dm4[var_tag] !== undefined){
+    for(ii;ii<dm4[var_tag].length;ii++){
+      if(var_tag != dm4[var_tag][ii]){
+        //$(`input[variable = '${dm4[var_tag][ii]}']`).css( "border-bottom", "2px solid red" );
+        $(`input[variable = '${dm4[var_tag][ii]}']` ).html(value).trigger('inputchange');
+        $(`input[variable = '${dm4[var_tag][ii]}']`).val(value).trigger('inputchange');
+      }
     }
   }
+
+  // var ii =0;
+  // if(dm4[var_tag] !== undefined){
+  //   for(ii;ii<dm4[var_tag].length;ii++){
+  //     if(var_tag != dm4[var_tag][ii]){
+  //       //out(dm4[var_tag][ii]);
+  //       //out(`input[variable = '${dm4[var_tag][ii]}'`);
+  //       $(`input[variable = '${dm4[var_tag][ii]}']` ).html(value).trigger('inputchange');
+  //       $(`input[variable = '${dm4[var_tag][ii]}']`).val(value).trigger('inputchange');
+  //       // $('#'+var_id).on('keydown', function(event){
+  //       //   var key = String.fromCharCode(event.which);
+  //       //   if (!event.shiftKey) {
+  //       //       key = key.toLowerCase();
+  //       //   }
+  //       //   $(`input[variable = '${dm4[var_tag][ii]}']` ).val( value + key );
+  //       // });​
+  //     }
+  //   }
+  // }
   //out(tblFormatsView.cache);
 }
 
@@ -359,6 +393,46 @@ var txtExprView = {
             listLinneaBody += "\" class=\"ui-state-default\" ";
             listLinneaBody += "style=\"width: 0px; padding: 0px\"></li>";
 
+            // Matrice Type
+            listLinneaBody += "<li id=\"";
+            listLinneaBody += ADD_MATTYPE_LI_1;
+            listLinneaBody += "\" class=\"ui-state-default\">";
+
+            listLinneaBody += "<div id=\"";
+            listLinneaBody += ADD_MATTYPE_LI_DIV_1;
+            listLinneaBody += "\" class=\"mdl-textfield mdl-js-textfield ";
+            listLinneaBody += "mdl-textfield--floating-label getmdl-select\" ";
+            //if(model.input.expression == "Bout=(k*inv(k-1))*Bin*(In+(-1*trans(A)*Wk*inv((k-1)*I1+trans(Wk)*A*Bin*trans(A)*Wk)*trans(Wk)*A*Bin))" && variable == "k"){
+            // if(format_T == "Scalar"){
+            //   listLinneaBody += "style=\"display: none;\"";
+            // }else{
+            //   listLinneaBody += "style=\"display: block;\"";
+            // }
+            listLinneaBody += ">";
+            listLinneaBody += "<input onchange='hidePropertyDisplay(this," + ADD_PROPERTY_LI_DIV_1 + ")' style=\"font-size: 11px\" class=\"mdl-textfield__input ";
+            listLinneaBody += "format-input\" id=\"";
+            listLinneaBody += ADD_MATTYPE_LI_DIV_INP_1;
+            listLinneaBody += "\" type=\"text\" readonly ";
+            listLinneaBody += "value=\""
+            listLinneaBody += format_T;
+            listLinneaBody += "\" data-val=\"General";
+            listLinneaBody += "\"/>";
+            listLinneaBody += "<label class=\"mdl-textfield__label\" for=\"";
+            listLinneaBody += ADD_MATTYPE_LI_DIV_INP_1;
+            listLinneaBody += "\">Type: ";
+            listLinneaBody += "</label>";
+            listLinneaBody += "<ul class=\"mdl-menu ";
+            listLinneaBody += "mdl-js-menu \" for=\"";
+            listLinneaBody += ADD_MATTYPE_LI_DIV_INP_1;
+            listLinneaBody += "\">";
+            listLinneaBody += "<li class=\"mdl-menu__item\" style=\"font-size: 11px\" data-val=\"";
+            listLinneaBody += "d\">General</li>";
+            listLinneaBody += "<li class=\"mdl-menu__item\" style=\"font-size: 11px\" data-val=\"";
+            listLinneaBody += "s\">Identity</li>";
+            listLinneaBody += "<li class=\"mdl-menu__item\" style=\"font-size: 11px\" data-val=\"";
+            listLinneaBody += "s\">Zero</li>";
+            listLinneaBody += "</ul></div></li>";
+
             listLinneaBody += "<li id=\"";
             listLinneaBody += "\" class=\"ui-state-default\">";
             listLinneaBody += "<div id=\"";
@@ -375,7 +449,7 @@ var txtExprView = {
             listLinneaBody += "\" style=\"font-size: 13px\" data-val=\"";
             listLinneaBody += "\" variable=\"";
             listLinneaBody += `${variable}:0`;
-            listLinneaBody += "\" onchange = 'writedim(this)'/>";
+            listLinneaBody += "\" onkeyup = 'writedim(this)'/>";
             listLinneaBody += "<label class=\"mdl-textfield__label\" for=\"";
             listLinneaBody += M_R_TD_2_UL_LI_2_DIV_INP_1;
             listLinneaBody += "\">Rows: ";
@@ -405,7 +479,7 @@ var txtExprView = {
             listLinneaBody += "\" style=\"font-size: 13px\" data-val=\"";
             listLinneaBody += "\" variable=\"";
             listLinneaBody += `${variable}:1`;
-            listLinneaBody += "\" onchange = 'writedim(this)'/>";
+            listLinneaBody += "\" onkeyup = 'writedim(this)'/>";
             listLinneaBody += "<label class=\"mdl-textfield__label\" for=\"";
             listLinneaBody += M_C_TD_2_UL_LI_2_DIV_INP_1;
             listLinneaBody += "\">Columns: ";
@@ -421,45 +495,7 @@ var txtExprView = {
             listLinneaBody += "<div class=\"\">";
             listLinneaBody += "</div></li>";
 
-            // Matrice Type
-            listLinneaBody += "<li id=\"";
-            listLinneaBody += ADD_MATTYPE_LI_1;
-            listLinneaBody += "\" class=\"ui-state-default\">";
-
-            listLinneaBody += "<div id=\"";
-            listLinneaBody += ADD_MATTYPE_LI_DIV_1;
-            listLinneaBody += "\" class=\"mdl-textfield mdl-js-textfield ";
-            listLinneaBody += "mdl-textfield--floating-label getmdl-select\" ";
-            //if(model.input.expression == "Bout=(k*inv(k-1))*Bin*(In+(-1*trans(A)*Wk*inv((k-1)*I1+trans(Wk)*A*Bin*trans(A)*Wk)*trans(Wk)*A*Bin))" && variable == "k"){
-            if(format_T == "Scalar"){
-              listLinneaBody += "style=\"display: none;\"";
-            }else{
-              listLinneaBody += "style=\"display: block;\"";
-            }
-            listLinneaBody += ">";
-            listLinneaBody += "<input onchange='hidePropertyDisplay(this," + ADD_PROPERTY_LI_DIV_1 + ")' style=\"font-size: 11px\" class=\"mdl-textfield__input ";
-            listLinneaBody += "format-input\" id=\"";
-            listLinneaBody += ADD_MATTYPE_LI_DIV_INP_1;
-            listLinneaBody += "\" type=\"text\" readonly ";
-            listLinneaBody += "value=\""
-            listLinneaBody += format_T;
-            listLinneaBody += "\" data-val=\"General";
-            listLinneaBody += "\"/>";
-            listLinneaBody += "<label class=\"mdl-textfield__label\" for=\"";
-            listLinneaBody += ADD_MATTYPE_LI_DIV_INP_1;
-            listLinneaBody += "\">Type: ";
-            listLinneaBody += "</label>";
-            listLinneaBody += "<ul class=\"mdl-menu ";
-            listLinneaBody += "mdl-js-menu \" for=\"";
-            listLinneaBody += ADD_MATTYPE_LI_DIV_INP_1;
-            listLinneaBody += "\">";
-            listLinneaBody += "<li class=\"mdl-menu__item\" style=\"font-size: 11px\" data-val=\"";
-            listLinneaBody += "d\">General</li>";
-            listLinneaBody += "<li class=\"mdl-menu__item\" style=\"font-size: 11px\" data-val=\"";
-            listLinneaBody += "s\">Identity</li>";
-            listLinneaBody += "<li class=\"mdl-menu__item\" style=\"font-size: 11px\" data-val=\"";
-            listLinneaBody += "s\">Zero</li>";
-            listLinneaBody += "</ul></div></li>";
+            
 
 
             listLinneaBody += "<li id=\"";
@@ -524,6 +560,9 @@ var txtExprView = {
             var ADD_CLMNVEC_LI_1 = "ADD_CLMNVEC_LI_1" + j;
             var ADD_CLMNVEC_LI_DIV_1 = "ADD_CLMNVEC_LI_DIV_1" + j;
             var ADD_CLMNVEC_LI_DIV_INP_1 = "V_" + j + "_3";
+            var ADD_CLMNVEC_LI_DIV_INP_UL_1 = "ADD_CLMNVEC_LI_DIV_INP_UL_1" + j;
+            var ADD_CLMNVEC_LI_DIV_INP_LI_1 = "ADD_CLMNVEC_LI_DIV_INP_LI_1" + j;
+            var ADD_CLMNVEC_LI_DIV_INP_LI_2 = "ADD_CLMNVEC_LI_DIV_INP_LI_2" + j;
 
             // for size IDS
             var V_TD_UL_LI_ID_2 = "V_TD_UL_LI_ID_2_J_" + j;
@@ -578,7 +617,7 @@ var txtExprView = {
             listLinneaBody += "\" class=\"mdl-textfield mdl-js-textfield ";
             listLinneaBody += "mdl-textfield--floating-label getmdl-select\" ";
             listLinneaBody += ">";
-            listLinneaBody += "<input onchange='hideScalarDisplay(this," + ADD_CLMNVEC_LI_DIV_1 + ", " + V_TD_UL_LI_DIV_INP_ID_LB_1 + ")' style=\"text-align: center; font-size: 11px; color: purple;\" class=\"format-input mdl-textfield__input ";
+            listLinneaBody += "<input onchange='hideScalarDisplay(this," + V_TD_UL_LI_DIV_ID_1 + ", " + ADD_CLMNVEC_LI_DIV_1 + ", " + ADD_CLMNVEC_LI_DIV_INP_LI_1 + ", "+ ADD_CLMNVEC_LI_DIV_INP_LI_2 + ")' style=\"text-align: center; font-size: 11px; color: purple;\" class=\"format-input mdl-textfield__input ";
             listLinneaBody += "format-input\" id=\"";
             listLinneaBody += V_TD_1_DIV_INP_1;
 
@@ -625,46 +664,6 @@ var txtExprView = {
             listLinneaBody += "\ class=\"ui-state-default\" ";
             listLinneaBody += "style=\"width: 0px; padding: 0px\"></li>";
 
-
-
-            // Size of the Vector
-            listLinneaBody += "<li id=\"";
-            listLinneaBody += V_TD_UL_LI_ID_2;
-            listLinneaBody += "\" class=\"ui-state-default\">";
-            listLinneaBody += "<div id=\""
-            listLinneaBody += V_TD_UL_LI_DIV_ID_1;
-            listLinneaBody += "\" class=\"mdl-textfield mdl-js-textfield ";
-            listLinneaBody += "mdl-textfield--floating-label getmdl-select\" ";
-            listLinneaBody += ">";
-            listLinneaBody += "<input class=\"mdl-textfield__input ";
-            listLinneaBody += "format-input\" id=\"";
-            listLinneaBody += V_TD_UL_LI_DIV_INP_ID_1;
-            listLinneaBody += "\" type=\"text\"  ";
-
-            listLinneaBody += "value=\"";
-            listLinneaBody += format_S;
-
-            listLinneaBody += "\" style=\"font-size: 13px\" data-val=\"";
-            listLinneaBody += "\" variable=\"";
-            listLinneaBody += `${variable}:0`;
-            listLinneaBody += "\" onchange = 'writedim(this)'/>";
-            listLinneaBody += "</label>";
-            listLinneaBody += "<label id=\"";
-            listLinneaBody += V_TD_UL_LI_DIV_INP_ID_LB_1;
-            listLinneaBody += "\" class=\"mdl-textfield__label\" for=\"";
-            listLinneaBody += V_TD_UL_LI_DIV_INP_ID_1;
-            if(format_T == "Scalar"){
-              listLinneaBody += "\">Value: ";
-            }else{
-              listLinneaBody += "\">Size: ";
-            }
-            
-            listLinneaBody += "</label>";
-            listLinneaBody += "<ul class=\"mdl-menu ";
-            listLinneaBody += "mdl-js-menu \" for=\"";
-            listLinneaBody += "\">";
-            listLinneaBody += "</ul></div></li>";
-
             // Column Vector or Row Vector
             listLinneaBody += "<li id=\"";
             listLinneaBody += ADD_CLMNVEC_LI_1;
@@ -673,13 +672,11 @@ var txtExprView = {
             listLinneaBody += "<div id=\"";
             listLinneaBody += ADD_CLMNVEC_LI_DIV_1;
             listLinneaBody += "\" class=\"mdl-textfield mdl-js-textfield ";
-            listLinneaBody += "mdl-textfield--floating-label getmdl-select\" ";
+            listLinneaBody += "mdl-textfield--floating-label getmdl-select\" variable =\"";
+            listLinneaBody += variable;
+            listLinneaBody += "\""
             //if(model.input.expression == "Bout=(k*inv(k-1))*Bin*(In+(-1*trans(A)*Wk*inv((k-1)*I1+trans(Wk)*A*Bin*trans(A)*Wk)*trans(Wk)*A*Bin))" && variable == "k"){
-            if(format_T == "Scalar"){
-              listLinneaBody += "style=\"display: none;\"";
-            }else{
-              listLinneaBody += "style=\"display: block;\"";
-            }
+            
             listLinneaBody += ">";
             listLinneaBody += "<input style=\"font-size: 11px\" class=\"mdl-textfield__input ";
             listLinneaBody += "format-input\" id=\"";
@@ -697,11 +694,68 @@ var txtExprView = {
             listLinneaBody += "mdl-js-menu \" for=\"";
             listLinneaBody += ADD_CLMNVEC_LI_DIV_INP_1;
             listLinneaBody += "\">";
-            listLinneaBody += "<li class=\"mdl-menu__item\" style=\"font-size: 11px\" data-val=\"";
-            listLinneaBody += "d\">Row Vector</li>";
-            listLinneaBody += "<li class=\"mdl-menu__item\" style=\"font-size: 11px\" data-val=\"";
-            listLinneaBody += "s\">Column Vector</li>";
+            listLinneaBody += "<li id=\""
+            listLinneaBody += ADD_CLMNVEC_LI_DIV_INP_LI_1;
+            listLinneaBody += "\" class=\"mdl-menu__item\" style=\"font-size: 11px\" data-val=\"";
+            if(format_T == "Scalar"){
+              listLinneaBody += "d\">Positive</li>";
+            }else{
+              listLinneaBody += "d\">Column Vector</li>";
+            }
+            listLinneaBody += "<li id=\"";
+            listLinneaBody += ADD_CLMNVEC_LI_DIV_INP_LI_2;
+            listLinneaBody += "\" class=\"mdl-menu__item\" style=\"font-size: 11px\" data-val=\"";
+            if(format_T == "Scalar"){
+              listLinneaBody += "d\">Negative</li>";
+            }else{
+              listLinneaBody += "d\">Row Vector</li>";
+            }
             listLinneaBody += "</ul></div></li>";
+
+            // Size of the Vector
+            listLinneaBody += "<li id=\"";
+            listLinneaBody += V_TD_UL_LI_ID_2;
+            listLinneaBody += "\" class=\"ui-state-default\">";
+            listLinneaBody += "<div id=\""
+            listLinneaBody += V_TD_UL_LI_DIV_ID_1;
+            
+            listLinneaBody += "\" "; 
+            if(format_T == "Scalar"){
+              listLinneaBody += "style=\"display: none; \"";
+            }else{
+              listLinneaBody += "style=\"display: block; \"";
+            }
+            
+            listLinneaBody += " class=\"mdl-textfield mdl-js-textfield ";
+            listLinneaBody += "mdl-textfield--floating-label getmdl-select\" ";
+            listLinneaBody += ">";
+            listLinneaBody += "<input class=\"mdl-textfield__input ";
+            listLinneaBody += "format-input\" id=\"";
+            listLinneaBody += V_TD_UL_LI_DIV_INP_ID_1;
+            listLinneaBody += "\" type=\"text\"  ";
+
+            listLinneaBody += "value=\"";
+            listLinneaBody += format_S;
+
+            listLinneaBody += "\" style=\"font-size: 13px;\" data-val=\"";
+            listLinneaBody += "\" variable=\"";
+            listLinneaBody += `${variable}:0`;
+            listLinneaBody += "\" onkeyup = 'writedim(this)'/>";
+            listLinneaBody += "</label>";
+            listLinneaBody += "<label id=\"";
+            listLinneaBody += V_TD_UL_LI_DIV_INP_ID_LB_1;
+            listLinneaBody += "\" class=\"mdl-textfield__label\" for=\"";
+            listLinneaBody += V_TD_UL_LI_DIV_INP_ID_1;
+            listLinneaBody += "\">Size: ";
+            
+            
+            listLinneaBody += "</label>";
+            listLinneaBody += "<ul class=\"mdl-menu ";
+            listLinneaBody += "mdl-js-menu \" for=\"";
+            listLinneaBody += "\">";
+            listLinneaBody += "</ul></div></li>";
+
+            
           }
           listLinneaBody += "</ul></td></tr>";
         }
@@ -738,40 +792,40 @@ var txtExprView = {
           }
 
           //out(model.mat_GEN);
-          var dim_suggest_input = "";
-          dim_suggest_input += "n = 1000";
-          dim_suggest_input += "\n";
+          // var dim_suggest_input = "";
+          // dim_suggest_input += "n = 1000";
+          // dim_suggest_input += "\n";
 
-          if(model.mat_GEN  !== undefined && model.mat_GEN.length != 0){
-            var i=0;
-            var j=0;
-            for (i; i< model.mat_GEN.length; i++){
-              dim_suggest_input += "Matrix " + model.mat_GEN[i][0] + "(n,n)" + " <>";
-              dim_suggest_input += "\n";
-            }
-          }
+          // if(model.mat_GEN  !== undefined && model.mat_GEN.length != 0){
+          //   var i=0;
+          //   var j=0;
+          //   for (i; i< model.mat_GEN.length; i++){
+          //     dim_suggest_input += "Matrix " + model.mat_GEN[i][0] + "(n,n)" + " <>";
+          //     dim_suggest_input += "\n";
+          //   }
+          // }
 
-          if(model.vec_GEN  !== undefined && model.vec_GEN.length != 0){
-            var i=0;
-            var j=0;
-            for (i; i< model.vec_GEN.length; i++){
-              if($('#'+model.vec_GEN[i][1]).val().trim() == "Scalar"){
-                dim_suggest_input += "Scalar " + model.vec_GEN[i][0] + "<>";
-                dim_suggest_input += "\n";
-              }else{
-                if($('#'+model.vec_GEN[i][5]).val() == 'Row Vector'){
-                  dim_suggest_input += "Row Vector " + model.vec_GEN[i][0] + "(n)<>";
-                  dim_suggest_input += "\n";
-                }else{
-                  dim_suggest_input += "ColumnVector " + model.vec_GEN[i][0] + "(n)<>";
-                  dim_suggest_input += "\n";
+          // if(model.vec_GEN  !== undefined && model.vec_GEN.length != 0){
+          //   var i=0;
+          //   var j=0;
+          //   for (i; i< model.vec_GEN.length; i++){
+          //     if($('#'+model.vec_GEN[i][1]).val().trim() == "Scalar"){
+          //       dim_suggest_input += "Scalar " + model.vec_GEN[i][0] + "<>";
+          //       dim_suggest_input += "\n";
+          //     }else{
+          //       if($('#'+model.vec_GEN[i][5]).val() == 'Row Vector'){
+          //         dim_suggest_input += "Row Vector " + model.vec_GEN[i][0] + "(n)<>";
+          //         dim_suggest_input += "\n";
+          //       }else{
+          //         dim_suggest_input += "ColumnVector " + model.vec_GEN[i][0] + "(n)<>";
+          //         dim_suggest_input += "\n";
 
-                }
-              }
-            }
-          }
-          dim_suggest_input += model.input.expression;
-          $("#description").val(dim_suggest_input);
+          //       }
+          //     }
+          //   }
+          // }
+          // dim_suggest_input += model.input.expression;
+          // $("#description").val(dim_suggest_input);
           
 
 
@@ -841,7 +895,7 @@ var txtExprView = {
       expr: ["\\( B_k := \\frac{k}{k-1}B_{k-1} \\Bigl(I_n - A^T W_k \\bigl((k-1)I_l\\)", "\\(+W_k^T A B_{k-1} A^T W_k \\bigr)^{-1} W_k^T A B_{k-1} \\Bigr)\\)"],
       format: {
         Bout: {formats: ["1000", "1000", "General", "SPD"]},
-        k: {formats: ["Scalar", "0", ""]},
+        k: {formats: ["Scalar", "0", "Positive"]},
         Bin: {formats: ["1000", "1000", "General", "SPD"]},
         In: {formats: ["1000", "1000", "General", ""]},
         A: {formats: ["5000", "1000", "General", "FullRank"]},
@@ -1009,19 +1063,54 @@ var txtExprView = {
   }
 
 
-  function hideScalarDisplay(object, id, id2){
+  function hideScalarDisplay(object, id, id2, id3, id4){
     //out(id2);
-    //out(id2.id);
+    console.log(id2);
+    console.log(id3);
     var id2_id = id2.id;
     //out($(object).val());
     if($(object).val() == 'Vector'){
       id.style.display = 'block';
+      var v = id2.getAttribute("variable");
+      if(tblFormatsView.cache[`${v}`] !== undefined){
+        out('yes');
+        if(tblFormatsView.cache[`${v}`].formats[2] !== undefined){
+          out('yesyes');
+          if(tblFormatsView.cache[`${v}`].formats[2] == "Column Vector" || tblFormatsView.cache[`${v}`].formats[2] == "Row Vector"){
+            id2.firstElementChild.value = tblFormatsView.cache[`${v}`].formats[2];
+          }else{
+            id2.firstElementChild.value = "Column Vector";
+          }
+          
+        }
+
+      }
+      id3.textContent = "Column Vector";
+      id4.textContent = "Row Vector";
       //id2.innerHTML = 'Size';
-      $('#'+id2_id).text('Size');
+      //$('#'+id2_id).text('Size');
       //out($("#"+id))
     }else if($(object).val() == 'Scalar'){
       id.style.display = 'none';
-      $('#'+id2_id).text('Value');
+      var v = id2.getAttribute("variable");
+      if(tblFormatsView.cache[`${v}`] !== undefined){
+        out('yes');
+        if(tblFormatsView.cache[`${v}`].formats[2] !== undefined){
+          out('yesyes');
+          if(tblFormatsView.cache[`${v}`].formats[2] == "Positive" || tblFormatsView.cache[`${v}`].formats[2] == "Negative"){
+            id2.firstElementChild.value = tblFormatsView.cache[`${v}`].formats[2];
+          }else{
+            id2.firstElementChild.value = "Positive";
+          }
+          
+        }
+
+      }
+      id3.textContent = "Positive";
+      id4.textContent = "Negative";
+      //$('#'+id2_id +' option[value="Column Vector"]').text('New Option Text');
+      //$('#'+id2_id).text('Value');
+      
       //id2.innerHTML = 'Value';
       //$("#"+id).html('value');
     }
@@ -1097,74 +1186,159 @@ var txtExprView = {
 
 
   function generateInput(){
-    var inputGenerated = "";
-    inputGenerated += "\n"
+    console.log("in generation");
 
-    if(model.mat_GEN  !== undefined && model.mat_GEN.length != 0){
-      var i=0;
-      var j=0;
-      for (i; i < model.mat_GEN.length; i++){
+    // out($('#description').val());
 
-        inputGenerated += model.mat_GEN[i][2];
-        inputGenerated += " = ";
-        inputGenerated += $('#'+model.mat_GEN[i][1]).val();
-        inputGenerated += "\n";
+    // out(tblFormatsView.cache);
+    // out(model.input.juliaVars);
+    
+    out(tblFormatsView.cache[model.input.juliaVars[0]]);
+    if(tblFormatsView.cache !== undefined && model.input.juliaVars !== undefined && model.input.juliaVars.length != 0){
+      var inputGenerated = "";
+      inputGenerated += "\n";
 
-        inputGenerated += model.mat_GEN[i][4];
-        inputGenerated += " = ";
-        inputGenerated += $('#'+model.mat_GEN[i][3]).val();
-        inputGenerated += "\n";
-
-      }
-    }
-
-    if(model.vec_GEN !== undefined && model.vec_GEN.length != 0){
-      var i=0;
-      var j=0;
-      for (i; i<model.vec_GEN.length; i++){
-        if($('#'+model.vec_GEN[i][1]).val().trim() !== "Scalar"){
-          inputGenerated += model.vec_GEN[i][4];
-          inputGenerated += " = ";
-          inputGenerated += $('#'+model.vec_GEN[i][3]).val();
-          inputGenerated += "\n";
-        }
-      }
-    }
-
-
-    if(model.mat_GEN  !== undefined && model.mat_GEN.length != 0){
-      var i=0;
-      var j=0;
-      for (i; i< model.mat_GEN.length; i++){
-        inputGenerated += "Matrix " + model.mat_GEN[i][0] + "(" + model.mat_GEN[i][2] + ", " + model.mat_GEN[i][4] + ")" + ' <' + $('#'+model.mat_GEN[i][5]).val() +">";
-        inputGenerated += "\n";
-      }
-    }
-
-    if(model.vec_GEN  !== undefined && model.vec_GEN.length != 0){
-      var i=0;
-      var j=0;
-      for (i; i< model.vec_GEN.length; i++){
-        if($('#'+model.vec_GEN[i][1]).val().trim() == "Scalar"){
-          inputGenerated += "Scalar " + model.vec_GEN[i][0] + "<>";
-          inputGenerated += "\n";
-        }else{
-          if($('#'+model.vec_GEN[i][5]).val() == 'Row Vector'){
-            inputGenerated += "Row Vector " + model.vec_GEN[i][0] + "(" + model.vec_GEN[i][4] + ")<>";
+      for(var v in model.input.juliaVars){
+        var id_v = model.input.juliaVars[v];
+        if (tblFormatsView.cache[`${id_v}`] !== undefined){  
+          if (/^[a-z]/.test(id_v)){
+            if(tblFormatsView.cache[`${id_v}`].formats[0] == "Scalar"){
+              inputGenerated += "";
+            }else{ 
+              if(tblFormatsView.cache[`${id_v}`].formats[2] == "Row Vector"){
+                inputGenerated += tblFormatsView.cache[`${id_v}`].ordering[1] + " = " + tblFormatsView.cache[`${id_v}`].formats[1];
+              }else if(tblFormatsView.cache[`${id_v}`].formats[2] == "Column Vector"){
+                inputGenerated += tblFormatsView.cache[`${id_v}`].ordering[1] + " = " + tblFormatsView.cache[`${id_v}`].formats[1];
+              }
+            }
             inputGenerated += "\n";
-          }else{
-            inputGenerated += "ColumnVector " + model.vec_GEN[i][0] + "(" + model.vec_GEN[i][4] + ")<>";
-            inputGenerated += "\n";
-
           }
         }
       }
+      for(var v in model.input.juliaVars){
+        var id_v = model.input.juliaVars[v];
+        if (tblFormatsView.cache[`${id_v}`] !== undefined){
+          if (/^[A-Z]/.test(id_v)){
+            if(tblFormatsView.cache[`${id_v}`].formats[2] == "General"){
+              inputGenerated += tblFormatsView.cache[`${id_v}`].ordering[0] + " = " + tblFormatsView.cache[`${id_v}`].formats[0];
+              inputGenerated += "\n";
+              inputGenerated += tblFormatsView.cache[`${id_v}`].ordering[1] + " = " + tblFormatsView.cache[`${id_v}`].formats[1];
+              inputGenerated += "\n";
+            }else if(tblFormatsView.cache[`${id_v}`].formats[2] == "Identity"){
+              inputGenerated += tblFormatsView.cache[`${id_v}`].ordering[0] + " = " + tblFormatsView.cache[`${id_v}`].formats[0];
+              inputGenerated += "\n";
+              inputGenerated += tblFormatsView.cache[`${id_v}`].ordering[1] + " = " + tblFormatsView.cache[`${id_v}`].formats[1];
+              inputGenerated += "\n";
+            }else if(tblFormatsView.cache[`${id_v}`].formats[2] == "Zero"){
+              inputGenerated += tblFormatsView.cache[`${id_v}`].ordering[0] + " = " + tblFormatsView.cache[`${id_v}`].formats[0];
+              inputGenerated += "\n";
+              inputGenerated += tblFormatsView.cache[`${id_v}`].ordering[1] + " = " + tblFormatsView.cache[`${id_v}`].formats[1];
+              inputGenerated += "\n";
+            }
+          }
+        }
+      }
+
+
+      
+      for(var v in model.input.juliaVars){
+        var id_v = model.input.juliaVars[v];
+        if (tblFormatsView.cache[`${id_v}`] !== undefined){  
+          if (/^[a-z]/.test(id_v)){
+            if(tblFormatsView.cache[`${id_v}`].formats[0] == "Scalar"){
+              inputGenerated += "Scalar " + id_v + "<>";
+            }else{ 
+              if(tblFormatsView.cache[`${id_v}`].formats[2] == "Row Vector"){
+                inputGenerated += "RowVector " + id_v + "(" + tblFormatsView.cache[`${id_v}`].ordering[1] + ")" + "<>";
+              }else if(tblFormatsView.cache[`${id_v}`].formats[2] == "Column Vector"){
+                inputGenerated += "ColumnVector " + id_v + "(" + tblFormatsView.cache[`${id_v}`].ordering[1] + ")" + "<>";
+              }
+            }
+            inputGenerated += "\n";
+          }
+        } 
+
+      }
+      for(var v in model.input.juliaVars){
+        var id_v = model.input.juliaVars[v];
+        
+        if (tblFormatsView.cache[`${id_v}`] !== undefined){
+          if (/^[A-Z]/.test(id_v)){
+            if(tblFormatsView.cache[`${id_v}`].formats[2] == "General"){
+              inputGenerated += "Matrix " + id_v + "(" + tblFormatsView.cache[`${id_v}`].ordering[0] + "," + tblFormatsView.cache[`${id_v}`].ordering[1] + ")" + "<>";
+            }else if(tblFormatsView.cache[`${id_v}`].formats[2] == "Identity"){
+              inputGenerated += "IdentityMatrix " + id_v + "(" + tblFormatsView.cache[`${id_v}`].ordering[0] + "," + tblFormatsView.cache[`${id_v}`].ordering[1] + ")" + "<>";
+            }else if(tblFormatsView.cache[`${id_v}`].formats[2] == "Zero"){
+              inputGenerated += "ZeroMatrix " + id_v + "(" + tblFormatsView.cache[`${id_v}`].ordering[0] + "," + tblFormatsView.cache[`${id_v}`].ordering[1] + ")" + "<>";
+            }
+            inputGenerated += "\n";
+          }
+        }
+      }
+      
+      inputGenerated += model.input.expression;
+      console.log(inputGenerated);
+      $("#description").val(inputGenerated);
     }
-    inputGenerated += model.input.expression;
+
+
+    // var inputGenerated = "";
+    // inputGenerated += "\n"
+
+    // if(model.mat_GEN  !== undefined && model.mat_GEN.length != 0){
+    //   var i=0;
+    //   var j=0;
+    //   for (i; i < model.mat_GEN.length; i++){
+
+    //     inputGenerated += model.mat_GEN[i][2];
+    //     inputGenerated += " = ";
+    //     inputGenerated += $('#'+model.mat_GEN[i][1]).val();
+    //     inputGenerated += "\n";
+
+    //     inputGenerated += model.mat_GEN[i][4];
+    //     inputGenerated += " = ";
+    //     inputGenerated += $('#'+model.mat_GEN[i][3]).val();
+    //     inputGenerated += "\n";
+
+    //   }
+    // }
+
+    
+
+
+    // if(model.mat_GEN  !== undefined && model.mat_GEN.length != 0){
+    //   var i=0;
+    //   var j=0;
+    //   for (i; i< model.mat_GEN.length; i++){
+    //     inputGenerated += "Matrix " + model.mat_GEN[i][0] + "(" + model.mat_GEN[i][2] + ", " + model.mat_GEN[i][4] + ")" + ' <' + $('#'+model.mat_GEN[i][5]).val() +">";
+    //     inputGenerated += "\n";
+    //   }
+    // }
+
+    // if(model.vec_GEN  !== undefined && model.vec_GEN.length != 0){
+    //   var i=0;
+    //   var j=0;
+    //   for (i; i< model.vec_GEN.length; i++){
+    //     if($('#'+model.vec_GEN[i][1]).val().trim() == "Scalar"){
+    //       inputGenerated += "Scalar " + model.vec_GEN[i][0] + "<>";
+    //       inputGenerated += "\n";
+    //     }else{
+    //       if($('#'+model.vec_GEN[i][5]).val() == 'Row Vector'){
+    //         inputGenerated += "RowVector " + model.vec_GEN[i][0] + "(" + model.vec_GEN[i][4] + ")<>";
+    //         inputGenerated += "\n";
+    //       }else{
+    //         inputGenerated += "ColumnVector " + model.vec_GEN[i][0] + "(" + model.vec_GEN[i][4] + ")<>";
+    //         inputGenerated += "\n";
+
+    //       }
+    //     }
+    //   }
+    // }
+    // inputGenerated += model.input.expression;
 
 
 
-    $("#description").val(inputGenerated);
+    // $("#description").val(inputGenerated);
   }
 
   function downloadOutput(){
