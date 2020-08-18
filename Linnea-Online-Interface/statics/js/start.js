@@ -102,8 +102,8 @@ function writedim(object){
         $(`input[variable = '${dm4[var_tag][ii]}']`).val(value).trigger('inputchange');
       }
       if($(`input[variable = '${var_tag}']`).val() == $(`input[variable = '${dm4[var_tag][ii]}']`).val()){
-        $(`input[variable = '${var_tag}']`).css( "border-bottom", "2px solid #218559" );
-        $(`input[variable = '${dm4[var_tag][ii]}']`).css( "border-bottom", "2px solid #218559" );
+        $(`input[variable = '${var_tag}']`).css( "border-bottom", "2px solid #1F7872" );
+        $(`input[variable = '${dm4[var_tag][ii]}']`).css( "border-bottom", "2px solid #1F7872" );
       }
     }
   }
@@ -599,7 +599,12 @@ var txtExprView = {
             var format_T = cached ? tblFormatsView.cache[variable].formats[0] : "Vector";
             var format_S = cached ? tblFormatsView.cache[variable].formats[1] : "100";
             var format_CR = cached ? tblFormatsView.cache[variable].formats[2] : "Column Vector";
-
+            var var_format_CR = "";
+            if (format_CR == "Column Vector"){
+              var_format_CR = `${variable}:0`;
+            }else{
+              var_format_CR = `${variable}:1`;
+            }
             // Variable name
             listLinneaBody += "<tr>";
             listLinneaBody += "<td id=\"";
@@ -743,7 +748,7 @@ var txtExprView = {
 
             listLinneaBody += "\" style=\"font-size: 13px;\" data-val=\"";
             listLinneaBody += "\" variable=\"";
-            listLinneaBody += `${variable}:0`;
+            listLinneaBody += var_format_CR;
             listLinneaBody += "\" onkeyup = 'writedim(this)'/>";
             listLinneaBody += "</label>";
             listLinneaBody += "<label id=\"";
@@ -1044,18 +1049,12 @@ var txtExprView = {
   }
 
   function hideScalarDisplay(object, id, id2, id3, id4){
-    //out(id2);
-    //console.log(id2);
-    //console.log(id3);
     var id2_id = id2.id;
-    //out($(object).val());
     if($(object).val() == 'Vector'){
       id.style.display = 'block';
       var v = id2.getAttribute("variable");
       if(tblFormatsView.cache[`${v}`] !== undefined){
-        out('yes');
         if(tblFormatsView.cache[`${v}`].formats[2] !== undefined){
-          out('yesyes');
           if(tblFormatsView.cache[`${v}`].formats[2] == "Column Vector" || tblFormatsView.cache[`${v}`].formats[2] == "Row Vector"){
             id2.firstElementChild.value = tblFormatsView.cache[`${v}`].formats[2];
           }else{
@@ -1067,9 +1066,6 @@ var txtExprView = {
       }
       id3.textContent = "Column Vector";
       id4.textContent = "Row Vector";
-      //id2.innerHTML = 'Size';
-      //$('#'+id2_id).text('Size');
-      //out($("#"+id))
     }else if($(object).val() == 'Scalar'){
       id.style.display = 'none';
       var v = id2.getAttribute("variable");
@@ -1088,17 +1084,11 @@ var txtExprView = {
       }
       id3.textContent = "Positive";
       id4.textContent = "Negative";
-      //$('#'+id2_id +' option[value="Column Vector"]').text('New Option Text');
-      //$('#'+id2_id).text('Value');
-      
-      //id2.innerHTML = 'Value';
-      //$("#"+id).html('value');
     }
 
   }
 
   function hidePropertyDisplay(object, id){
-    //out($(object).val());
     if($(object).val() == 'General'){
       id.style.display = 'block';
       
@@ -1167,11 +1157,6 @@ var txtExprView = {
 
   function generateInput(){
     console.log("in generation");
-
-    // out($('#description').val());
-
-    // out(tblFormatsView.cache);
-    // out(model.input.juliaVars);
     
     out(tblFormatsView.cache[model.input.juliaVars[0]]);
     if(tblFormatsView.cache !== undefined && model.input.juliaVars !== undefined && model.input.juliaVars.length != 0){
@@ -1262,63 +1247,6 @@ var txtExprView = {
     }
 
 
-    // var inputGenerated = "";
-    // inputGenerated += "\n"
-
-    // if(model.mat_GEN  !== undefined && model.mat_GEN.length != 0){
-    //   var i=0;
-    //   var j=0;
-    //   for (i; i < model.mat_GEN.length; i++){
-
-    //     inputGenerated += model.mat_GEN[i][2];
-    //     inputGenerated += " = ";
-    //     inputGenerated += $('#'+model.mat_GEN[i][1]).val();
-    //     inputGenerated += "\n";
-
-    //     inputGenerated += model.mat_GEN[i][4];
-    //     inputGenerated += " = ";
-    //     inputGenerated += $('#'+model.mat_GEN[i][3]).val();
-    //     inputGenerated += "\n";
-
-    //   }
-    // }
-
-    
-
-
-    // if(model.mat_GEN  !== undefined && model.mat_GEN.length != 0){
-    //   var i=0;
-    //   var j=0;
-    //   for (i; i< model.mat_GEN.length; i++){
-    //     inputGenerated += "Matrix " + model.mat_GEN[i][0] + "(" + model.mat_GEN[i][2] + ", " + model.mat_GEN[i][4] + ")" + ' <' + $('#'+model.mat_GEN[i][5]).val() +">";
-    //     inputGenerated += "\n";
-    //   }
-    // }
-
-    // if(model.vec_GEN  !== undefined && model.vec_GEN.length != 0){
-    //   var i=0;
-    //   var j=0;
-    //   for (i; i< model.vec_GEN.length; i++){
-    //     if($('#'+model.vec_GEN[i][1]).val().trim() == "Scalar"){
-    //       inputGenerated += "Scalar " + model.vec_GEN[i][0] + "<>";
-    //       inputGenerated += "\n";
-    //     }else{
-    //       if($('#'+model.vec_GEN[i][5]).val() == 'Row Vector'){
-    //         inputGenerated += "RowVector " + model.vec_GEN[i][0] + "(" + model.vec_GEN[i][4] + ")<>";
-    //         inputGenerated += "\n";
-    //       }else{
-    //         inputGenerated += "ColumnVector " + model.vec_GEN[i][0] + "(" + model.vec_GEN[i][4] + ")<>";
-    //         inputGenerated += "\n";
-
-    //       }
-    //     }
-    //   }
-    // }
-    // inputGenerated += model.input.expression;
-
-
-
-    // $("#description").val(inputGenerated);
   }
 
   function downloadOutput(){

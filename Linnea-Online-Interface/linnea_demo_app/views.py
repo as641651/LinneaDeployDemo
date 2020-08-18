@@ -4,15 +4,38 @@ from django.http import JsonResponse
 from .models import SResult, FResult
 import pkg_resources
 import json
+import subprocess
+import pathlib
+import os
+ 
+def execute_shell_command(cmd, work_dir):
+    pipe = subprocess.Popen(cmd, shell=True, cwd=work_dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    (out, error) = pipe.communicate()
+    pipe.wait()
+    return out
+ 
+ 
+def git_rev_parse(repo_dir):    
+    cmd = 'git rev-parse --verify HEAD'
+    linnea_latest_commit = execute_shell_command(cmd, repo_dir)
+    return linnea_latest_commit
+    
 
 def create_input(request):
     response_data = {}
-
+    currentDirectory = os.path.dirname(os.path.realpath(__file__))
+    baseDirectory = currentDirectory.split("Linnea-Online-Interface",1)[0]
+    linnea_directory = baseDirectory+'linnea'
+    print(linnea_directory)
+    # print(git_rev_parse('/home/sinahk/Dropbox/6. Workspace/Linnea/LinneaDeployDemo/linnea'))
+    linnea_dir = '/home/sinahk/Dropbox/6. Workspace/Linnea/LinneaDeployDemo/linnea'
+    linnea_last_commit = git_rev_parse(linnea_directory)
+    linnea_last_commit = linnea_last_commit[2:-3]
     if request.POST.get('action') == 'post':
         description = request.POST.get('description')
-        print(description)
+        print('The .la input is: ' + description)
         event = request.POST.get('event')
-        print(event)
+        print('The event type is: ' + event)
         response_data['description'] = description
 
         if event == 'submit':
@@ -22,7 +45,8 @@ def create_input(request):
                 SResult.objects.create(
                     description = description,
                     result = answer,
-                    git_version = pkg_resources.get_distribution("linnea").version,
+                    #git_version = pkg_resources.get_distribution("linnea").version,
+                    git_version = linnea_last_commit,
                 )
                 response_data['answer'] = answer
             except Exception as e:
@@ -31,20 +55,20 @@ def create_input(request):
                     description = description,
                     result = e,
                     reason = 'Expression Error!!!',
-                    git_version = pkg_resources.get_distribution("linnea").version,
+                    #git_version = pkg_resources.get_distribution("linnea").version,
+                    git_version = linnea_last_commit,
                 )
                 response_data['answer'] = e
 
             response_data['git_version'] = pkg_resources.get_distribution("linnea").version
         elif event == 'keyup':
             try:
-                print('hello')
                 answer = dependent_dimensions(description)
                 
                 response_data['answer'] = str(answer)
 
                 
-                print(dependent_dimensions(description))
+                print('The dimensions suggested are: ' + dependent_dimensions(description))
 
             except Exception as e:
             

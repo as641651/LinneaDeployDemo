@@ -41,7 +41,7 @@
 
   <body onload="inittxtExpr();">
 
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #111627;">
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #1A202C;">
       <a class="navbar-brand" href="#">Linnea</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -289,8 +289,7 @@
 
     <!-- </footer> -->
     <div class="myfooter">
-                  <p style="margin: auto; font-size: 0.60em; width: 72em; line-height:15px; padding-top: 5px;"> The generated code is provided "as is", without warranty of any kind. In order to improve Linnea, all submitted input expressions are stored. If you have questions, comments, or encounter bugs, please post an issue on <a href="//github.com/HPAC/linnea/issues"> GitHub</a>.</p>
-
+      <p style="margin: auto; font-size: 0.60em; width: 72em; line-height:15px; padding-top: 5px;"> The generated code is provided "as is", without warranty of any kind. In order to improve Linnea, all submitted input expressions are stored. If you have questions, comments, or encounter bugs, please post an issue on <a href="//github.com/HPAC/linnea/issues"> GitHub</a>.</p>
       <p style="margin-top: 0; margin-bottom: 0;">&copy; Copyright <b><a href="http://hpac.rwth-aachen.de/">HPAC</a></b> Team 2020</p>
     </div> 
 
@@ -323,7 +322,7 @@
           if (tblFormatsView.cache[`${id_v}`] !== undefined){  
             if (/^[a-z]/.test(id_v)){
               if(tblFormatsView.cache[`${id_v}`].formats[0] == "Scalar"){
-                dim_suggest_input += "Scalar " + id_v + "(n) <>";
+                dim_suggest_input += "Scalar " + id_v + " <" + tblFormatsView.cache[`${id_v}`].formats[2] + ">";
               }else{ 
                 if(tblFormatsView.cache[`${id_v}`].formats[2] == "Row Vector"){
                   dim_suggest_input += "RowVector " + id_v + "(n) <>";
@@ -375,8 +374,8 @@
           $("#btnGetKernel").attr("disabled", false);
           $("#btnDownloads").attr("disabled", false);
           $("#lblError").css('visibility', 'visible');
-          //$('#lblError').val('');
-          //$('#lblError').html(json.answer);
+          $('#lblError').val('');
+          $('#lblError').html('');
           //out(json.answer)
           var dm1 = json.answer.split(']]');
           //out(dm1);
@@ -434,8 +433,8 @@
                   if(key != value[ii]){
                     //console.log($(`input[variable = '${key}']`).val().match('^(0|[1-9][0-9]*)$'));
                     if($(`input[variable = '${key}']`).val() != $(`input[variable = '${value[ii]}']`).val()){
-                      $(`input[variable = '${key}']`).css( "border-bottom", "2px solid #DD1E2F" );
-                      $(`input[variable = '${value[ii]}']`).css( "border-bottom", "2px solid #DD1E2F" );
+                      $(`input[variable = '${key}']`).css( "border-bottom", "2px solid #D13F31" );
+                      $(`input[variable = '${value[ii]}']`).css( "border-bottom", "2px solid #D13F31" );
                       $(`input[variable = '${value[ii]}']`).addClass(".mdl-textfield.is-focused")
                     }else{
                       $(`input[variable = '${key}']`).css( "border-bottom", "1px solid rgba(0,0,0,.12)" );
@@ -448,6 +447,7 @@
  
         },
         error : function(xhr,errmsg,err) {
+          dm4 = {}
           //$("#tblFormats").hide();
           //console.log(xhr.status + ": " + xhr.responseText);
          
@@ -466,7 +466,7 @@
 
     }
     $(document).ready(function(){
-      setInterval(fetchdims,2000);
+      setInterval(fetchdims,1000);
     });
 
 
@@ -529,6 +529,7 @@
           },
           error : function(xhr,errmsg,err) {
             //$("#tblFormats").hide();
+            dm4 = {}
             $("#btnGetKernel").attr("disabled", false);
             $("#btnDownloads").attr("disabled", false);
 
