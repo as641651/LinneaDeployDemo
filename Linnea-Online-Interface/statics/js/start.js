@@ -97,10 +97,13 @@ function writedim(object){
   //val = val.replace(/[^\w]+/g, "");
   if(dm4[var_tag] !== undefined){
     for(ii;ii<dm4[var_tag].length;ii++){
-      if(var_tag != dm4[var_tag][ii]){
-        //$(`input[variable = '${dm4[var_tag][ii]}']`).css( "border-bottom", "2px solid red" );
+      if(var_tag != dm4[var_tag][ii]){      
         $(`input[variable = '${dm4[var_tag][ii]}']` ).html(value).trigger('inputchange');
         $(`input[variable = '${dm4[var_tag][ii]}']`).val(value).trigger('inputchange');
+      }
+      if($(`input[variable = '${var_tag}']`).val() == $(`input[variable = '${dm4[var_tag][ii]}']`).val()){
+        $(`input[variable = '${var_tag}']`).css( "border-bottom", "2px solid #218559" );
+        $(`input[variable = '${dm4[var_tag][ii]}']`).css( "border-bottom", "2px solid #218559" );
       }
     }
   }
@@ -342,8 +345,8 @@ var txtExprView = {
             model.all_IDs.push(mat_ID_cache);
             mat_ID_cache = [];
 
-            var format_R = cached ? tblFormatsView.cache[variable].formats[0] : "0";
-            var format_C = cached ? tblFormatsView.cache[variable].formats[1] : "0";
+            var format_R = cached ? tblFormatsView.cache[variable].formats[0] : "100";
+            var format_C = cached ? tblFormatsView.cache[variable].formats[1] : "100";
             var format_T = cached ? tblFormatsView.cache[variable].formats[2] : "General";
             var format_P = cached ? tblFormatsView.cache[variable].formats[3] : "";
 
@@ -594,7 +597,7 @@ var txtExprView = {
             vec_ID_cache = [];
 
             var format_T = cached ? tblFormatsView.cache[variable].formats[0] : "Vector";
-            var format_S = cached ? tblFormatsView.cache[variable].formats[1] : "0";
+            var format_S = cached ? tblFormatsView.cache[variable].formats[1] : "100";
             var format_CR = cached ? tblFormatsView.cache[variable].formats[2] : "Column Vector";
 
             // Variable name
@@ -678,7 +681,8 @@ var txtExprView = {
             //if(model.input.expression == "Bout=(k*inv(k-1))*Bin*(In+(-1*trans(A)*Wk*inv((k-1)*I1+trans(Wk)*A*Bin*trans(A)*Wk)*trans(Wk)*A*Bin))" && variable == "k"){
             
             listLinneaBody += ">";
-            listLinneaBody += "<input style=\"font-size: 11px\" class=\"mdl-textfield__input ";
+            listLinneaBody += "<input onchange='changeVectorType(this, " + V_TD_UL_LI_DIV_INP_ID_1 + ")'";
+            listLinneaBody += "\" style=\"font-size: 11px\" class=\"mdl-textfield__input ";
             listLinneaBody += "format-input\" id=\"";
             listLinneaBody += ADD_CLMNVEC_LI_DIV_INP_1;
             listLinneaBody += "\" type=\"text\" readonly ";
@@ -791,41 +795,7 @@ var txtExprView = {
             }
           }
 
-          //out(model.mat_GEN);
-          // var dim_suggest_input = "";
-          // dim_suggest_input += "n = 1000";
-          // dim_suggest_input += "\n";
-
-          // if(model.mat_GEN  !== undefined && model.mat_GEN.length != 0){
-          //   var i=0;
-          //   var j=0;
-          //   for (i; i< model.mat_GEN.length; i++){
-          //     dim_suggest_input += "Matrix " + model.mat_GEN[i][0] + "(n,n)" + " <>";
-          //     dim_suggest_input += "\n";
-          //   }
-          // }
-
-          // if(model.vec_GEN  !== undefined && model.vec_GEN.length != 0){
-          //   var i=0;
-          //   var j=0;
-          //   for (i; i< model.vec_GEN.length; i++){
-          //     if($('#'+model.vec_GEN[i][1]).val().trim() == "Scalar"){
-          //       dim_suggest_input += "Scalar " + model.vec_GEN[i][0] + "<>";
-          //       dim_suggest_input += "\n";
-          //     }else{
-          //       if($('#'+model.vec_GEN[i][5]).val() == 'Row Vector'){
-          //         dim_suggest_input += "Row Vector " + model.vec_GEN[i][0] + "(n)<>";
-          //         dim_suggest_input += "\n";
-          //       }else{
-          //         dim_suggest_input += "ColumnVector " + model.vec_GEN[i][0] + "(n)<>";
-          //         dim_suggest_input += "\n";
-
-          //       }
-          //     }
-          //   }
-          // }
-          // dim_suggest_input += model.input.expression;
-          // $("#description").val(dim_suggest_input);
+          
           
 
 
@@ -1062,11 +1032,21 @@ var txtExprView = {
     }
   }
 
+  function changeVectorType (object, id){
+    var var_tag = id.getAttribute("variable");
+    var_tag = var_tag.charAt(0);
+    console.log(id);
+    if($(object).val() == 'Column Vector'){
+      id.setAttribute("variable", `${var_tag}:0`);
+    }else{
+      id.setAttribute("variable", `${var_tag}:1`);
+    }
+  }
 
   function hideScalarDisplay(object, id, id2, id3, id4){
     //out(id2);
-    console.log(id2);
-    console.log(id3);
+    //console.log(id2);
+    //console.log(id3);
     var id2_id = id2.id;
     //out($(object).val());
     if($(object).val() == 'Vector'){

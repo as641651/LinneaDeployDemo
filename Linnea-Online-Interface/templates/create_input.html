@@ -375,8 +375,8 @@
           $("#btnGetKernel").attr("disabled", false);
           $("#btnDownloads").attr("disabled", false);
           $("#lblError").css('visibility', 'visible');
-          $('#lblError').val(json.answer);
-          $('#lblError').html(json.answer);
+          //$('#lblError').val('');
+          //$('#lblError').html(json.answer);
           //out(json.answer)
           var dm1 = json.answer.split(']]');
           //out(dm1);
@@ -420,7 +420,31 @@
             }
 
           }
+          // out("The dm4: ");
           //out(dm4);
+
+          if(dm4 !== undefined){
+            for (const [key, value] of Object.entries(dm4)) {
+              console.log(key);
+              console.log(value);
+              console.log($(`input[variable = '${key}']`).val());
+              var ii=0;
+              if(value.length)
+                for(ii;ii<value.length;ii++){
+                  if(key != value[ii]){
+                    //console.log($(`input[variable = '${key}']`).val().match('^(0|[1-9][0-9]*)$'));
+                    if($(`input[variable = '${key}']`).val() != $(`input[variable = '${value[ii]}']`).val()){
+                      $(`input[variable = '${key}']`).css( "border-bottom", "2px solid #DD1E2F" );
+                      $(`input[variable = '${value[ii]}']`).css( "border-bottom", "2px solid #DD1E2F" );
+                      $(`input[variable = '${value[ii]}']`).addClass(".mdl-textfield.is-focused")
+                    }else{
+                      $(`input[variable = '${key}']`).css( "border-bottom", "1px solid rgba(0,0,0,.12)" );
+                      $(`input[variable = '${value[ii]}']`).css( "border-bottom", "1px solid rgba(0,0,0,.12)" );
+                    }
+                  }
+                }
+            }
+          }
  
         },
         error : function(xhr,errmsg,err) {
