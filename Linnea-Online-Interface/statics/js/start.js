@@ -863,7 +863,7 @@ var txtExprView = {
         I: {formats: ["5000", "5000", "General", ""]},
         x: {formats: ["Vector", "5000", "Column Vector"]},
       },
-      code: "H_dag=trans(H)*inv(H*trans(H))\ny_k=H_dag*y+(I+(-1*H_dag*H))*x",
+      code: "H_dag=trans(H)*inv(H*trans(H))\ny_k=H_dag*y+(I+(-H_dag*H))*x",
     },
     input5:{
       name: "Stochastic Newton",
@@ -880,7 +880,7 @@ var txtExprView = {
       //&+ W_k^T A B_{k-1} A^T W_k \\bigr)^{-1} W_k^T A B_{k-1} \\Bigr)\\end{align}",
       //expr: ["\\(A = (k/k-1)*B_{in}\\)", "\\(B = I_{n}\\)", "\\(C = -A^{T}*W_{k}*W_{k}^{T}*A*B_{in}\\)", "\\(D=(k-1)*I_{1}\\)", "\\(E=W_{k}^{T}*A*B_{in}*A^{T}*B_{in}\\)","\\(B_{out}=A*(B+(C*(D+E)))\\)"],
       //expr: "\\(B_{out}=((k/k-1)*B_{in}*(I_{n}+(-A^{T}*W_{k}*A*((k-1)*I_{1}+(W_{k})^{T}*A*B_{in}*A^{T}*W_{k})^{-1}*B_{in}*A^{T}*W_{k}))\\)",
-     code: "Bout=(k*inv(k-1))*Bin*(In+(-1*trans(A)*Wk*inv((k-1)*I1+trans(Wk)*A*Bin*trans(A)*Wk)*trans(Wk)*A*Bin))",
+     code: "Bout=(k*inv(k-1))*Bin*(In+(-trans(A)*Wk*inv((k-1)*I1+trans(Wk)*A*Bin*trans(A)*Wk)*trans(Wk)*A*Bin))",
    },
 
   };
@@ -909,11 +909,13 @@ var txtExprView = {
       listExamplesBody += "<li id=\"example_";
       listExamplesBody += e;
       listExamplesBody += "\" class=\"mdl-menu__item\" style=\"height: 70px; \" >";
-      listExamplesBody += "<ul style=\"list-style: none;  padding-top: 10px;padding-left: 0px;padding-bottom:10px;;font-size: 11px;\"><li class=\"\">";
+      //listExamplesBody += "<ul style=\"list-style: none;  padding-top: 10px;padding-left: 0px;padding-bottom:10px;;font-size: 11px;\"><li class=\"\">";
+      listExamplesBody += "<ul style=\"list-style: none;  padding-top: 10px;padding-left: 0px;padding-bottom:10px; font-size: 11px;\"><li class=\"\"  style=\"float: right;\">";
       listExamplesBody += examples[e].name;
       listExamplesBody += ":&nbsp ";
       listExamplesBody += examples[e].expr[0];
-      listExamplesBody += "</li><li class=\"\" style=\"padding-left: 116px;\">";
+      //listExamplesBody += "</li><li class=\"\" style=\"padding-left: 116px;\">";
+      listExamplesBody += "</li><li class=\"\" style=\"float: right;\">";
       listExamplesBody += examples[e].expr[1];
       listExamplesBody += "</li></ul></li>";
 
@@ -1065,6 +1067,7 @@ var txtExprView = {
 
       }
       id3.textContent = "Column Vector";
+      id4.style.display = 'block';
       id4.textContent = "Row Vector";
     }else if($(object).val() == 'Scalar'){
       id.style.display = 'none';
@@ -1083,7 +1086,9 @@ var txtExprView = {
 
       }
       id3.textContent = "Positive";
+      id4.style.display = 'none';
       id4.textContent = "Negative";
+      
     }
 
   }
@@ -1168,7 +1173,7 @@ var txtExprView = {
         if (tblFormatsView.cache[`${id_v}`] !== undefined){  
           if (/^[a-z]/.test(id_v)){
             if(tblFormatsView.cache[`${id_v}`].formats[0] == "Scalar"){
-              inputGenerated += "";
+              inputGenerated += "Scalar " + id_v + " <" + tblFormatsView.cache[`${id_v}`].formats[2] + ">";
             }else{ 
               if(tblFormatsView.cache[`${id_v}`].formats[2] == "Row Vector"){
                 inputGenerated += tblFormatsView.cache[`${id_v}`].ordering[1] + " = " + tblFormatsView.cache[`${id_v}`].formats[1];
