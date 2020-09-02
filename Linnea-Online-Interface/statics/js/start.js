@@ -710,15 +710,12 @@ var txtExprView = {
               listLinneaBody += "d\">Positive</li>";
             }else{
               listLinneaBody += "d\">Column Vector</li>";
-            }
-            listLinneaBody += "<li id=\"";
-            listLinneaBody += ADD_CLMNVEC_LI_DIV_INP_LI_2;
-            listLinneaBody += "\" class=\"mdl-menu__item\" style=\"font-size: 11px\" data-val=\"";
-            if(format_T == "Scalar"){
-              listLinneaBody += "d\">Negative</li>";
-            }else{
+              listLinneaBody += "<li id=\"";
+              listLinneaBody += ADD_CLMNVEC_LI_DIV_INP_LI_2;
+              listLinneaBody += "\" class=\"mdl-menu__item\" style=\"font-size: 11px\" data-val=\"";
               listLinneaBody += "d\">Row Vector</li>";
             }
+            
             listLinneaBody += "</ul></div></li>";
 
             // Size of the Vector
@@ -837,7 +834,7 @@ var txtExprView = {
     },
     input3:{
       name: "Triangular Matrix Inversion",
-      expr: ["\\(X_{10} := L_{10} L_{00}^{-1}\\)" , "\\(X_{20} := L_{20} + L_{22}^{-1} L_{21} L_{11}^{-1} L_{10}\\)","\\(X_{11} := L_{11}^{-1}\\)", "\\(X_{21} := -L_{22}^{-1} L_{21}\\)"],
+      expr: "\\(\\begin{aligned}X_{10} &:= L_{10} L_{00}^{-1} \\\\X_{20} &:= L_{20} + L_{22}^{-1} L_{21} L_{11}^{-1} L_{10} \\\\X_{11} &:= L_{11}^{-1} \\\\X_{21} &:= - L_{22}^{-1} L_{21}\\end{aligned}\\)",
       format: {
         X10: {formats: ["200","2000","General",""]},
         L10: {formats: ["200","2000","General","FullRank"]},
@@ -850,11 +847,11 @@ var txtExprView = {
         X11: {formats: ["200","200","General",""]},
         X21: {formats: ["2000","200","General",""]},
       },
-      code: "X10=L10*inv(L00)\nX20=L20+(inv(L22)*L21*inv(L11)*L10)\nX11=inv(L11)\nX21=inv(L22)*L21*-1",
+      code: "X10=L10*inv(L00)\nX20=L20+(inv(L22)*L21*inv(L11)*L10)\nX11=inv(L11)\nX21=-inv(L22)*L21",
     },
     input4:{
       name: "Image Restoration",
-      expr: ["\\(H^{\\dagger} := H^{T}(HH^{T})^{-1}\\) ", "\\(y_k := H^{\\dagger}y+(I_n-H^{\\dagger}H)x_k\\)"],
+      expr: "\\(\\begin{aligned}H^\\dagger &:= H^T ( H H^T )^{-1} \\\\y_k &:= H^\\dagger y + ( I_n - H^\\dagger H ) x_k\\end{aligned}\\)",
       format: {
         H_dag: {formats: ["5000", "1000", "General", "FullRank"]},
         H: {formats: ["1000", "5000", "General", "FullRank"]},
@@ -867,7 +864,7 @@ var txtExprView = {
     },
     input5:{
       name: "Stochastic Newton",
-      expr: ["\\( B_k := \\frac{k}{k-1}B_{k-1} \\Bigl(I_n - A^T W_k \\bigl((k-1)I_l\\)", "\\(+W_k^T A B_{k-1} A^T W_k \\bigr)^{-1} W_k^T A B_{k-1} \\Bigr)\\)"],
+      expr: "\\(\\begin{align} B_k :={}& \\frac{k}{k-1}B_{k-1} \\Bigl(I_n - A^T W_k \\bigl((k-1)I_l \\\\ &+ W_k^T A B_{k-1} A^T W_k \\bigr)^{-1} W_k^T A B_{k-1} \\Bigr) \\end{align}\\)",
       format: {
         Bout: {formats: ["1000", "1000", "General", "SPD"]},
         k: {formats: ["Scalar", "0", "Positive"]},
@@ -877,9 +874,6 @@ var txtExprView = {
         Wk: {formats: ["5000", "1", "General", "FullRank"]},
         I1: {formats: ["1", "1", "General", ""]},
       },
-      //&+ W_k^T A B_{k-1} A^T W_k \\bigr)^{-1} W_k^T A B_{k-1} \\Bigr)\\end{align}",
-      //expr: ["\\(A = (k/k-1)*B_{in}\\)", "\\(B = I_{n}\\)", "\\(C = -A^{T}*W_{k}*W_{k}^{T}*A*B_{in}\\)", "\\(D=(k-1)*I_{1}\\)", "\\(E=W_{k}^{T}*A*B_{in}*A^{T}*B_{in}\\)","\\(B_{out}=A*(B+(C*(D+E)))\\)"],
-      //expr: "\\(B_{out}=((k/k-1)*B_{in}*(I_{n}+(-A^{T}*W_{k}*A*((k-1)*I_{1}+(W_{k})^{T}*A*B_{in}*A^{T}*W_{k})^{-1}*B_{in}*A^{T}*W_{k}))\\)",
      code: "Bout=(k*inv(k-1))*Bin*(In+(-trans(A)*Wk*inv((k-1)*I1+trans(Wk)*A*Bin*trans(A)*Wk)*trans(Wk)*A*Bin))",
    },
 
@@ -887,62 +881,51 @@ var txtExprView = {
 
   var listExamplesBody = "";
   for (var e in examples) {
-
-    //:&nbsp;
-    if(examples[e].name == "Triangular Matrix Inversion" ){
+    if(examples[e].name == "Least Squares" ){
       listExamplesBody += "<li id=\"example_";
       listExamplesBody += e;
-      listExamplesBody += "\" class=\"mdl-menu__item\" style=\"height: 115px;\" >";
-      listExamplesBody += "<ul style=\"list-style: none; padding-top: 10px;padding-left: 0px;padding-bottom:10px;font-size: 11px;\"><li class=\"\">";
-      listExamplesBody += examples[e].name;
-      listExamplesBody += ":&nbsp ";
-      listExamplesBody += examples[e].expr[0];
-      listExamplesBody += "</li><li class=\"\" style=\"padding-left: 163px;\">";
-      listExamplesBody += examples[e].expr[1];
-      listExamplesBody += "</li><li class=\"\" style=\"padding-left: 163px;\">";
-      listExamplesBody += examples[e].expr[2];
-      listExamplesBody += "</li><li  class=\"\" style=\"padding-left: 163px;\">";
-      listExamplesBody += examples[e].expr[3];
-      listExamplesBody += "</li></ul></li>";
+      listExamplesBody += "\" class=\"mdl-menu__item mdl-menu__item--full-bleed-divider\" style=\"font-size: 11px; \"><strong style=\"color:purple\" >";
 
+      listExamplesBody += examples[e].name;
+      listExamplesBody += ":</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ";
+      listExamplesBody += examples[e].expr;
+      listExamplesBody += "</li>";
+    }else if(examples[e].name == "Generalized Least Squares"){
+      listExamplesBody += "<li id=\"example_";
+      listExamplesBody += e;
+      listExamplesBody += "\" class=\"mdl-menu__item mdl-menu__item--full-bleed-divider\" style=\"font-size: 11px; \"><strong style=\"color:purple\" >";
+
+      listExamplesBody += examples[e].name;
+      listExamplesBody += ":</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ";
+      listExamplesBody += examples[e].expr;
+      listExamplesBody += "</li>";  
+    }else if(examples[e].name == "Triangular Matrix Inversion"){
+      listExamplesBody += "<li id=\"example_";
+      listExamplesBody += e;
+      listExamplesBody += "\" class=\"mdl-menu__item mdl-menu__item--full-bleed-divider\" style=\"font-size: 11px; height: 104px; padding-top: 16px;\"><strong style=\"color:purple\" >";
+
+      listExamplesBody += examples[e].name;
+      listExamplesBody += ":</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+      listExamplesBody += examples[e].expr;
+      listExamplesBody += "</li>";  
     }else if(examples[e].name == "Image Restoration"){
       listExamplesBody += "<li id=\"example_";
       listExamplesBody += e;
-      listExamplesBody += "\" class=\"mdl-menu__item\" style=\"height: 70px; \" >";
-      //listExamplesBody += "<ul style=\"list-style: none;  padding-top: 10px;padding-left: 0px;padding-bottom:10px;;font-size: 11px;\"><li class=\"\">";
-      listExamplesBody += "<ul style=\"list-style: none;  padding-top: 10px;padding-left: 0px;padding-bottom:10px; font-size: 11px;\"><li class=\"\"  style=\"float: right;\">";
-      listExamplesBody += examples[e].name;
-      listExamplesBody += ":&nbsp ";
-      listExamplesBody += examples[e].expr[0];
-      //listExamplesBody += "</li><li class=\"\" style=\"padding-left: 116px;\">";
-      listExamplesBody += "</li><li class=\"\" style=\"float: right;\">";
-      listExamplesBody += examples[e].expr[1];
-      listExamplesBody += "</li></ul></li>";
+      listExamplesBody += "\" class=\"mdl-menu__item mdl-menu__item--full-bleed-divider\" style=\"font-size: 11px; height: 70px; padding-top: 10px;\"><strong style=\"color:purple\" >";
 
+      listExamplesBody += examples[e].name;
+      listExamplesBody += ":</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+      listExamplesBody += examples[e].expr;
+      listExamplesBody += "</li>";  
     }else if(examples[e].name == "Stochastic Newton"){
       listExamplesBody += "<li id=\"example_";
       listExamplesBody += e;
-      listExamplesBody += "\" class=\"mdl-menu__item\" style=\"height: 70px; font-size: 11px;\">";
-      listExamplesBody += "<ul style=\"list-style: none;  padding-top: 10px;padding-left: 0px;padding-bottom:10px;font-size: 11px;\"><li class=\"\">";
-      listExamplesBody += examples[e].name;
-      listExamplesBody += ":&nbsp ";
-      listExamplesBody += examples[e].expr[0];
-      listExamplesBody += "</li><li class=\"\" style=\"padding-left: 116px;\">";
-      listExamplesBody += examples[e].expr[1];
-
-      listExamplesBody += "</li></ul></li>";
-
-    }else{
-
-      listExamplesBody += "<li id=\"example_";
-      listExamplesBody += e;
-      listExamplesBody += "\" class=\"mdl-menu__item\" style=\"font-size: 11px;\">";
+      listExamplesBody += "\" class=\"mdl-menu__item \" style=\"font-size: 11px; height: 70px; padding-top: 10px;\"><strong style=\"color:purple\" >";
 
       listExamplesBody += examples[e].name;
-      listExamplesBody += ":&nbsp ";
+      listExamplesBody += ":</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
       listExamplesBody += examples[e].expr;
-      listExamplesBody += "</li>";
-
+      listExamplesBody += "</li>";  
     }
 
   }
@@ -1173,7 +1156,7 @@ var txtExprView = {
         if (tblFormatsView.cache[`${id_v}`] !== undefined){  
           if (/^[a-z]/.test(id_v)){
             if(tblFormatsView.cache[`${id_v}`].formats[0] == "Scalar"){
-              inputGenerated += "Scalar " + id_v + " <" + tblFormatsView.cache[`${id_v}`].formats[2] + ">";
+              //inputGenerated += "Scalar " + id_v + " <" + tblFormatsView.cache[`${id_v}`].formats[2] + ">";
             }else{ 
               if(tblFormatsView.cache[`${id_v}`].formats[2] == "Row Vector"){
                 inputGenerated += tblFormatsView.cache[`${id_v}`].ordering[1] + " = " + tblFormatsView.cache[`${id_v}`].formats[1];
@@ -1216,7 +1199,7 @@ var txtExprView = {
         if (tblFormatsView.cache[`${id_v}`] !== undefined){  
           if (/^[a-z]/.test(id_v)){
             if(tblFormatsView.cache[`${id_v}`].formats[0] == "Scalar"){
-              inputGenerated += "Scalar " + id_v + "<>";
+              inputGenerated += "Scalar " + id_v + " <" + tblFormatsView.cache[`${id_v}`].formats[2] + ">";
             }else{ 
               if(tblFormatsView.cache[`${id_v}`].formats[2] == "Row Vector"){
                 inputGenerated += "RowVector " + id_v + "(" + tblFormatsView.cache[`${id_v}`].ordering[1] + ")" + "<>";
