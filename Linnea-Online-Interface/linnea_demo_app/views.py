@@ -24,13 +24,15 @@ def git_rev_parse(repo_dir):
 def create_input(request):
     response_data = {}
     currentDirectory = os.path.dirname(os.path.realpath(__file__))
-    baseDirectory = currentDirectory.split("Linnea-Online-Interface",1)[0]
-    linnea_directory = baseDirectory+'linnea'
-    print(linnea_directory)
+    baseDirectory = currentDirectory.split("linnea_demo_app",1)[0]
+    print(baseDirectory)
     # print(git_rev_parse('/home/sinahk/Dropbox/6. Workspace/Linnea/LinneaDeployDemo/linnea'))
-    linnea_dir = '/home/sinahk/Dropbox/6. Workspace/Linnea/LinneaDeployDemo/linnea'
-    linnea_last_commit = git_rev_parse(linnea_directory)
+    # linnea_dir = '/home/sinahk/Dropbox/6. Workspace/Linnea/LinneaDeployDemo/linnea'
+    linnea_dir = baseDirectory+'linnea_web'
+    
+    linnea_last_commit = git_rev_parse(linnea_dir)
     linnea_last_commit = linnea_last_commit[2:-3]
+    #linnea_last_commit = "afd75b10321488f3e3c8721215d35090c6"
     if request.POST.get('action') == 'post':
         description = request.POST.get('description')
         print('The .la input is: ' + description)

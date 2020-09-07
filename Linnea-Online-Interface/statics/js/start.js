@@ -896,7 +896,7 @@ var txtExprView = {
       listExamplesBody += "\" class=\"mdl-menu__item mdl-menu__item--full-bleed-divider\" style=\"font-size: 11px; \"><strong style=\"color:purple\" >";
 
       listExamplesBody += examples[e].name;
-      listExamplesBody += ":</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ";
+      listExamplesBody += ":</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ";
       listExamplesBody += examples[e].expr;
       listExamplesBody += "</li>";  
     }else if(examples[e].name == "Triangular Matrix Inversion"){
@@ -914,7 +914,7 @@ var txtExprView = {
       listExamplesBody += "\" class=\"mdl-menu__item mdl-menu__item--full-bleed-divider\" style=\"font-size: 11px; height: 70px; padding-top: 10px;\"><strong style=\"color:purple\" >";
 
       listExamplesBody += examples[e].name;
-      listExamplesBody += ":</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+      listExamplesBody += ":</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
       listExamplesBody += examples[e].expr;
       listExamplesBody += "</li>";  
     }else if(examples[e].name == "Stochastic Newton"){
