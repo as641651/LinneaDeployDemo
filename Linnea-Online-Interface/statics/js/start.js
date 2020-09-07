@@ -1218,7 +1218,7 @@ var txtExprView = {
         if (tblFormatsView.cache[`${id_v}`] !== undefined){
           if (/^[A-Z]/.test(id_v)){
             if(tblFormatsView.cache[`${id_v}`].formats[2] == "General"){
-              inputGenerated += "Matrix " + id_v + "(" + tblFormatsView.cache[`${id_v}`].ordering[0] + "," + tblFormatsView.cache[`${id_v}`].ordering[1] + ")" + "<>";
+              inputGenerated += "Matrix " + id_v + "(" + tblFormatsView.cache[`${id_v}`].ordering[0] + "," + tblFormatsView.cache[`${id_v}`].ordering[1] + ")" + "<" + tblFormatsView.cache[`${id_v}`].formats[3] + ">";
             }else if(tblFormatsView.cache[`${id_v}`].formats[2] == "Identity"){
               inputGenerated += "IdentityMatrix " + id_v + "(" + tblFormatsView.cache[`${id_v}`].ordering[0] + "," + tblFormatsView.cache[`${id_v}`].ordering[1] + ")" + "<>";
             }else if(tblFormatsView.cache[`${id_v}`].formats[2] == "Zero"){
