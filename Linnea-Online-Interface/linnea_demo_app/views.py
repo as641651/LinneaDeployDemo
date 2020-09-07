@@ -28,7 +28,7 @@ def create_input(request):
     print(baseDirectory)
     # print(git_rev_parse('/home/sinahk/Dropbox/6. Workspace/Linnea/LinneaDeployDemo/linnea'))
     # linnea_dir = '/home/sinahk/Dropbox/6. Workspace/Linnea/LinneaDeployDemo/linnea'
-    linnea_dir = baseDirectory+'linnea_web'
+    linnea_dir = baseDirectory+'linnea_master'
     
     linnea_last_commit = git_rev_parse(linnea_dir)
     linnea_last_commit = linnea_last_commit[2:-3]
