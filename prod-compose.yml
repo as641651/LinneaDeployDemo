@@ -42,7 +42,7 @@ services:
         context: .
         dockerfile: Docker/prod/nginx/Dockerfile
       ports:
-        - "8012:80"
+        - "80:80"
       volumes:
         # app creates a docker volume, which is inturn mapped here
         - static_files:/vol/static
