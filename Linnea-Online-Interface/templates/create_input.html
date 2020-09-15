@@ -307,12 +307,6 @@
   <script>
     $('#description').val()
     function fetchdims(){
-      out($('#description').val());
-
-      out(tblFormatsView.cache);
-      out(model.input.juliaVars);
-      
-      out(tblFormatsView.cache[model.input.juliaVars[0]]);
       if(tblFormatsView.cache !== undefined && model.input.juliaVars !== undefined && model.input.juliaVars.length != 0){
         var dim_suggest_input = "";
         dim_suggest_input += "n = 1000";
@@ -322,7 +316,12 @@
           if (tblFormatsView.cache[`${id_v}`] !== undefined){  
             if (/^[a-z]/.test(id_v)){
               if(tblFormatsView.cache[`${id_v}`].formats[0] == "Scalar"){
-                dim_suggest_input += "Scalar " + id_v + " <" + tblFormatsView.cache[`${id_v}`].formats[2] + ">";
+                if(tblFormatsView.cache[`${id_v}`].formats[2] == "Positive"){
+                  dim_suggest_input += "Scalar " + id_v + " <" + tblFormatsView.cache[`${id_v}`].formats[2] + ">";
+                }else{
+                  dim_suggest_input += "Scalar " + id_v + " <>";
+                }
+                
               }else{ 
                 if(tblFormatsView.cache[`${id_v}`].formats[2] == "Row Vector"){
                   dim_suggest_input += "RowVector " + id_v + "(n) <>";
@@ -346,9 +345,9 @@
               if(tblFormatsView.cache[`${id_v}`].formats[2] == "General"){
                 dim_suggest_input += "Matrix " + id_v + "(n,n)" + " <>";
               }else if(tblFormatsView.cache[`${id_v}`].formats[2] == "Identity"){
-                dim_suggest_input += "IdentityMatrix " + id_v + "(n,n)" + " <>";
+                dim_suggest_input += "IdentityMatrix " + id_v + "(n,n)";
               }else if(tblFormatsView.cache[`${id_v}`].formats[2] == "Zero"){
-                dim_suggest_input += "ZeroMatrix " + id_v + "(n,n)" + " <>";
+                dim_suggest_input += "ZeroMatrix " + id_v + "(n,n)";
               }
               dim_suggest_input += "\n";
             }
@@ -376,13 +375,10 @@
           $("#lblError").css('visibility', 'visible');
           $('#lblError').val('');
           $('#lblError').html('');
-          //out(json.answer)
           var dm1 = json.answer.split(']]');
-          //out(dm1);
           dada = [];
           dm4 = {};
           for(d in dm1){
-            //out(dm1[d]);
             if(dm1[d].length > 1){
               dx = dm1[d].replace(/[\[\]\{\}\(\)\'\"&]+/g,'');
               dx = dx.trim();
@@ -395,7 +391,6 @@
                   sss.push(ss[ii]);
                 }
               }
-              //out(sss);
               da = [];
               var ii=0;
               for(ii; ii<sss.length;ii=ii+2){
@@ -408,35 +403,31 @@
             dada.push(da);
           }
 
-          //out(tblFormatsView.cache);
-          //out(dada);
           for(d in dada){
             var ii=0; 
             for(ii; ii<dada[d].length;ii=ii+1){
               var dda = dada[d];
-              //dda = removeItemAll(dda,dada[d][ii]);
               dm4[dada[d][ii]] = dda
             }
 
           }
-          // out("The dm4: ");
-          //out(dm4);
 
+          console.log(dm4);
           if(dm4 !== undefined){
             for (const [key, value] of Object.entries(dm4)) {
-              console.log(key);
-              console.log(value);
-              console.log($(`input[variable = '${key}']`).val());
+              
               var ii=0;
               if(value.length)
                 for(ii;ii<value.length;ii++){
                   if(key != value[ii]){
-                    //console.log($(`input[variable = '${key}']`).val().match('^(0|[1-9][0-9]*)$'));
                     if($(`input[variable = '${key}']`).val() != $(`input[variable = '${value[ii]}']`).val()){
-                      $(`input[variable = '${key}']`).css( "border-bottom", "2px solid #D13F31" );
-                      $(`input[variable = '${value[ii]}']`).css( "border-bottom", "2px solid #D13F31" );
-                      $(`input[variable = '${value[ii]}']`).addClass(".mdl-textfield.is-focused")
+                      $('#lblError').val('Error: Dimension mismatch!');
+                      $('#lblError').html('Error: Dimension mismatch!');
+                      $(`input[variable = '${key}']`).css( "border-bottom", "1px solid #D13F31" );
+                      $(`input[variable = '${value[ii]}']`).css( "border-bottom", "1px solid #D13F31" );
                     }else{
+                      $('#lblError').val('');
+                      $('#lblError').html('');
                       $(`input[variable = '${key}']`).css( "border-bottom", "1px solid rgba(0,0,0,.12)" );
                       $(`input[variable = '${value[ii]}']`).css( "border-bottom", "1px solid rgba(0,0,0,.12)" );
                     }
@@ -459,8 +450,8 @@
           //$('#txtComputeLoops').html("Your input expression had syntax error :(");
 
           $("#lblError").css('visibility', 'visible');
-          $('#lblError').val('Error: Not valid expression or inconsostency in properties of variables!');
-          $('#lblError').html('Error: Not valid expression or inconsostency in properties of variables!');
+          $('#lblError').val('Error: Please check expression, operand types and operand properties.');
+          $('#lblError').html('Error: Please check expression, operand types and operand properties.');
         }
       });
 
@@ -479,8 +470,6 @@
         $("#lblError").css('visibility', 'hidden');
       }
 
-      //out($('#description').val());
-      
       
       
     });
@@ -535,8 +524,8 @@
 
             $("#btnGetKernel").html("Generate Kernel");
             console.log(xhr.status + ": " + xhr.responseText);
-            $('#txtComputeLoops').val("Conflict in inputs :(");
-            $('#txtComputeLoops').html("Conflict in inputs :(");
+            $('#txtComputeLoops').val("Unable to generate code. Please check the input for errors.");
+            $('#txtComputeLoops').html("Unable to generate code. Please check the input for errors.");
 
             $("#lblError").css('visibility', 'visible');
             $('#lblError').val('Error: Invalid Expression!');

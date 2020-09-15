@@ -72,29 +72,12 @@ function removeItemAll(arr, value) {
 }
 
 function writedim(object){
-  //out(object);
   var var_tag = object.getAttribute("variable");
   var var_id = object.getAttribute("id");
   console.log('This is id: ' + var_id);
   var value = object.value;
-
-  // $('#'+var_id).on('keydown', function(event){
-  //   var key = String.fromCharCode(event.which);
-  //   if (!event.shiftKey) {
-  //       key = key.toLowerCase();
-  //   }
-  //   $('.two').val( value + key );
-  // });​
-  //out(dm4);
-  //out(var_tag);
-  //out(value);
-  //out(dm4[var_tag]);
-  out($('#'+var_id));
   
-  out('hello');
   var ii =0;
-  //var value = $(this).val();
-  //val = val.replace(/[^\w]+/g, "");
   if(dm4[var_tag] !== undefined){
     for(ii;ii<dm4[var_tag].length;ii++){
       if(var_tag != dm4[var_tag][ii]){      
@@ -102,31 +85,11 @@ function writedim(object){
         $(`input[variable = '${dm4[var_tag][ii]}']`).val(value).trigger('inputchange');
       }
       if($(`input[variable = '${var_tag}']`).val() == $(`input[variable = '${dm4[var_tag][ii]}']`).val()){
-        $(`input[variable = '${var_tag}']`).css( "border-bottom", "2px solid #1F7872" );
-        $(`input[variable = '${dm4[var_tag][ii]}']`).css( "border-bottom", "2px solid #1F7872" );
+        $(`input[variable = '${var_tag}']`).css( "border-bottom", "1px solid #1F7872" );
+        $(`input[variable = '${dm4[var_tag][ii]}']`).css( "border-bottom", "1px solid #1F7872" );
       }
     }
   }
-
-  // var ii =0;
-  // if(dm4[var_tag] !== undefined){
-  //   for(ii;ii<dm4[var_tag].length;ii++){
-  //     if(var_tag != dm4[var_tag][ii]){
-  //       //out(dm4[var_tag][ii]);
-  //       //out(`input[variable = '${dm4[var_tag][ii]}'`);
-  //       $(`input[variable = '${dm4[var_tag][ii]}']` ).html(value).trigger('inputchange');
-  //       $(`input[variable = '${dm4[var_tag][ii]}']`).val(value).trigger('inputchange');
-  //       // $('#'+var_id).on('keydown', function(event){
-  //       //   var key = String.fromCharCode(event.which);
-  //       //   if (!event.shiftKey) {
-  //       //       key = key.toLowerCase();
-  //       //   }
-  //       //   $(`input[variable = '${dm4[var_tag][ii]}']` ).val( value + key );
-  //       // });​
-  //     }
-  //   }
-  // }
-  //out(tblFormatsView.cache);
 }
 
 //select2js
@@ -507,6 +470,11 @@ var txtExprView = {
             listLinneaBody += ADD_PROPERTY_LI_DIV_1;
             listLinneaBody += "\" class=\"content mdl-textfield mdl-js-textfield ";
             listLinneaBody += "mdl-textfield--floating-label getmdl-select\" ";
+            if(format_T == "Identity" || format_T == "Zero"){
+              listLinneaBody += "style=\"display:none\" ";
+            }else{
+              listLinneaBody += "style=\"display:block\" ";
+            }
             listLinneaBody += ">";
             listLinneaBody += "<input class=\"mdl-textfield__input ";
             listLinneaBody += "format-input extrawide\" placeholder=\"None\"id=\"";
@@ -563,6 +531,7 @@ var txtExprView = {
             var ADD_CLMNVEC_LI_1 = "ADD_CLMNVEC_LI_1" + j;
             var ADD_CLMNVEC_LI_DIV_1 = "ADD_CLMNVEC_LI_DIV_1" + j;
             var ADD_CLMNVEC_LI_DIV_INP_1 = "V_" + j + "_3";
+            var ADD_CLMNVEC_LI_DIV_INP_LB_1 = "ADD_CLMNVEC_LI_DIV_INP_LB" + j;
             var ADD_CLMNVEC_LI_DIV_INP_UL_1 = "ADD_CLMNVEC_LI_DIV_INP_UL_1" + j;
             var ADD_CLMNVEC_LI_DIV_INP_LI_1 = "ADD_CLMNVEC_LI_DIV_INP_LI_1" + j;
             var ADD_CLMNVEC_LI_DIV_INP_LI_2 = "ADD_CLMNVEC_LI_DIV_INP_LI_2" + j;
@@ -625,7 +594,7 @@ var txtExprView = {
             listLinneaBody += "\" class=\"mdl-textfield mdl-js-textfield ";
             listLinneaBody += "mdl-textfield--floating-label getmdl-select\" ";
             listLinneaBody += ">";
-            listLinneaBody += "<input onchange='hideScalarDisplay(this," + V_TD_UL_LI_DIV_ID_1 + ", " + ADD_CLMNVEC_LI_DIV_1 + ", " + ADD_CLMNVEC_LI_DIV_INP_LI_1 + ", "+ ADD_CLMNVEC_LI_DIV_INP_LI_2 + ")' style=\"text-align: center; font-size: 11px; color: purple;\" class=\"format-input mdl-textfield__input ";
+            listLinneaBody += "<input onchange='hideScalarDisplay(this," + V_TD_UL_LI_DIV_ID_1 + ", " + ADD_CLMNVEC_LI_DIV_1 + ", " + ADD_CLMNVEC_LI_DIV_INP_LI_1 + ", "+ ADD_CLMNVEC_LI_DIV_INP_LI_2 + ", " + ADD_CLMNVEC_LI_DIV_INP_LB_1 + ")' style=\"text-align: center; font-size: 11px; color: purple;\" class=\"format-input mdl-textfield__input ";
             listLinneaBody += "format-input\" id=\"";
             listLinneaBody += V_TD_1_DIV_INP_1;
 
@@ -683,8 +652,7 @@ var txtExprView = {
             listLinneaBody += "mdl-textfield--floating-label getmdl-select\" variable =\"";
             listLinneaBody += variable;
             listLinneaBody += "\""
-            //if(model.input.expression == "Bout=(k*inv(k-1))*Bin*(In+(-1*trans(A)*Wk*inv((k-1)*I1+trans(Wk)*A*Bin*trans(A)*Wk)*trans(Wk)*A*Bin))" && variable == "k"){
-            
+          
             listLinneaBody += ">";
             listLinneaBody += "<input onchange='changeVectorType(this, " + V_TD_UL_LI_DIV_INP_ID_1 + ")'";
             listLinneaBody += "\" style=\"font-size: 11px\" class=\"mdl-textfield__input ";
@@ -695,9 +663,15 @@ var txtExprView = {
             listLinneaBody += format_CR;
             listLinneaBody += "\" data-val=\"Column Vector";
             listLinneaBody += "\"/>";
-            listLinneaBody += "<label class=\"mdl-textfield__label\" for=\"";
+            listLinneaBody += "<label id=\"";
+            listLinneaBody += ADD_CLMNVEC_LI_DIV_INP_LB_1;
+            listLinneaBody += "\" class=\"mdl-textfield__label\" for=\"";
             listLinneaBody += ADD_CLMNVEC_LI_DIV_INP_1;
-            listLinneaBody += "\">Type: ";
+            if(format_T == "Scalar"){
+              listLinneaBody += "\">Properties: ";
+            }else{
+              listLinneaBody += "\">Type: ";
+            }
             listLinneaBody += "</label>";
             listLinneaBody += "<ul class=\"mdl-menu ";
             listLinneaBody += "mdl-js-menu \" for=\"";
@@ -707,6 +681,10 @@ var txtExprView = {
             listLinneaBody += ADD_CLMNVEC_LI_DIV_INP_LI_1;
             listLinneaBody += "\" class=\"mdl-menu__item\" style=\"font-size: 11px\" data-val=\"";
             if(format_T == "Scalar"){
+              listLinneaBody += "d\">None</li>";
+              listLinneaBody += "<li id=\"";
+              listLinneaBody += ADD_CLMNVEC_LI_DIV_INP_LI_2;
+              listLinneaBody += "\" class=\"mdl-menu__item\" style=\"font-size: 11px\" data-val=\"";
               listLinneaBody += "d\">Positive</li>";
             }else{
               listLinneaBody += "d\">Column Vector</li>";
@@ -860,7 +838,7 @@ var txtExprView = {
         I: {formats: ["5000", "5000", "General", ""]},
         x: {formats: ["Vector", "5000", "Column Vector"]},
       },
-      code: "H_dag=trans(H)*inv(H*trans(H))\ny_k=H_dag*y+(I+(-H_dag*H))*x",
+      code: "H_dag=trans(H)*inv(H*trans(H))\ny_k=H_dag*y+(I-H_dag*H)*x",
     },
     input5:{
       name: "Stochastic Newton",
@@ -871,8 +849,8 @@ var txtExprView = {
         Bin: {formats: ["1000", "1000", "General", "SPD"]},
         In: {formats: ["1000", "1000", "General", ""]},
         A: {formats: ["5000", "1000", "General", "FullRank"]},
-        Wk: {formats: ["5000", "1", "General", "FullRank"]},
-        I1: {formats: ["1", "1", "General", ""]},
+        Wk: {formats: ["5000", "625", "General", "FullRank"]},
+        I1: {formats: ["625", "625", "Identity", ""]},
       },
      code: "Bout=(k*inv(k-1))*Bin*(In+(-trans(A)*Wk*inv((k-1)*I1+trans(Wk)*A*Bin*trans(A)*Wk)*trans(Wk)*A*Bin))",
    },
@@ -887,7 +865,7 @@ var txtExprView = {
       listExamplesBody += "\" class=\"mdl-menu__item mdl-menu__item--full-bleed-divider\" style=\"font-size: 11px; \"><strong style=\"color:purple\" >";
 
       listExamplesBody += examples[e].name;
-      listExamplesBody += ":</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ";
+      listExamplesBody += ":</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ";
       listExamplesBody += examples[e].expr;
       listExamplesBody += "</li>";
     }else if(examples[e].name == "Generalized Least Squares"){
@@ -896,7 +874,7 @@ var txtExprView = {
       listExamplesBody += "\" class=\"mdl-menu__item mdl-menu__item--full-bleed-divider\" style=\"font-size: 11px; \"><strong style=\"color:purple\" >";
 
       listExamplesBody += examples[e].name;
-      listExamplesBody += ":</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ";
+      listExamplesBody += ":</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ";
       listExamplesBody += examples[e].expr;
       listExamplesBody += "</li>";  
     }else if(examples[e].name == "Triangular Matrix Inversion"){
@@ -905,7 +883,7 @@ var txtExprView = {
       listExamplesBody += "\" class=\"mdl-menu__item mdl-menu__item--full-bleed-divider\" style=\"font-size: 11px; height: 104px; padding-top: 16px;\"><strong style=\"color:purple\" >";
 
       listExamplesBody += examples[e].name;
-      listExamplesBody += ":</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+      listExamplesBody += ":</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
       listExamplesBody += examples[e].expr;
       listExamplesBody += "</li>";  
     }else if(examples[e].name == "Image Restoration"){
@@ -914,7 +892,7 @@ var txtExprView = {
       listExamplesBody += "\" class=\"mdl-menu__item mdl-menu__item--full-bleed-divider\" style=\"font-size: 11px; height: 70px; padding-top: 10px;\"><strong style=\"color:purple\" >";
 
       listExamplesBody += examples[e].name;
-      listExamplesBody += ":</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+      listExamplesBody += ":</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
       listExamplesBody += examples[e].expr;
       listExamplesBody += "</li>";  
     }else if(examples[e].name == "Stochastic Newton"){
@@ -923,7 +901,7 @@ var txtExprView = {
       listExamplesBody += "\" class=\"mdl-menu__item \" style=\"font-size: 11px; height: 70px; padding-top: 10px;\"><strong style=\"color:purple\" >";
 
       listExamplesBody += examples[e].name;
-      listExamplesBody += ":</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+      listExamplesBody += ":</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
       listExamplesBody += examples[e].expr;
       listExamplesBody += "</li>";  
     }
@@ -938,7 +916,6 @@ var txtExprView = {
         for (var f in format) {
           tblFormatsView.insertCacheEntry(f,format[f]);
         }
-        //out("4");
         $("#txtExpr").css('height','64px');
         $("#txtExpr").val(code).trigger('inputchange');
         $("#txtExpr").html(code).trigger('inputchange');
@@ -949,7 +926,6 @@ var txtExprView = {
         for (var f in format) {
           tblFormatsView.insertCacheEntry(f,format[f]);
         }
-        //out("4");
         $("#txtExpr").css('height','64px');
         $("#txtExpr").val(code).trigger('inputchange');
         $("#txtExpr").html(code).trigger('inputchange');
@@ -960,7 +936,6 @@ var txtExprView = {
         for (var f in format) {
           tblFormatsView.insertCacheEntry(f,format[f]);
         }
-        //out("3");
         $("#txtExpr").css('height','128px');
         $("#txtExpr").val(code).trigger('inputchange');
         $("#txtExpr").html(code).trigger('inputchange');
@@ -971,7 +946,6 @@ var txtExprView = {
         for (var f in format) {
           tblFormatsView.insertCacheEntry(f,format[f]);
         }
-        //out("else");
         $("#txtExpr").css('height','32px');
         $("#txtExpr").val(code).trigger('inputchange');
         $("#txtExpr").html(code).trigger('inputchange');
@@ -1033,9 +1007,12 @@ var txtExprView = {
     }
   }
 
-  function hideScalarDisplay(object, id, id2, id3, id4){
+  function hideScalarDisplay(object, id, id2, id3, id4, id5){
+    console.log(id5);
+    console.log(id5.value);
     var id2_id = id2.id;
     if($(object).val() == 'Vector'){
+      id5.textContent = "Type:"
       id.style.display = 'block';
       var v = id2.getAttribute("variable");
       if(tblFormatsView.cache[`${v}`] !== undefined){
@@ -1053,24 +1030,22 @@ var txtExprView = {
       id4.style.display = 'block';
       id4.textContent = "Row Vector";
     }else if($(object).val() == 'Scalar'){
+      id5.textContent = "Properties:"
       id.style.display = 'none';
       var v = id2.getAttribute("variable");
       if(tblFormatsView.cache[`${v}`] !== undefined){
-        out('yes');
         if(tblFormatsView.cache[`${v}`].formats[2] !== undefined){
-          out('yesyes');
-          if(tblFormatsView.cache[`${v}`].formats[2] == "Positive" || tblFormatsView.cache[`${v}`].formats[2] == "Negative"){
+          if(tblFormatsView.cache[`${v}`].formats[2] == "Positive" || tblFormatsView.cache[`${v}`].formats[2] == "None"){
             id2.firstElementChild.value = tblFormatsView.cache[`${v}`].formats[2];
           }else{
-            id2.firstElementChild.value = "Positive";
+            id2.firstElementChild.value = "None";
           }
           
         }
 
       }
-      id3.textContent = "Positive";
-      id4.style.display = 'none';
-      id4.textContent = "Negative";
+      id3.textContent = "None";
+      id4.textContent = "Positive";
       
     }
 
@@ -1079,14 +1054,10 @@ var txtExprView = {
   function hidePropertyDisplay(object, id){
     if($(object).val() == 'General'){
       id.style.display = 'block';
-      
-      //out($("#"+id))
     }else if($(object).val() == 'Identity'){
       id.style.display = 'none';
-      //$("#"+id).html('value');
     }else if($(object).val() == 'Zero'){
       id.style.display = 'none';
-      //$("#"+id).html('value');
     }
 
   }
@@ -1097,18 +1068,12 @@ var txtExprView = {
     currentVariableId = id;
     modal.style.display = "block";
     var thisID = $(object).attr('id');
-    //out($(object).val());
     inputInto = $(object).closest("div.content").find("input").attr('id');
     listofproperties = $('#'+inputInto).val().trim().split(',');
-    //out(listofproperties);
-    //out('this id is: ' + thisID);
     $('input:checkbox').removeAttr('checked');
 
     for(lst in listofproperties){
-        //
-        //out($('#'+listofproperties[lst].trim()));
         $('#'+listofproperties[lst].trim()).prop('checked', true);
-        //$("input[name='listofproperties[lst]']:checked");
     }
 
     $.each($("input[name='properties']:checked"), function(){
@@ -1144,9 +1109,6 @@ var txtExprView = {
 
 
   function generateInput(){
-    console.log("in generation");
-    
-    out(tblFormatsView.cache[model.input.juliaVars[0]]);
     if(tblFormatsView.cache !== undefined && model.input.juliaVars !== undefined && model.input.juliaVars.length != 0){
       var inputGenerated = "";
       inputGenerated += "\n";
@@ -1199,7 +1161,11 @@ var txtExprView = {
         if (tblFormatsView.cache[`${id_v}`] !== undefined){  
           if (/^[a-z]/.test(id_v)){
             if(tblFormatsView.cache[`${id_v}`].formats[0] == "Scalar"){
-              inputGenerated += "Scalar " + id_v + " <" + tblFormatsView.cache[`${id_v}`].formats[2] + ">";
+              if(tblFormatsView.cache[`${id_v}`].formats[2] == "None"){
+                inputGenerated += "Scalar " + id_v + " <>";
+              }else if(tblFormatsView.cache[`${id_v}`].formats[2] == "Positive"){
+                inputGenerated += "Scalar " + id_v + " <" + tblFormatsView.cache[`${id_v}`].formats[2] + ">";
+              }
             }else{ 
               if(tblFormatsView.cache[`${id_v}`].formats[2] == "Row Vector"){
                 inputGenerated += "RowVector " + id_v + "(" + tblFormatsView.cache[`${id_v}`].ordering[1] + ")" + "<>";
@@ -1220,9 +1186,9 @@ var txtExprView = {
             if(tblFormatsView.cache[`${id_v}`].formats[2] == "General"){
               inputGenerated += "Matrix " + id_v + "(" + tblFormatsView.cache[`${id_v}`].ordering[0] + "," + tblFormatsView.cache[`${id_v}`].ordering[1] + ")" + "<" + tblFormatsView.cache[`${id_v}`].formats[3] + ">";
             }else if(tblFormatsView.cache[`${id_v}`].formats[2] == "Identity"){
-              inputGenerated += "IdentityMatrix " + id_v + "(" + tblFormatsView.cache[`${id_v}`].ordering[0] + "," + tblFormatsView.cache[`${id_v}`].ordering[1] + ")" + "<>";
+              inputGenerated += "IdentityMatrix " + id_v + "(" + tblFormatsView.cache[`${id_v}`].ordering[0] + "," + tblFormatsView.cache[`${id_v}`].ordering[1] + ")";
             }else if(tblFormatsView.cache[`${id_v}`].formats[2] == "Zero"){
-              inputGenerated += "ZeroMatrix " + id_v + "(" + tblFormatsView.cache[`${id_v}`].ordering[0] + "," + tblFormatsView.cache[`${id_v}`].ordering[1] + ")" + "<>";
+              inputGenerated += "ZeroMatrix " + id_v + "(" + tblFormatsView.cache[`${id_v}`].ordering[0] + "," + tblFormatsView.cache[`${id_v}`].ordering[1] + ")";
             }
             inputGenerated += "\n";
           }
