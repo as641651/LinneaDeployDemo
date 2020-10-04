@@ -26,12 +26,6 @@ def create_input(request):
     currentDirectory = os.path.dirname(os.path.realpath(__file__))
     baseDirectory = currentDirectory.split("app",1)[0]
     print(baseDirectory)
-    # print(git_rev_parse('/home/sinahk/Dropbox/6. Workspace/Linnea/LinneaDeployDemo/linnea'))
-    # linnea_dir = '/home/sinahk/Dropbox/6. Workspace/Linnea/LinneaDeployDemo/linnea'
-    # linnea_dir = baseDirectory+'linnea'
-    
-    # linnea_last_commit = git_rev_parse(linnea_dir)
-    # linnea_last_commit = linnea_last_commit[2:-3]
     linnea_last_commit = "c02811669dae88a0a0b86882b67fbd239bb1d76a"
     if request.POST.get('action') == 'post':
         description = request.POST.get('description')
